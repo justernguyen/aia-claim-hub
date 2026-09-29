@@ -24,10 +24,10 @@ export const ExecutiveToolbar: React.FC<ExecutiveToolbarProps> = ({
         </div>
         <div className="min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
+            <h3 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
               Trung Tâm Thống Kê & Báo Cáo Hiệu Quả Nghiệp Vụ
             </h3>
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-rose-50 text-aia-red border border-rose-200/70">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold uppercase tracking-wider bg-rose-50 text-aia-red border border-rose-200/70">
               <Sparkles className="w-3 h-3 text-aia-red" />
               <span>MDRT Executive Hub</span>
             </span>

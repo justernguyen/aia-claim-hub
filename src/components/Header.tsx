@@ -1,12 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Plus,
-  Upload,
-  RefreshCw,
-  FileSpreadsheet,
-  FileCode,
-  ShieldCheck,
-  Building,
   Users,
   ShieldAlert,
   CalendarCheck,
@@ -31,13 +25,14 @@ interface HeaderProps {
   onOpenNewCustomer: () => void;
   onOpenNewClaim: () => void;
   onOpenNewCare: () => void;
-  onExportJSON: () => void;
-  onExportCSV: () => void;
-  onImportJSON: (jsonStr: string) => { success: boolean; error?: string };
-  onResetDefault: () => void;
+  onExportJSON?: () => void;
+  onExportCSV?: () => void;
+  onImportJSON?: (jsonStr: string) => { success: boolean; error?: string };
+  onResetDefault?: () => void;
   onOpenProfile?: () => void;
   onOpenBackupModal?: () => void;
 }
+
 export const Header: React.FC<HeaderProps> = ({
   activeTab,
   onTabChange,
@@ -47,36 +42,11 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenNewCustomer,
   onOpenNewClaim,
   onOpenNewCare,
-  onExportJSON,
-  onExportCSV,
-  onImportJSON,
-  onResetDefault,
   onOpenProfile,
   onOpenBackupModal,
 }) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
   const [avatarError, setAvatarError] = useState(false);
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const content = event.target?.result as string;
-      if (content) {
-        const result = onImportJSON(content);
-        if (result.success) {
-          alert('Khôi phục dữ liệu hệ thống CRM & Claim thành công!');
-        } else {
-          alert(`Lỗi nhập file: ${result.error || 'Dữ liệu không hợp lệ'}`);
-        }
-      }
-    };
-    reader.readAsText(file);
-    if (fileInputRef.current) fileInputRef.current.value = '';
-  };
 
   const navTabs: {
     id: AppTab;
@@ -132,13 +102,12 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           </div>
 
-          {/* Center: Consultant Profile Card */}
           {/* Center: Consultant Profile Card (Clickable to Edit) */}
           <button
             type="button"
             onClick={onOpenProfile}
-            title="Nhấp để cập nhật thông tin cá nhân tư vấn viên & đổi avatar"
-            className="hidden lg:flex items-center gap-2.5 bg-slate-50/90 hover:bg-rose-50/40 border border-slate-200/80 hover:border-aia-red/40 rounded-xl px-3 py-1.5 shadow-2xs hover:shadow-xs transition-all shrink-0 whitespace-nowrap cursor-pointer text-left group"
+            title="Nhấp để cập nhật thông tin cá nhân tư vấn viên"
+            className="hidden lg:flex items-center gap-2.5 bg-slate-50 hover:bg-rose-50/50 border border-slate-200/80 hover:border-aia-red/30 rounded-xl px-3 py-1.5 shadow-2xs hover:shadow-xs transition-all shrink-0 whitespace-nowrap cursor-pointer text-left group"
           >
             <div className="relative flex-shrink-0">
               {consultant.avatarUrl && !avatarError ? (
@@ -146,32 +115,30 @@ export const Header: React.FC<HeaderProps> = ({
                   src={consultant.avatarUrl}
                   alt={consultant.name}
                   onError={() => setAvatarError(true)}
-                  className="w-9 h-9 rounded-full object-cover shadow-xs border-2 border-white ring-1 ring-slate-200 shrink-0 group-hover:ring-aia-red/40 transition-all"
+                  className="w-8 h-8 rounded-full object-cover border border-slate-200 shrink-0 group-hover:ring-2 group-hover:ring-aia-red/20 transition-all"
                 />
               ) : (
-                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-aia-red to-rose-400 text-white font-bold flex items-center justify-center text-xs shadow-xs border-2 border-white shrink-0">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-aia-red to-rose-400 text-white font-bold flex items-center justify-center text-xs border border-slate-200 shrink-0">
                   {consultant.name ? consultant.name.trim().charAt(consultant.name.trim().length - 1).toUpperCase() : 'Ý'}
                 </div>
               )}
-              <span className="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 border-2 border-white rounded-full" title="Đang trực tuyến" />
+              <span className="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 border border-white rounded-full" title="Đang trực tuyến" />
             </div>
             <div className="text-left whitespace-nowrap shrink-0">
               <div className="flex items-center gap-1.5 leading-none">
-                <span className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-aia-red transition-colors whitespace-nowrap">{consultant.name}</span>
-                <span className="text-[10.5px] bg-amber-50 text-amber-900 border border-amber-300 font-black px-2 py-0.5 rounded shadow-2xs whitespace-nowrap shrink-0">
+                <span className="text-xs sm:text-sm font-semibold text-slate-900 group-hover:text-aia-red transition-colors whitespace-nowrap">{consultant.name}</span>
+                <span className="text-[10px] bg-amber-50 text-amber-800 border border-amber-200 font-bold px-1.5 py-0.5 rounded shadow-2xs whitespace-nowrap shrink-0">
                   {consultant.title.includes('MDRT') ? 'MDRT' : consultant.title.includes('COT') ? 'COT' : 'AGENT'}
                 </span>
                 <UserCog className="w-3.5 h-3.5 text-slate-400 group-hover:text-aia-red transition-colors ml-0.5 shrink-0" />
               </div>
-              <div className="flex items-center gap-1.5 text-slate-600 text-xs mt-1 whitespace-nowrap shrink-0 leading-none">
-                <span className="flex items-center gap-0.5 font-numeric font-semibold text-slate-700 whitespace-nowrap shrink-0">
-                  <ShieldCheck className="w-3.5 h-3.5 text-aia-red shrink-0" />
-                  <span className="whitespace-nowrap">{consultant.code.replace(/-/g, '\u2011')}</span>
+              <div className="flex items-center gap-1.5 text-slate-500 text-xs mt-1 whitespace-nowrap shrink-0 leading-none">
+                <span className="font-numeric font-medium text-slate-600 whitespace-nowrap shrink-0">
+                  {consultant.code.replace(/-/g, '\u2011')}
                 </span>
                 <span className="text-slate-300">•</span>
-                <span className="flex items-center gap-0.5 whitespace-nowrap shrink-0" title={consultant.office || consultant.agency}>
-                  <Building className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                  <span className="whitespace-nowrap">{consultant.agency}</span>
+                <span className="whitespace-nowrap shrink-0" title={consultant.office || consultant.agency}>
+                  {consultant.agency}
                 </span>
               </div>
             </div>
@@ -179,7 +146,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Right: Data Tools + Primary Action Dropdown */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            {/* Mobile Consultant Avatar (Clickable to Edit) */}
+            {/* Mobile Consultant Avatar */}
             <button
               type="button"
               onClick={onOpenProfile}
@@ -200,66 +167,17 @@ export const Header: React.FC<HeaderProps> = ({
               )}
               <span className="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 border border-white rounded-full" />
             </button>
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileUpload}
-              accept=".json"
-              className="hidden"
-            />
 
-            {/* Quick backup tools */}
-            <div className="flex items-center gap-1 sm:gap-1.5 border-r border-slate-200 pr-1.5 sm:pr-2 mr-0.5 sm:mr-1 shrink-0">
-              <button
-                type="button"
-                onClick={onOpenBackupModal}
-                title="Trung tâm Sao lưu & Khôi phục dữ liệu (JSON & Excel)"
-                className="p-1.5 sm:px-2.5 sm:py-2 text-slate-700 hover:text-aia-red hover:bg-rose-50/70 border border-slate-200/90 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer shrink-0"
-              >
-                <Database className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-aia-red shrink-0" />
-                <span className="hidden sm:inline whitespace-nowrap">Sao lưu</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={onExportJSON}
-                title="Sao lưu nhanh toàn bộ dữ liệu ra file JSON"
-                className="hidden md:flex p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg text-xs font-medium items-center gap-1.5 transition-colors whitespace-nowrap shrink-0"
-              >
-                <FileCode className="w-4 h-4 text-slate-500 shrink-0" />
-                <span className="hidden 2xl:inline whitespace-nowrap">Xuất JSON</span>
-              </button>
-              <button
-                type="button"
-                onClick={onExportCSV}
-                title="Xuất danh bạ và hợp đồng ra file Excel CSV"
-                className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors whitespace-nowrap shrink-0"
-              >
-                <FileSpreadsheet className="w-4 h-4 text-slate-500 shrink-0" />
-                <span className="hidden 2xl:inline whitespace-nowrap">Xuất Excel</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                title="Khôi phục dữ liệu từ file backup JSON"
-                className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors whitespace-nowrap shrink-0"
-              >
-                <Upload className="w-4 h-4 text-slate-500 shrink-0" />
-                <span className="hidden 2xl:inline whitespace-nowrap">Nhập file</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  if (confirm('Khôi phục toàn bộ hệ thống về dữ liệu mẫu mặc định ban đầu?')) {
-                    onResetDefault();
-                  }
-                }}
-                title="Khôi phục dữ liệu mẫu ban đầu"
-                className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors shrink-0"
-              >
-                <RefreshCw className="w-4 h-4" />
-              </button>
-            </div>
+            {/* Consolidated Backup & Data Center Button */}
+            <button
+              type="button"
+              onClick={onOpenBackupModal}
+              title="Trung tâm Dữ liệu: Sao lưu, Khôi phục, Xuất/Nhập JSON & Excel"
+              className="px-3 py-2 text-slate-700 hover:text-aia-red hover:bg-rose-50/70 border border-slate-200/90 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer shrink-0"
+            >
+              <Database className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-aia-red shrink-0" />
+              <span className="hidden sm:inline whitespace-nowrap">Sao lưu & Dữ liệu</span>
+            </button>
 
             {/* Quick Add Dropdown */}
             <div className="relative shrink-0">

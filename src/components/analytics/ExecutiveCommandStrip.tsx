@@ -20,7 +20,7 @@ export const ExecutiveCommandStrip: React.FC<ExecutiveCommandStripProps> = ({
         className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col justify-between hover:border-slate-300 transition-all cursor-pointer group min-w-0"
       >
         <div className="flex items-center justify-between gap-2">
-          <p className="text-xs font-bold text-slate-700 uppercase tracking-wider truncate">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">
             Doanh Số Phí APE
           </p>
           <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0 group-hover:bg-slate-200 transition-colors">
@@ -30,13 +30,13 @@ export const ExecutiveCommandStrip: React.FC<ExecutiveCommandStripProps> = ({
 
         <div className="mt-2 min-w-0">
           <p
-            className="text-xl sm:text-2xl font-black text-slate-900 font-numeric truncate tracking-tight"
+            className="text-2xl font-bold text-slate-900 font-numeric truncate tracking-tight"
             title={formatCurrencyVND(kpis.totalAnnualPremium)}
           >
             {formatShortCurrency(kpis.totalAnnualPremium)}
           </p>
-          <div className="flex items-center gap-1.5 text-xs text-slate-600 font-medium mt-0.5 truncate">
-            <span className="font-bold text-emerald-700">FYP: {formatShortCurrency(kpis.fypAmount)}</span>
+          <div className="flex items-center gap-1.5 text-xs text-slate-500 font-normal mt-0.5 truncate">
+            <span className="font-semibold text-emerald-700">FYP: {formatShortCurrency(kpis.fypAmount)}</span>
             <span className="text-slate-300">•</span>
             <span>RYP: {formatShortCurrency(kpis.rypAmount)}</span>
           </div>
@@ -56,7 +56,7 @@ export const ExecutiveCommandStrip: React.FC<ExecutiveCommandStripProps> = ({
         className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col justify-between hover:border-slate-300 transition-all cursor-pointer group min-w-0"
       >
         <div className="flex items-center justify-between gap-2">
-          <p className="text-xs font-bold text-slate-700 uppercase tracking-wider truncate">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">
             Chỉ Tiêu MDRT 2026
           </p>
           <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-rose-50 text-aia-red flex items-center justify-center shrink-0 group-hover:bg-rose-100 transition-colors">
@@ -66,10 +66,10 @@ export const ExecutiveCommandStrip: React.FC<ExecutiveCommandStripProps> = ({
 
         <div className="mt-2 min-w-0">
           <div className="flex items-baseline gap-2">
-            <p className="text-xl sm:text-2xl font-black text-slate-900 font-numeric tracking-tight">
+            <p className="text-2xl font-bold text-slate-900 font-numeric tracking-tight">
               {kpis.mdrtProgressPct}%
             </p>
-            <span className="text-xs font-bold text-slate-600">/ 750 Tr ₫</span>
+            <span className="text-xs font-medium text-slate-500">/ 750 Tr ₫</span>
           </div>
 
           {/* Progress bar mini */}
@@ -101,7 +101,7 @@ export const ExecutiveCommandStrip: React.FC<ExecutiveCommandStripProps> = ({
         className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col justify-between hover:border-slate-300 transition-all cursor-pointer group min-w-0"
       >
         <div className="flex items-center justify-between gap-2">
-          <p className="text-xs font-bold text-slate-700 uppercase tracking-wider truncate">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">
             Tiền AIA Đã Chi Trả
           </p>
           <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 group-hover:bg-emerald-100 transition-colors">
@@ -111,13 +111,13 @@ export const ExecutiveCommandStrip: React.FC<ExecutiveCommandStripProps> = ({
 
         <div className="mt-2 min-w-0">
           <p
-            className="text-xl sm:text-2xl font-black text-emerald-700 font-numeric truncate tracking-tight"
+            className="text-2xl font-bold text-emerald-700 font-numeric truncate tracking-tight"
             title={formatCurrencyVND(kpis.totalApprovedAmount)}
           >
             {formatShortCurrency(kpis.totalApprovedAmount)}
           </p>
-          <p className="text-xs text-slate-600 font-medium mt-0.5 truncate">
-            Duyệt <strong className="text-slate-900 font-bold font-numeric">{kpis.approvedClaimsCount}/{kpis.totalClaimsCount}</strong> ca ({kpis.approvalRate}%)
+          <p className="text-xs text-slate-500 font-normal mt-0.5 truncate">
+            Duyệt <strong className="text-slate-700 font-semibold font-numeric">{kpis.approvedClaimsCount}/{kpis.totalClaimsCount}</strong> ca ({kpis.approvalRate}%)
           </p>
         </div>
 
@@ -135,7 +135,7 @@ export const ExecutiveCommandStrip: React.FC<ExecutiveCommandStripProps> = ({
         className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col justify-between hover:border-slate-300 transition-all cursor-pointer group min-w-0"
       >
         <div className="flex items-center justify-between gap-2">
-          <p className="text-xs font-bold text-slate-700 uppercase tracking-wider truncate">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">
             Tỷ Lệ Duy Trì K1
           </p>
           <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center shrink-0 group-hover:bg-blue-100 transition-colors">
@@ -145,13 +145,13 @@ export const ExecutiveCommandStrip: React.FC<ExecutiveCommandStripProps> = ({
 
         <div className="mt-2 min-w-0">
           <div className="flex items-baseline gap-2">
-            <p className="text-xl sm:text-2xl font-black text-slate-900 font-numeric tracking-tight">
+            <p className="text-2xl font-bold text-slate-900 font-numeric tracking-tight">
               {kpis.k1PersistencyRate}%
             </p>
-            <span className="text-xs font-bold text-emerald-700">Đạt chuẩn K1</span>
+            <span className="text-xs font-semibold text-emerald-700">Đạt chuẩn K1</span>
           </div>
-          <p className="text-xs text-slate-600 font-medium mt-0.5 truncate">
-            <strong className="text-slate-900 font-bold font-numeric">{kpis.inForceCount}</strong> / {kpis.totalPoliciesCount} HĐ đang hiệu lực
+          <p className="text-xs text-slate-500 font-normal mt-0.5 truncate">
+            <strong className="text-slate-700 font-semibold font-numeric">{kpis.inForceCount}</strong> / {kpis.totalPoliciesCount} HĐ đang hiệu lực
           </p>
         </div>
 
