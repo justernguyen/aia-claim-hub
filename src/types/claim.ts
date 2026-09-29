@@ -192,5 +192,32 @@ export const CLAIM_TYPE_LABELS: Record<ClaimType, string> = {
   accident: 'Thương tật tai nạn',
 };
 
+export const isBenefitMatchingClaimType = (
+  benefitType: ClaimType,
+  claimType: ClaimType
+): boolean => {
+  if (benefitType === claimType) return true;
+  if (benefitType === 'medical_expense') {
+    return [
+      'inpatient',
+      'outpatient',
+      'day_treatment',
+      'pre_admission',
+      'post_discharge',
+      'surgery',
+      'dental',
+      'maternity',
+      'medical_expense',
+    ].includes(claimType);
+  }
+  if (benefitType === 'hospital_cash') {
+    return ['hospital_cash', 'inpatient', 'day_treatment'].includes(claimType);
+  }
+  if (benefitType === 'accident' || benefitType === 'accident_injury') {
+    return claimType === 'accident' || claimType === 'accident_injury';
+  }
+  return false;
+};
+
 // Alias
 export const BENEFIT_LABELS = CLAIM_TYPE_LABELS;

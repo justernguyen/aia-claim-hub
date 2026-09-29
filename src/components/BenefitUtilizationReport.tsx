@@ -70,15 +70,15 @@ export const BenefitUtilizationReport: React.FC<BenefitUtilizationReportProps> =
       </div>
 
       <div className="overflow-x-auto border border-slate-200 rounded-xl">
-        <table className="w-full text-left text-xs border-collapse">
+        <table className="w-full min-w-[960px] text-left text-xs border-collapse">
           <thead>
             <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
-              <th className="py-3 px-3">Khách hàng & HĐ</th>
-              <th className="py-3 px-3">Quyền lợi bảo hiểm</th>
-              <th className="py-3 px-3 text-right">Hạn mức năm</th>
-              <th className="py-3 px-3 text-right">Đã bồi thường</th>
-              <th className="py-3 px-3 min-w-[140px]">Tỷ lệ sử dụng</th>
-              <th className="py-3 px-3 text-right">Còn lại</th>
+              <th className="py-3 px-3 min-w-[150px] whitespace-nowrap">Khách hàng & HĐ</th>
+              <th className="py-3 px-3 min-w-[170px] whitespace-nowrap">Quyền lợi bảo hiểm</th>
+              <th className="py-3 px-3 min-w-[130px] text-right whitespace-nowrap">Hạn mức năm</th>
+              <th className="py-3 px-3 min-w-[130px] text-right whitespace-nowrap">Đã bồi thường</th>
+              <th className="py-3 px-3 min-w-[140px] whitespace-nowrap">Tỷ lệ sử dụng</th>
+              <th className="py-3 px-3 min-w-[130px] text-right whitespace-nowrap">Còn lại</th>
               <th className="py-3 px-3 min-w-[200px]">Đánh giá & Khuyến nghị</th>
             </tr>
           </thead>
@@ -104,12 +104,12 @@ export const BenefitUtilizationReport: React.FC<BenefitUtilizationReportProps> =
                 </td>
 
                 {/* Hạn mức năm */}
-                <td className="py-3 px-3 text-right font-mono text-slate-600">
+                <td className="py-3 px-3 text-right font-mono text-slate-600 whitespace-nowrap">
                   {row.unit === 'days' ? `${row.maxLimit} ngày` : formatCurrencyVND(row.maxLimit)}
                 </td>
 
                 {/* Đã bồi thường */}
-                <td className="py-3 px-3 text-right font-mono font-bold text-slate-900">
+                <td className="py-3 px-3 text-right font-mono font-bold text-slate-900 whitespace-nowrap">
                   {row.unit === 'days' ? `${row.usedAmount} ngày` : formatCurrencyVND(row.usedAmount)}
                 </td>
 
@@ -133,7 +133,7 @@ export const BenefitUtilizationReport: React.FC<BenefitUtilizationReportProps> =
                 </td>
 
                 {/* Hạn mức còn lại */}
-                <td className="py-3 px-3 text-right font-mono font-bold text-emerald-700">
+                <td className="py-3 px-3 text-right font-mono font-bold text-emerald-700 whitespace-nowrap">
                   {row.unit === 'days' ? `${row.remainingLimit} ngày` : formatCurrencyVND(row.remainingLimit)}
                 </td>
 

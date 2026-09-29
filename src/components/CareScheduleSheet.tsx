@@ -138,18 +138,18 @@ export const CareScheduleSheet: React.FC<CareScheduleSheetProps> = ({
 
       {/* Spreadsheet Grid Table */}
       <div className="overflow-x-auto border border-slate-200 rounded-xl">
-        <table className="w-full text-left text-xs border-collapse">
+        <table className="w-full min-w-[1050px] text-left text-xs border-collapse">
           <thead>
             <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
-              <th className="py-3 px-3 w-12 text-center">Xong</th>
-              <th className="py-3 px-3 w-24">Ngày</th>
-              <th className="py-3 px-3 min-w-[140px]">Khách hàng</th>
-              <th className="py-3 px-3 min-w-[110px]">Kênh</th>
-              <th className="py-3 px-3 min-w-[220px]">Nội dung trao đổi / Tư vấn</th>
-              <th className="py-3 px-3 min-w-[160px]">Kết quả</th>
+              <th className="py-3 px-3 w-12 text-center whitespace-nowrap">Xong</th>
+              <th className="py-3 px-3 w-28 whitespace-nowrap">Ngày</th>
+              <th className="py-3 px-3 min-w-[150px] whitespace-nowrap">Khách hàng</th>
+              <th className="py-3 px-3 min-w-[120px] whitespace-nowrap">Kênh</th>
+              <th className="py-3 px-3 min-w-[240px]">Nội dung trao đổi / Tư vấn</th>
+              <th className="py-3 px-3 min-w-[180px]">Kết quả</th>
               <th className="py-3 px-3 min-w-[200px]">Việc tiếp theo (Next Action)</th>
-              <th className="py-3 px-3 w-24">Hẹn tiếp</th>
-              <th className="py-3 px-2 w-10 text-center">Xóa</th>
+              <th className="py-3 px-3 w-28 whitespace-nowrap">Hẹn tiếp</th>
+              <th className="py-3 px-2 w-12 text-center whitespace-nowrap">Xóa</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 font-medium">

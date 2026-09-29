@@ -58,7 +58,7 @@ export function useClaims() {
   const isClaimOverdue = (claim: ClaimItem): boolean => {
     if (claim.status === 'underwriting' || claim.status === 'intake' || claim.status === 'pending_docs') {
       const intake = new Date(claim.intakeDate);
-      const now = new Date('2026-09-29');
+      const now = new Date();
       const diffDays = Math.floor((now.getTime() - intake.getTime()) / (1000 * 60 * 60 * 24));
       return diffDays >= 5;
     }

@@ -8,7 +8,7 @@ export const CURRENT_CONSULTANT: ConsultantProfile = {
   phone: '0908 123 889',
   email: 'nhuy.duong@aia.com.vn',
   office: 'Tầng 15, Tòa nhà Bitexco Financial Tower, Quận 1, TP.HCM',
-  avatarUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=256',
+  avatarUrl: '/avatar-consultant.png',
 };
 
 export const INITIAL_CLAIMS: ClaimItem[] = [

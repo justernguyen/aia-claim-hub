@@ -106,14 +106,13 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                   <span className="text-xs font-mono text-slate-400">({customer.id})</span>
                 </div>
                 <p className="text-xs text-slate-300 font-medium mt-0.5">{customer.occupation}</p>
-                <div className="flex items-center gap-4 text-xs text-slate-400 mt-2 font-mono">
-                  <span>{customerPolicies.length} Hợp đồng</span>
+                <div className="flex items-center gap-4 text-xs text-slate-400 mt-2 font-mono whitespace-nowrap">
+                  <span className="whitespace-nowrap">{customerPolicies.length} Hợp đồng</span>
                   <span>•</span>
-                  <span>Tổng phí: <strong className="text-white">{formatCurrencyVND(totalAnnualPremium)}/năm</strong></span>
+                  <span className="whitespace-nowrap">Tổng phí: <strong className="text-white">{formatCurrencyVND(totalAnnualPremium)}/năm</strong></span>
                 </div>
               </div>
             </div>
-
             <div className="flex items-center gap-2">
               <button
                 type="button"
@@ -127,21 +126,21 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
 
           {/* Quick Contact Action Bar */}
           <div className="bg-slate-800/80 px-6 py-2.5 flex items-center justify-between text-xs text-slate-300 border-b border-slate-700">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 overflow-x-auto scrollbar-none">
               <a
                 href={`tel:${customer.phone.replace(/\s+/g, '')}`}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition-colors whitespace-nowrap shrink-0"
               >
-                <Phone className="w-3.5 h-3.5" />
+                <Phone className="w-3.5 h-3.5 shrink-0" />
                 <span>Gọi điện: {customer.phone}</span>
               </a>
               <a
                 href={`https://zalo.me/${customer.phone.replace(/[^0-9]/g, '')}`}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold transition-colors whitespace-nowrap shrink-0"
               >
-                <MessageSquare className="w-3.5 h-3.5" />
+                <MessageSquare className="w-3.5 h-3.5 shrink-0" />
                 <span>Nhắn Zalo</span>
               </a>
             </div>
@@ -163,53 +162,68 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex border-b border-slate-200 bg-slate-50 px-6 text-xs font-bold">
+          <div className="flex border-b border-slate-200 bg-slate-50 px-4 sm:px-6 text-xs font-bold overflow-x-auto scrollbar-none">
             <button
               type="button"
               onClick={() => setActiveSubTab('policies')}
-              className={`py-3 px-3 border-b-2 flex items-center gap-1.5 transition-all cursor-pointer ${
+              className={`py-3 px-3.5 border-b-2 flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                 activeSubTab === 'policies'
-                  ? 'border-aia-red text-aia-red bg-white'
-                  : 'border-transparent text-slate-500 hover:text-slate-900'
+                  ? 'border-aia-red text-aia-red bg-white font-bold'
+                  : 'border-transparent text-slate-500 hover:text-slate-900 font-semibold'
               }`}
             >
-              <ShieldCheck className="w-4 h-4" />
-              <span>Hợp đồng & Quyền lợi ({customerPolicies.length})</span>
+              <ShieldCheck className="w-4 h-4 shrink-0" />
+              <span>Hợp đồng & Quyền lợi</span>
+              <span className={`text-[11px] px-1.5 py-0.2 rounded-full font-bold ${
+                activeSubTab === 'policies' ? 'bg-rose-100 text-aia-red' : 'bg-slate-200/80 text-slate-600'
+              }`}>
+                {customerPolicies.length}
+              </span>
             </button>
             <button
               type="button"
               onClick={() => setActiveSubTab('claims')}
-              className={`py-3 px-3 border-b-2 flex items-center gap-1.5 transition-all cursor-pointer ${
+              className={`py-3 px-3.5 border-b-2 flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                 activeSubTab === 'claims'
-                  ? 'border-aia-red text-aia-red bg-white'
-                  : 'border-transparent text-slate-500 hover:text-slate-900'
+                  ? 'border-aia-red text-aia-red bg-white font-bold'
+                  : 'border-transparent text-slate-500 hover:text-slate-900 font-semibold'
               }`}
             >
-              <Receipt className="w-4 h-4" />
-              <span>Lịch sử Bồi thường ({customerClaims.length})</span>
+              <Receipt className="w-4 h-4 shrink-0" />
+              <span>Lịch sử Bồi thường</span>
+              <span className={`text-[11px] px-1.5 py-0.2 rounded-full font-bold ${
+                activeSubTab === 'claims' ? 'bg-rose-100 text-aia-red' : 'bg-slate-200/80 text-slate-600'
+              }`}>
+                {customerClaims.length}
+              </span>
             </button>
             <button
               type="button"
               onClick={() => setActiveSubTab('care')}
-              className={`py-3 px-3 border-b-2 flex items-center gap-1.5 transition-all cursor-pointer ${
+              className={`py-3 px-3.5 border-b-2 flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                 activeSubTab === 'care'
-                  ? 'border-aia-red text-aia-red bg-white'
-                  : 'border-transparent text-slate-500 hover:text-slate-900'
+                  ? 'border-aia-red text-aia-red bg-white font-bold'
+                  : 'border-transparent text-slate-500 hover:text-slate-900 font-semibold'
               }`}
             >
-              <Clock className="w-4 h-4" />
-              <span>Nhật ký Chăm sóc ({customerActivities.length})</span>
+              <Clock className="w-4 h-4 shrink-0" />
+              <span>Nhật ký Chăm sóc</span>
+              <span className={`text-[11px] px-1.5 py-0.2 rounded-full font-bold ${
+                activeSubTab === 'care' ? 'bg-rose-100 text-aia-red' : 'bg-slate-200/80 text-slate-600'
+              }`}>
+                {customerActivities.length}
+              </span>
             </button>
             <button
               type="button"
               onClick={() => setActiveSubTab('profile')}
-              className={`py-3 px-3 border-b-2 flex items-center gap-1.5 transition-all cursor-pointer ${
+              className={`py-3 px-3.5 border-b-2 flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                 activeSubTab === 'profile'
-                  ? 'border-aia-red text-aia-red bg-white'
-                  : 'border-transparent text-slate-500 hover:text-slate-900'
+                  ? 'border-aia-red text-aia-red bg-white font-bold'
+                  : 'border-transparent text-slate-500 hover:text-slate-900 font-semibold'
               }`}
             >
-              <Calendar className="w-4 h-4" />
+              <Calendar className="w-4 h-4 shrink-0" />
               <span>Hồ sơ Cá nhân</span>
             </button>
           </div>
@@ -296,9 +310,9 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                                 key={idx}
                                 className="p-3 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition-colors"
                               >
-                                <div className="flex items-center justify-between text-xs mb-1.5">
+                                <div className="flex items-center justify-between text-xs mb-1.5 gap-2">
                                   <span className="font-semibold text-slate-800">{b.name}</span>
-                                  <span className="font-mono text-slate-500 font-bold">
+                                  <span className="font-mono text-slate-500 font-bold whitespace-nowrap shrink-0">
                                     {b.unit === 'days'
                                       ? `${b.usedAmount}/${b.maxLimit} ngày`
                                       : `${formatCurrencyVND(b.usedAmount)} / ${formatCurrencyVND(b.maxLimit)}`}
@@ -315,9 +329,9 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                                   />
                                 </div>
 
-                                <div className="flex items-center justify-between text-[11px] text-slate-500">
-                                  <span>Tỷ lệ đã sử dụng: <strong className="font-mono">{pct}%</strong></span>
-                                  <span className="text-emerald-700 font-bold font-mono">
+                                <div className="flex items-center justify-between text-[11px] text-slate-500 gap-2">
+                                  <span className="whitespace-nowrap">Tỷ lệ đã sử dụng: <strong className="font-mono">{pct}%</strong></span>
+                                  <span className="text-emerald-700 font-bold font-mono whitespace-nowrap">
                                     Hạn mức còn lại: {b.unit === 'days' ? `${b.remainingLimit} ngày` : formatCurrencyVND(b.remainingLimit)}
                                   </span>
                                 </div>

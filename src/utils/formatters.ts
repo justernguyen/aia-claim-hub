@@ -3,9 +3,9 @@
  * Ví dụ: 952445 -> "952.445 đ"
  */
 export function formatCurrencyVND(amount: number): string {
-  if (isNaN(amount) || amount === 0) return '0 đ';
+  if (isNaN(amount) || amount === 0) return '0\u00A0đ';
   const formatted = new Intl.NumberFormat('vi-VN').format(amount);
-  return `${formatted} đ`;
+  return `${formatted}\u00A0đ`;
 }
 
 /**
@@ -13,14 +13,14 @@ export function formatCurrencyVND(amount: number): string {
  * Ví dụ: 154800000 -> "154.8 tr đ"
  */
 export function formatShortCurrency(amount: number): string {
-  if (isNaN(amount) || amount === 0) return '0 đ';
+  if (isNaN(amount) || amount === 0) return '0\u00A0đ';
   if (amount >= 1_000_000_000) {
     const b = (amount / 1_000_000_000).toFixed(1).replace('.0', '');
-    return `${b} tỷ đ`;
+    return `${b}\u00A0tỷ\u00A0đ`;
   }
   if (amount >= 1_000_000) {
     const m = (amount / 1_000_000).toFixed(1).replace('.0', '');
-    return `${m} tr đ`;
+    return `${m}\u00A0tr\u00A0đ`;
   }
   return formatCurrencyVND(amount);
 }
@@ -46,4 +46,47 @@ export function getRemainingDays(deadlineStr?: string): number | null {
   const now = new Date('2026-09-29'); // Reference current system date
   const diffTime = deadline.getTime() - now.getTime();
   return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+}
+
+/**
+ * Định dạng số nhập liệu thời gian thực có dấu chấm phân cách hàng nghìn (chuẩn vi-VN)
+ * Ví dụ: 25000000 hoặc "25000000" -> "25.000.000"
+ */
+export function formatNumberInput(value: string | number | undefined | null): string {
+  if (value === undefined || value === null || value === '') return '';
+  const str = typeof value === 'number' ? Math.round(value).toString() : String(value);
+  const digits = str.replace(/\D/g, '');
+  if (!digits) return '';
+  return new Intl.NumberFormat('vi-VN').format(Number(digits));
+}
+
+/**
+ * Chuyển chuỗi đã định dạng dấu chấm về số nguyên
+ * Ví dụ: "25.000.000" -> 25000000
+ */
+export function parseNumberInput(value: string | number | undefined | null): number {
+  if (typeof value === 'number') return isNaN(value) ? 0 : value;
+  if (!value) return 0;
+  return Number(String(value).replace(/\D/g, '')) || 0;
+}
+
+/**
+ * Diễn giải số tiền thành chữ ngắn gọn (triệu / tỷ đồng) giúp đối soát nhầm lẫn số 0
+ * Ví dụ: 25000000 -> "25 triệu đồng", 1000000000 -> "1 tỷ đồng"
+ */
+export function formatWordsVND(amount: number): string {
+  if (!amount || isNaN(amount) || amount <= 0) return '';
+  if (amount >= 1_000_000_000) {
+    const val = amount / 1_000_000_000;
+    return `${val.toLocaleString('vi-VN', { maximumFractionDigits: 2 })} tỷ đồng`;
+  }
+  if (amount >= 1_000_000) {
+    const val = amount / 1_000_000;
+    return `${val.toLocaleString('vi-VN', { maximumFractionDigits: 2 })} triệu đồng`;
+  }
+  if (amount >= 1_000) {
+    const val = amount / 1_000;
+    return `${val.toLocaleString('vi-VN', { maximumFractionDigits: 1 })} nghìn đồng`;
+  }
+  return `${new Intl.NumberFormat('vi-VN').format(amount)} đồng`;
 }

@@ -43,17 +43,17 @@ export const ClaimTableView: React.FC<ClaimTableViewProps> = ({
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs border-collapse">
+        <table className="w-full min-w-[1120px] text-left text-xs border-collapse">
           <thead>
             <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-600 font-semibold uppercase tracking-wider text-[11px]">
-              <th className="py-3.5 px-4">Mã Claim / Ngày nộp</th>
-              <th className="py-3.5 px-4">Khách hàng & HĐBH</th>
-              <th className="py-3.5 px-4">Sản phẩm & Quyền lợi</th>
-              <th className="py-3.5 px-4">Bệnh viện & Chẩn đoán</th>
-              <th className="py-3.5 px-4 text-right">Số tiền yêu cầu / Duyệt</th>
-              <th className="py-3.5 px-4 text-center">Chứng từ</th>
-              <th className="py-3.5 px-4 text-center">Trạng thái</th>
-              <th className="py-3.5 px-4 text-center">Thao tác</th>
+              <th className="py-3.5 px-4 min-w-[145px] whitespace-nowrap">Mã Claim / Ngày nộp</th>
+              <th className="py-3.5 px-4 min-w-[165px] whitespace-nowrap">Khách hàng & HĐBH</th>
+              <th className="py-3.5 px-4 min-w-[180px] whitespace-nowrap">Sản phẩm & Quyền lợi</th>
+              <th className="py-3.5 px-4 min-w-[220px]">Bệnh viện & Chẩn đoán</th>
+              <th className="py-3.5 px-4 min-w-[155px] text-right whitespace-nowrap">Số tiền yêu cầu / Duyệt</th>
+              <th className="py-3.5 px-4 min-w-[115px] text-center whitespace-nowrap">Chứng từ</th>
+              <th className="py-3.5 px-4 min-w-[150px] text-center whitespace-nowrap">Trạng thái</th>
+              <th className="py-3.5 px-4 min-w-[130px] text-center whitespace-nowrap">Thao tác</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -70,26 +70,26 @@ export const ClaimTableView: React.FC<ClaimTableViewProps> = ({
                   className="hover:bg-rose-50/30 transition-colors cursor-pointer group"
                 >
                   {/* Mã Claim & Ngày nộp */}
-                  <td className="py-3.5 px-4">
-                    <div className="font-bold text-slate-900 group-hover:text-aia-red transition-colors flex items-center gap-1.5">
-                      <span>{claim.id}</span>
+                  <td className="py-3.5 px-4 whitespace-nowrap">
+                    <div className="font-bold text-slate-900 group-hover:text-aia-red transition-colors flex items-center gap-1.5 font-mono">
+                      <span className="whitespace-nowrap">{claim.id}</span>
                     </div>
-                    <div className="text-[11px] text-slate-500 flex items-center gap-1 mt-0.5">
-                      <Calendar className="w-3 h-3 text-slate-400" />
+                    <div className="text-[11px] text-slate-500 flex items-center gap-1 mt-0.5 whitespace-nowrap">
+                      <Calendar className="w-3 h-3 text-slate-400 shrink-0" />
                       <span>{formatDate(claim.intakeDate)}</span>
                     </div>
                   </td>
 
                   {/* Khách hàng & Số HĐ */}
-                  <td className="py-3.5 px-4">
-                    <div className="font-bold text-slate-900">{claim.customerName}</div>
-                    <div className="text-[11px] text-slate-500 font-mono flex items-center gap-1 mt-0.5">
-                      <span className="text-aia-red font-semibold">{claim.policyNumber}</span>
+                  <td className="py-3.5 px-4 whitespace-nowrap">
+                    <div className="font-bold text-slate-900 whitespace-nowrap">{claim.customerName}</div>
+                    <div className="text-[11px] text-slate-500 font-mono flex items-center gap-1 mt-0.5 whitespace-nowrap">
+                      <span className="text-aia-red font-semibold whitespace-nowrap">{claim.policyNumber}</span>
                       <span>•</span>
-                      <span>{claim.relationship}</span>
+                      <span className="whitespace-nowrap">{claim.relationship}</span>
                     </div>
                     {claim.insuredPersonName !== claim.customerName && (
-                      <div className="text-[10px] text-slate-400 italic">
+                      <div className="text-[10px] text-slate-400 italic whitespace-nowrap">
                         NĐBH: {claim.insuredPersonName}
                       </div>
                     )}
@@ -97,88 +97,87 @@ export const ClaimTableView: React.FC<ClaimTableViewProps> = ({
 
                   {/* Sản phẩm & Quyền lợi */}
                   <td className="py-3.5 px-4">
-                    <div className="font-medium text-slate-800 truncate max-w-[180px]" title={claim.productName}>
+                    <div className="font-medium text-slate-800 truncate max-w-[210px]" title={claim.productName}>
                       {claim.productName}
                     </div>
-                    <span className="inline-block mt-1 text-[10px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
+                    <span className="inline-block mt-1 text-[10px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200 whitespace-nowrap">
                       {CLAIM_TYPE_LABELS[claim.claimType]}
                     </span>
                   </td>
 
                   {/* Bệnh viện & Chẩn đoán */}
                   <td className="py-3.5 px-4">
-                    <div className="font-medium text-slate-900 flex items-center gap-1 truncate max-w-[220px]" title={claim.hospitalName}>
+                    <div className="font-medium text-slate-900 flex items-center gap-1.5 truncate max-w-[260px]" title={claim.hospitalName}>
                       <Building2 className="w-3 h-3 text-slate-400 shrink-0" />
                       <span className="truncate">{claim.hospitalName}</span>
                     </div>
-                    <div className="text-[11px] text-slate-500 truncate max-w-[220px] mt-0.5" title={claim.diagnosis}>
+                    <div className="text-[11px] text-slate-500 truncate max-w-[260px] mt-0.5" title={claim.diagnosis}>
                       {claim.diagnosis}
                     </div>
                   </td>
-
                   {/* Số tiền Yêu cầu / Duyệt */}
-                  <td className="py-3.5 px-4 text-right">
-                    <div className="font-bold text-slate-900 font-mono">
+                  <td className="py-3.5 px-4 text-right whitespace-nowrap">
+                    <div className="font-bold text-slate-900 font-mono whitespace-nowrap">
                       {formatCurrencyVND(claim.claimedAmount)}
                     </div>
                     {claim.approvedAmount > 0 ? (
-                      <div className="text-[11px] text-emerald-600 font-semibold font-mono mt-0.5">
+                      <div className="text-[11px] text-emerald-600 font-semibold font-mono mt-0.5 whitespace-nowrap">
                         Duyệt: {formatCurrencyVND(claim.approvedAmount)}
                       </div>
                     ) : claim.status === 'rejected' ? (
-                      <div className="text-[11px] text-rose-600 font-semibold mt-0.5">
+                      <div className="text-[11px] text-rose-600 font-semibold mt-0.5 whitespace-nowrap">
                         Từ chối chi trả
                       </div>
                     ) : (
-                      <div className="text-[11px] text-slate-400 mt-0.5">
+                      <div className="text-[11px] text-slate-400 mt-0.5 whitespace-nowrap">
                         Đang thẩm định
                       </div>
                     )}
                   </td>
 
                   {/* Trạng thái chứng từ */}
-                  <td className="py-3.5 px-4 text-center">
+                  <td className="py-3.5 px-4 text-center whitespace-nowrap">
                     <div
-                      className={`inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full border ${
+                      className={`inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${
                         hasMissing
                           ? 'bg-amber-50 text-amber-800 border-amber-200'
                           : 'bg-emerald-50 text-emerald-800 border-emerald-200'
                       }`}
                     >
                       {hasMissing ? (
-                        <AlertCircle className="w-3 h-3 text-amber-600" />
+                        <AlertCircle className="w-3 h-3 text-amber-600 shrink-0" />
                       ) : (
-                        <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                        <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
                       )}
-                      <span>
+                      <span className="whitespace-nowrap">
                         {verifiedDocs}/{totalDocs} hợp lệ
                       </span>
                     </div>
                   </td>
 
                   {/* Trạng thái xử lý */}
-                  <td className="py-3.5 px-4 text-center">
+                  <td className="py-3.5 px-4 text-center whitespace-nowrap">
                     <span
-                      className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border ${statusCfg.badgeClass}`}
+                      className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border whitespace-nowrap ${statusCfg.badgeClass}`}
                     >
                       <span
-                        className="w-1.5 h-1.5 rounded-full"
+                        className="w-1.5 h-1.5 rounded-full shrink-0"
                         style={{ backgroundColor: statusCfg.dotColor }}
                       />
-                      <span>{statusCfg.label}</span>
+                      <span className="whitespace-nowrap">{statusCfg.label}</span>
                     </span>
                   </td>
 
                   {/* Nút hành động */}
                   <td
-                    className="py-3.5 px-4 text-center"
+                    className="py-3.5 px-4 text-center whitespace-nowrap"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div className="flex items-center justify-center gap-1">
+                    <div className="flex items-center justify-center gap-1 whitespace-nowrap">
                       <button
                         type="button"
                         onClick={() => onSelectClaim(claim.id)}
-                        className="p-1.5 text-slate-500 hover:text-aia-red hover:bg-rose-50 rounded-lg transition-colors"
+                        className="p-1.5 text-slate-500 hover:text-aia-red hover:bg-rose-50 rounded-lg transition-colors shrink-0"
                         title="Xem chi tiết hồ sơ"
                       >
                         <Eye className="w-4 h-4" />
@@ -186,7 +185,7 @@ export const ClaimTableView: React.FC<ClaimTableViewProps> = ({
                       <select
                         value={claim.status}
                         onChange={(e) => onUpdateStatus(claim.id, e.target.value as ClaimStatus)}
-                        className="text-[11px] font-medium bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg px-1.5 py-1 text-slate-700 cursor-pointer focus:outline-none focus:ring-1 focus:ring-aia-red"
+                        className="text-[11px] font-medium bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg px-2 py-1 text-slate-700 cursor-pointer focus:outline-none focus:ring-1 focus:ring-aia-red whitespace-nowrap"
                         title="Chuyển trạng thái nhanh"
                       >
                         <option value="intake">Tiếp nhận</option>

@@ -16,7 +16,7 @@ import { NewCareActivityModal } from './components/NewCareActivityModal';
 import { ClaimStatus, ClaimType } from './types/claim';
 import { SortOption, ViewMode } from './hooks/useClaims';
 import { ShieldCheck, Sparkles } from 'lucide-react';
-
+import { AiaLogo } from './components/AiaLogo';
 export default function App() {
   const store = useCRMStore();
 
@@ -282,17 +282,24 @@ export default function App() {
       {/* Footer */}
       <footer className="bg-white border-t border-slate-200 mt-12 py-6 text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <span className="font-extrabold text-aia-red text-sm tracking-tight">AIA</span>
-            <span>•</span>
+          <div className="flex items-center gap-2.5">
+            <AiaLogo variant="full" size="sm" className="h-5" />
+            <span className="text-slate-300">•</span>
             <span>Hệ thống Quản lý Khách hàng, Bồi thường & Chăm sóc Khách hàng</span>
           </div>
-          <div className="flex items-center gap-4 text-slate-400">
-            <span>Tư vấn viên: <strong className="text-slate-700">Dương Như Ý</strong> ({store.consultant.code})</span>
+          <div className="flex items-center gap-3 text-slate-400">
+            <div className="flex items-center gap-2">
+              <img
+                src={store.consultant.avatarUrl || '/avatar-consultant.png'}
+                alt={store.consultant.name}
+                className="w-5 h-5 rounded-full object-cover border border-slate-200"
+              />
+              <span>Tư vấn viên: <strong className="text-slate-700">{store.consultant.name}</strong> ({store.consultant.code})</span>
+            </div>
             <span>•</span>
             <span className="flex items-center gap-1 text-slate-500">
               <ShieldCheck className="w-3.5 h-3.5 text-aia-red" />
-              <span>AIA Exchange Bitexco</span>
+              <span>{store.consultant.agency}</span>
             </span>
           </div>
         </div>

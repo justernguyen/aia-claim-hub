@@ -12,6 +12,7 @@ import {
   ClaimType,
   ConsultantProfile,
   DocumentStatus,
+  isBenefitMatchingClaimType,
 } from '../types/claim';
 import {
   INITIAL_CUSTOMERS,
@@ -50,7 +51,15 @@ export const useCRMStore = () => {
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed.customers && parsed.policies && parsed.claims && parsed.careActivities) {
-          return parsed;
+          const consultant = {
+            ...CURRENT_CONSULTANT,
+            ...(parsed.consultant || {}),
+            avatarUrl:
+              parsed.consultant?.avatarUrl && !parsed.consultant.avatarUrl.includes('unsplash.com')
+                ? parsed.consultant.avatarUrl
+                : CURRENT_CONSULTANT.avatarUrl,
+          };
+          return { ...parsed, consultant };
         }
       }
     } catch (e) {
@@ -79,10 +88,10 @@ export const useCRMStore = () => {
   // ==========================================
   const alerts = useMemo<CareAlert[]>(() => {
     const alertList: CareAlert[] = [];
-    const today = new Date('2026-09-29'); // Simulated reference today
+    const today = new Date();
+    const currentYear = today.getFullYear();
     const currentMonth = today.getMonth() + 1; // 1-12
-    const currentDay = today.getDate(); // 29
-
+    const currentDay = today.getDate();
     // 1. Sinh nhật khách hàng trong 7 ngày tới hoặc trong tháng
     data.customers.forEach((cust) => {
       if (!cust.birthDate) return;
@@ -111,7 +120,7 @@ export const useCRMStore = () => {
           description: daysDiff === 0
             ? 'Hôm nay là sinh nhật khách hàng! Hãy gọi điện hoặc gửi quà chúc mừng.'
             : `Còn ${daysDiff} ngày nữa là đến sinh nhật. Chuẩn bị thiệp và quà chúc mừng.`,
-          dueDate: `2026-${String(bMonth).padStart(2, '0')}-${String(bDay).padStart(2, '0')}`,
+          dueDate: `${currentYear}-${String(bMonth).padStart(2, '0')}-${String(bDay).padStart(2, '0')}`,
           daysRemaining: daysDiff,
           severity: daysDiff <= 3 ? 'urgent' : 'warning',
         });
@@ -343,6 +352,7 @@ export const useCRMStore = () => {
       ...prev,
       customers: prev.customers.filter((c) => c.id !== id),
       policies: prev.policies.filter((p) => p.customerId !== id),
+      claims: prev.claims.filter((c) => c.customerId !== id),
       careActivities: prev.careActivities.filter((a) => a.customerId !== id),
     }));
   }, []);
@@ -507,10 +517,19 @@ export const useCRMStore = () => {
       if (deductionDelta !== 0 && claim.policyNumber) {
         updatedPolicies = prev.policies.map((pol) => {
           if (pol.id !== claim.policyNumber) return pol;
+          // Find exact match first, else compatible match
+          let targetIndex = pol.benefits.findIndex((b) => b.type === claim.claimType);
+          if (targetIndex === -1) {
+            targetIndex = pol.benefits.findIndex((b) => isBenefitMatchingClaimType(b.type, claim.claimType));
+          }
+          if (targetIndex === -1) {
+            targetIndex = 0;
+          }
+
           return {
             ...pol,
-            benefits: pol.benefits.map((b) => {
-              if (b.type === claim.claimType || b.type === 'medical_expense') {
+            benefits: pol.benefits.map((b, idx) => {
+              if (idx === targetIndex) {
                 const newUsed = Math.max(0, b.usedAmount + deductionDelta);
                 const newRemaining = Math.max(0, b.maxLimit - newUsed);
                 return {

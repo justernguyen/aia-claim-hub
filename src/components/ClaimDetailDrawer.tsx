@@ -24,9 +24,10 @@ import {
   DocumentStatus,
   STATUS_CONFIG,
   CLAIM_TYPE_LABELS,
+  isBenefitMatchingClaimType,
 } from '../types/claim';
 import { Policy } from '../types/crm';
-import { formatCurrencyVND, formatDate } from '../utils/formatters';
+import { formatCurrencyVND, formatDate, formatNumberInput, parseNumberInput } from '../utils/formatters';
 
 interface ClaimDetailDrawerProps {
   claim: ClaimItem | null;
@@ -246,7 +247,7 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
               {(() => {
                 const matchingPolicy = policies.find((p) => p.id === claim.policyNumber);
                 const matchingBenefit = matchingPolicy?.benefits.find((b) => b.type === claim.claimType) ||
-                  matchingPolicy?.benefits.find((b) => b.type === 'medical_expense') ||
+                  matchingPolicy?.benefits.find((b) => isBenefitMatchingClaimType(b.type, claim.claimType)) ||
                   matchingPolicy?.benefits[0];
 
                 if (!matchingBenefit) return null;
@@ -578,15 +579,17 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
             {/* Quick Status Transition Form */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
               {(selectedStatus === 'approved' || selectedStatus === 'paid') && (
-                <div className="flex items-center gap-1 bg-white border border-emerald-300 rounded-xl px-2.5 py-1">
+                <div className="flex items-center gap-1.5 bg-white border border-emerald-300 rounded-xl px-2.5 py-1">
                   <span className="text-[11px] font-semibold text-emerald-700 whitespace-nowrap">Tiền duyệt:</span>
                   <input
-                    type="number"
-                    value={approvedAmountInput}
-                    onChange={(e) => setApprovedAmountInput(Number(e.target.value) || 0)}
+                    type="text"
+                    inputMode="numeric"
+                    value={approvedAmountInput > 0 ? formatNumberInput(approvedAmountInput) : ''}
+                    onChange={(e) => setApprovedAmountInput(parseNumberInput(e.target.value))}
                     className="w-28 text-xs font-bold font-mono text-emerald-800 focus:outline-none"
                     placeholder="0"
                   />
+                  <span className="text-xs font-bold text-emerald-600 select-none">đ</span>
                 </div>
               )}
 

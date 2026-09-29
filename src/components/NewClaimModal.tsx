@@ -13,7 +13,7 @@ import {
   ClaimType,
   CLAIM_TYPE_LABELS,
 } from '../types/claim';
-import { formatCurrencyVND } from '../utils/formatters';
+import { formatCurrencyVND, formatNumberInput, parseNumberInput, formatWordsVND } from '../utils/formatters';
 
 interface NewClaimModalProps {
   isOpen: boolean;
@@ -162,9 +162,16 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
                 <h2 className="text-base font-bold text-slate-900">
                   Tiếp Nhận Hồ Sơ Quyền Lợi AIA Mới
                 </h2>
-                <p className="text-xs text-slate-500 font-medium">
-                  Tư vấn viên: <strong>Dương Như Ý</strong> (AIA-VN-8869)
-                </p>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <img
+                    src="/avatar-consultant.png"
+                    alt="Dương Như Ý"
+                    className="w-4 h-4 rounded-full object-cover border border-slate-200"
+                  />
+                  <p className="text-xs text-slate-500 font-medium">
+                    Tư vấn viên: <strong className="text-slate-700">Dương Như Ý</strong> (AIA-VN-8869)
+                  </p>
+                </div>
               </div>
             </div>
             <button
@@ -424,21 +431,34 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 <div>
-                  <label className="block text-slate-600 font-semibold mb-1">
-                    Số Tiền Yêu Cầu Bồi Thường (VNĐ) <span className="text-rose-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={claimedAmountStr}
-                    onChange={(e) => setClaimedAmountStr(e.target.value)}
-                    placeholder="VD: 15,000,000"
-                    className={`w-full px-3 py-2 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-aia-red/20 font-mono text-sm font-bold ${
-                      errors.claimedAmount ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200'
-                    }`}
-                  />
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-slate-700 font-semibold">
+                      Số tiền yêu cầu bồi thường (VND) <span className="text-rose-500">*</span>
+                    </label>
+                    {parsedAmount > 0 && (
+                      <span className="text-[11px] font-bold text-aia-red bg-rose-50 px-2 py-0.5 rounded-md border border-rose-200">
+                        {formatWordsVND(parsedAmount)}
+                      </span>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      value={claimedAmountStr}
+                      onChange={(e) => setClaimedAmountStr(formatNumberInput(e.target.value))}
+                      placeholder="VD: 15.000.000"
+                      className={`w-full p-2.5 pr-8 bg-slate-50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-aia-red/20 font-mono text-sm font-bold text-slate-900 ${
+                        errors.claimedAmount ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200'
+                      }`}
+                    />
+                    <span className="absolute right-3 top-2.5 text-xs font-bold text-slate-400 select-none">
+                      đ
+                    </span>
+                  </div>
                   {parsedAmount > 0 && (
-                    <div className="text-[11px] font-semibold text-aia-red mt-1">
-                      Bằng số: {formatCurrencyVND(parsedAmount)}
+                    <div className="text-[11px] font-semibold text-slate-600 mt-1">
+                      Bằng số: <strong className="text-slate-900 font-mono">{formatCurrencyVND(parsedAmount)}</strong>
                     </div>
                   )}
                   {errors.claimedAmount && (

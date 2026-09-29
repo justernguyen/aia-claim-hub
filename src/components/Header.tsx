@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { ConsultantProfile } from '../types/claim';
 import { AppTab } from '../types/navigation';
-
+import { AiaLogo } from './AiaLogo';
 interface HeaderProps {
   activeTab: AppTab;
   onTabChange: (tab: AppTab) => void;
@@ -50,7 +50,7 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
-
+  const [avatarError, setAvatarError] = useState(false);
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -104,31 +104,38 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Top bar: Brand + Consultant Info + Quick Actions */}
         <div className="flex items-center justify-between h-18 border-b border-slate-100">
           {/* Left: AIA Brand & System Title */}
-          <div className="flex items-center gap-3.5">
-            <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-aia-red text-white font-extrabold text-xl tracking-tighter shadow-md select-none">
-              AIA
-            </div>
-            <div>
+          <div className="flex items-center gap-3 sm:gap-4">
+            <AiaLogo variant="full" size="md" className="h-9 sm:h-10" />
+            <div className="border-l border-slate-200 pl-3 sm:pl-3.5">
               <div className="flex items-center gap-2">
-                <h1 className="text-lg font-bold text-slate-900 tracking-tight">
+                <h1 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-tight">
                   AIA Agent CRM & Claim Hub
                 </h1>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-aia-red border border-rose-200/80 uppercase tracking-wide">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-aia-red border border-rose-200/80 uppercase tracking-wide hidden xs:inline-block">
                   MDRT Portal
                 </span>
               </div>
-              <p className="text-xs text-slate-500 font-medium hidden sm:block">
+              <p className="text-xs text-slate-500 font-medium hidden sm:block mt-0.5">
                 Quản lý Khách hàng, Hợp đồng, Bồi thường & Chăm sóc Khách hàng
               </p>
             </div>
           </div>
 
           {/* Center: Consultant Profile Card */}
-          <div className="hidden lg:flex items-center gap-3 bg-slate-50/90 border border-slate-200/80 rounded-xl px-3 py-1.5">
-            <div className="relative">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-aia-red to-rose-400 text-white font-bold flex items-center justify-center text-sm shadow-xs border border-white">
-                Ý
-              </div>
+          <div className="hidden lg:flex items-center gap-3 bg-slate-50/90 border border-slate-200/80 rounded-xl px-3 py-1.5 shadow-2xs hover:bg-slate-50 transition-colors">
+            <div className="relative flex-shrink-0">
+              {consultant.avatarUrl && !avatarError ? (
+                <img
+                  src={consultant.avatarUrl}
+                  alt={consultant.name}
+                  onError={() => setAvatarError(true)}
+                  className="w-10 h-10 rounded-full object-cover shadow-xs border-2 border-white ring-1 ring-slate-200"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-aia-red to-rose-400 text-white font-bold flex items-center justify-center text-sm shadow-xs border-2 border-white">
+                  Ý
+                </div>
+              )}
               <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full" title="Đang trực tuyến" />
             </div>
             <div className="text-left text-xs">
@@ -152,6 +159,25 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Right: Data Tools + Primary Action Dropdown */}
           <div className="flex items-center gap-2">
+            {/* Mobile Consultant Avatar */}
+            <div
+              className="relative flex lg:hidden items-center flex-shrink-0 mr-1"
+              title={`${consultant.name} (${consultant.code}) - ${consultant.agency}`}
+            >
+              {consultant.avatarUrl && !avatarError ? (
+                <img
+                  src={consultant.avatarUrl}
+                  alt={consultant.name}
+                  onError={() => setAvatarError(true)}
+                  className="w-8 h-8 rounded-full object-cover shadow-xs border-2 border-white ring-1 ring-slate-200"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-aia-red to-rose-400 text-white font-bold flex items-center justify-center text-xs shadow-xs border-2 border-white">
+                  Ý
+                </div>
+              )}
+              <span className="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 border border-white rounded-full" />
+            </div>
             <input
               type="file"
               ref={fileInputRef}

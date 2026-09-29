@@ -27,18 +27,18 @@ export const ClaimDataTable: React.FC<ClaimDataTableProps> = ({
   return (
     <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-2xs my-4">
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-slate-200 text-left">
+        <table className="min-w-full min-w-[960px] divide-y divide-slate-200 text-left">
           <thead className="bg-slate-50/75 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
             <tr>
-              <th scope="col" className="py-3 px-4">Mã hồ sơ</th>
-              <th scope="col" className="py-3 px-4">Ngày khám</th>
-              <th scope="col" className="py-3 px-4">Người ĐCBH</th>
-              <th scope="col" className="py-3 px-4">Quyền lợi</th>
-              <th scope="col" className="py-3 px-4">Cơ sở y tế</th>
-              <th scope="col" className="py-3 px-4 text-right">Tiền yêu cầu</th>
-              <th scope="col" className="py-3 px-4 text-right">Tiền chi trả</th>
-              <th scope="col" className="py-3 px-4 text-center">Trạng thái</th>
-              <th scope="col" className="py-3 px-3 text-right">Chi tiết</th>
+              <th scope="col" className="py-3 px-4 min-w-[130px] whitespace-nowrap">Mã hồ sơ</th>
+              <th scope="col" className="py-3 px-4 min-w-[110px] whitespace-nowrap">Ngày khám</th>
+              <th scope="col" className="py-3 px-4 min-w-[160px] whitespace-nowrap">Người ĐCBH</th>
+              <th scope="col" className="py-3 px-4 min-w-[140px] whitespace-nowrap">Quyền lợi</th>
+              <th scope="col" className="py-3 px-4 min-w-[180px]">Cơ sở y tế</th>
+              <th scope="col" className="py-3 px-4 min-w-[130px] text-right whitespace-nowrap">Tiền yêu cầu</th>
+              <th scope="col" className="py-3 px-4 min-w-[130px] text-right whitespace-nowrap">Tiền chi trả</th>
+              <th scope="col" className="py-3 px-4 min-w-[130px] text-center whitespace-nowrap">Trạng thái</th>
+              <th scope="col" className="py-3 px-3 min-w-[70px] text-right whitespace-nowrap">Chi tiết</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 text-xs">

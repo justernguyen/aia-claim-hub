@@ -11,6 +11,7 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import { Customer, Policy, BillingFrequency } from '../types/crm';
+import { formatNumberInput, parseNumberInput, formatWordsVND } from '../utils/formatters';
 
 interface NewCustomerModalProps {
   isOpen: boolean;
@@ -49,8 +50,8 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
   const [createPolicyNow, setCreatePolicyNow] = useState(true);
   const [policyId, setPolicyId] = useState(`AIA-${Math.floor(1000000 + Math.random() * 9000000)}`);
   const [productName, setProductName] = useState(AIA_PRODUCTS[0]);
-  const [mainCoverageStr, setMainCoverageStr] = useState('1000000000'); // 1 tỷ
-  const [premiumStr, setPremiumStr] = useState('25000000'); // 25 triệu
+  const [mainCoverageStr, setMainCoverageStr] = useState(formatNumberInput(1000000000)); // 1 tỷ -> "1.000.000.000"
+  const [premiumStr, setPremiumStr] = useState(formatNumberInput(25000000)); // 25 triệu -> "25.000.000"
   const [billingFrequency, setBillingFrequency] = useState<BillingFrequency>('annual');
   const [healthCardQuotaStr, setHealthCardQuotaStr] = useState('250000000'); // 250 triệu
 
@@ -67,7 +68,7 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
 
     if (createPolicyNow) {
       if (!policyId.trim()) errs.policyId = 'Vui lòng nhập số hợp đồng';
-      if (!premiumStr || Number(premiumStr) <= 0) errs.premium = 'Phí bảo hiểm phải lớn hơn 0';
+      if (!premiumStr || parseNumberInput(premiumStr) <= 0) errs.premium = 'Phí bảo hiểm phải lớn hơn 0';
     }
 
     setErrors(errs);
@@ -101,11 +102,11 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
         customerId: '', // Sẽ được gán trong hook
         customerName: name.trim(),
         productName,
-        mainCoverageAmount: Number(mainCoverageStr) || 1000000000,
+        mainCoverageAmount: parseNumberInput(mainCoverageStr) || 1000000000,
         issueDate: todayStr,
         status: 'in_force',
         billingFrequency,
-        premiumAmount: Number(premiumStr) || 25000000,
+        premiumAmount: parseNumberInput(premiumStr) || 25000000,
         nextDueDate: nextDue,
         benefits: [
           {
@@ -334,16 +335,29 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">
-                    Phí bảo hiểm định kỳ (VND) <span className="text-rose-500">*</span>
-                  </label>
-                  <input
-                    type="number"
-                    value={premiumStr}
-                    onChange={(e) => setPremiumStr(e.target.value)}
-                    placeholder="25000000"
-                    className="w-full p-2.5 rounded-xl border border-slate-200 bg-white font-mono font-bold"
-                  />
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block font-semibold text-slate-700">
+                      Phí bảo hiểm định kỳ (VND) <span className="text-rose-500">*</span>
+                    </label>
+                    {parseNumberInput(premiumStr) > 0 && (
+                      <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                        {formatWordsVND(parseNumberInput(premiumStr))}
+                      </span>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      value={premiumStr}
+                      onChange={(e) => setPremiumStr(formatNumberInput(e.target.value))}
+                      placeholder="VD: 25.000.000"
+                      className="w-full p-2.5 pr-8 rounded-xl border border-slate-200 bg-white font-mono font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-aia-red/20 focus:border-aia-red"
+                    />
+                    <span className="absolute right-3 top-2.5 text-xs font-bold text-slate-400 select-none">
+                      đ
+                    </span>
+                  </div>
                   {errors.premium && <p className="text-rose-500 text-[11px] mt-1">{errors.premium}</p>}
                 </div>
 
@@ -375,14 +389,27 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Mệnh giá bảo vệ chính (VND)</label>
-                  <input
-                    type="number"
-                    value={mainCoverageStr}
-                    onChange={(e) => setMainCoverageStr(e.target.value)}
-                    placeholder="1000000000"
-                    className="w-full p-2.5 rounded-xl border border-slate-200 bg-white font-mono"
-                  />
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block font-semibold text-slate-700">Mệnh giá bảo vệ chính (VND)</label>
+                    {parseNumberInput(mainCoverageStr) > 0 && (
+                      <span className="text-[11px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200">
+                        {formatWordsVND(parseNumberInput(mainCoverageStr))}
+                      </span>
+                    )}
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      value={mainCoverageStr}
+                      onChange={(e) => setMainCoverageStr(formatNumberInput(e.target.value))}
+                      placeholder="VD: 1.000.000.000"
+                      className="w-full p-2.5 pr-8 rounded-xl border border-slate-200 bg-white font-mono font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-aia-red/20 focus:border-aia-red"
+                    />
+                    <span className="absolute right-3 top-2.5 text-xs font-bold text-slate-400 select-none">
+                      đ
+                    </span>
+                  </div>
                 </div>
               </div>
             )}
