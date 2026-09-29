@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { Customer, Policy, POLICY_STATUS_CONFIG } from '../types/crm';
 import { ClaimItem } from '../types/claim';
-import { formatCurrencyVND, formatCCCD, formatCompactVND } from '../utils/formatters';
+import { formatCurrencyVND, formatCCCD, formatCompactVND, formatPhone } from '../utils/formatters';
 import { CustomerAvatar } from './CustomerAvatar';
 
 interface CustomerCardProps {
@@ -108,11 +108,11 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
         <div className="mt-4 grid grid-cols-2 gap-2 text-xs text-slate-600 bg-slate-50/80 p-2.5 rounded-xl border border-slate-100">
           <div className="flex items-center gap-1.5 truncate">
             <Phone className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-            <span className="font-mono">{customer.phone}</span>
+            <span className="font-numeric font-medium text-slate-700">{formatPhone(customer.phone)}</span>
           </div>
           <div className="flex items-center gap-1.5 truncate">
             <CreditCard className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-            <span className="font-mono tracking-tight font-medium truncate">{formatCCCD(customer.cccd)}</span>
+            <span className="font-numeric font-medium text-slate-700 tracking-tight truncate">{formatCCCD(customer.cccd)}</span>
           </div>
           <div className="flex items-center gap-1.5 col-span-2 truncate">
             <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
@@ -129,9 +129,9 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
               <span className="text-[11px] text-slate-400">({primaryPolicy.id})</span>
             )}
           </div>
-          <div className="font-mono">
-            <span className="font-bold text-slate-900 text-[13px]">{formatCurrencyVND(totalPremium)}</span>
-            <span className="text-[11px] text-slate-500 font-normal">/năm</span>
+          <div className="font-numeric flex items-baseline gap-1">
+            <span className="font-bold text-slate-900 text-sm">{formatCurrencyVND(totalPremium).replace(/\s*₫$/, '')}</span>
+            <span className="text-[11px] font-medium text-slate-500">₫/năm</span>
           </div>
         </div>
 
@@ -145,7 +145,7 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
                   {medicalBenefit.name}
                 </span>
               </span>
-              <span className={`font-bold font-mono text-[10px] px-1.5 py-0.5 rounded shrink-0 ${
+              <span className={`font-bold font-numeric text-[10px] px-1.5 py-0.5 rounded shrink-0 ${
                 usedPercentage > 80
                   ? 'bg-rose-50 text-aia-red border border-rose-200'
                   : usedPercentage > 0
@@ -169,16 +169,16 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
             {/* Benefit numbers breakdown: Đã dùng, Còn lại & Hạn mức */}
             <div className="mt-2 grid grid-cols-2 gap-2 text-[11px] bg-slate-50/80 p-2.5 rounded-xl border border-slate-100">
               <div>
-                <span className="text-slate-400 block text-[10px] font-medium leading-none mb-1">Đã bồi thường</span>
-                <span className="font-bold font-mono text-slate-800 text-xs">
+                <span className="text-slate-500 block text-[10px] font-medium leading-none mb-1">Đã bồi thường</span>
+                <span className="font-bold font-numeric text-slate-800 text-xs">
                   {formatCurrencyVND(usedAmount)}
                 </span>
               </div>
               <div className="text-right">
-                <span className="text-slate-400 block text-[10px] font-medium leading-none mb-1">
-                  Còn lại <span className="text-slate-500 font-normal">/ {formatCompactVND(maxLimit)}</span>
+                <span className="text-slate-500 block text-[10px] font-medium leading-none mb-1">
+                  Còn lại <span className="text-slate-400 font-normal">/ {formatCompactVND(maxLimit)}</span>
                 </span>
-                <span className="font-bold font-mono text-emerald-700 text-xs">
+                <span className="font-bold font-numeric text-emerald-700 text-xs">
                   {formatCurrencyVND(remainingLimit)}
                 </span>
               </div>

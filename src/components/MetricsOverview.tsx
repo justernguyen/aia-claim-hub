@@ -86,10 +86,10 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({
             </div>
           </div>
           <div className="mt-3 flex items-baseline justify-between">
-            <div className="text-2xl font-extrabold text-slate-900 tracking-tight">
-              {stats.totalCases} <span className="text-xs font-normal text-slate-500">ca</span>
+            <div className="text-2xl font-extrabold text-slate-900 tracking-tight font-numeric">
+              {stats.totalCases} <span className="text-xs font-normal text-slate-500 font-sans">ca</span>
             </div>
-            <div className="text-xs font-bold text-slate-600">
+            <div className="text-xs font-bold text-slate-600 font-numeric">
               {formatShortCurrency(stats.totalClaimed)}
             </div>
           </div>
@@ -117,8 +117,8 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({
             </div>
           </div>
           <div className="mt-3 flex items-baseline justify-between">
-            <div className="text-2xl font-extrabold text-amber-900 tracking-tight">
-              {stats.pendingDocsCount} <span className="text-xs font-normal text-amber-700">hồ sơ</span>
+            <div className="text-2xl font-extrabold text-amber-900 tracking-tight font-numeric">
+              {stats.pendingDocsCount} <span className="text-xs font-normal text-amber-700 font-sans">hồ sơ</span>
             </div>
             <span className="text-[11px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full">
               Khách hàng cần gửi lại
@@ -147,8 +147,8 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({
             </div>
           </div>
           <div className="mt-3 flex items-baseline justify-between">
-            <div className="text-2xl font-extrabold text-blue-900 tracking-tight">
-              {stats.underwritingCount} <span className="text-xs font-normal text-blue-700">hồ sơ</span>
+            <div className="text-2xl font-extrabold text-blue-900 tracking-tight font-numeric">
+              {stats.underwritingCount} <span className="text-xs font-normal text-blue-700 font-sans">hồ sơ</span>
             </div>
             {stats.overdueSlaCount > 0 ? (
               <span className="text-[11px] font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
@@ -183,10 +183,10 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({
             </div>
           </div>
           <div className="mt-3 flex items-baseline justify-between">
-            <div className="text-2xl font-extrabold text-emerald-900 tracking-tight">
+            <div className="text-2xl font-extrabold text-emerald-900 tracking-tight font-numeric">
               {formatShortCurrency(stats.totalApproved)}
             </div>
-            <div className="flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
+            <div className="flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full font-numeric">
               <TrendingUp className="w-3 h-3" />
               <span>{stats.approvalRate}% duyệt</span>
             </div>

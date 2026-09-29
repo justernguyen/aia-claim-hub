@@ -72,7 +72,7 @@ export const ClaimTableView: React.FC<ClaimTableViewProps> = ({
                 >
                   {/* Mã Claim & Ngày nộp */}
                   <td className="py-3.5 px-4 whitespace-nowrap">
-                    <div className="font-bold text-slate-900 group-hover:text-aia-red transition-colors flex items-center gap-1.5 font-mono">
+                    <div className="font-bold text-slate-900 group-hover:text-aia-red transition-colors flex items-center gap-1.5 font-numeric">
                       <span className="whitespace-nowrap">{claim.id}</span>
                     </div>
                     <div className="text-[11px] text-slate-500 flex items-center gap-1 mt-0.5 whitespace-nowrap">
@@ -84,8 +84,8 @@ export const ClaimTableView: React.FC<ClaimTableViewProps> = ({
                   {/* Khách hàng & Số HĐ */}
                   <td className="py-3.5 px-4 whitespace-nowrap">
                     <div className="font-bold text-slate-900 whitespace-nowrap">{claim.customerName}</div>
-                    <div className="text-[11px] text-slate-500 font-mono flex items-center gap-1.5 mt-0.5 whitespace-nowrap">
-                      <span className="text-aia-red font-semibold whitespace-nowrap font-mono tracking-tight">{claim.policyNumber}</span>
+                    <div className="text-[11px] text-slate-500 font-numeric flex items-center gap-1.5 mt-0.5 whitespace-nowrap">
+                      <span className="text-aia-red font-semibold whitespace-nowrap tracking-tight">{claim.policyNumber}</span>
                       <span className="text-slate-300">•</span>
                       <span className="inline-block px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded text-[10px] font-sans font-medium whitespace-nowrap">{claim.relationship}</span>
                     </div>
@@ -118,11 +118,11 @@ export const ClaimTableView: React.FC<ClaimTableViewProps> = ({
                   </td>
                   {/* Số tiền Yêu cầu / Duyệt */}
                   <td className="py-3.5 px-4 text-right whitespace-nowrap">
-                    <div className="font-bold text-slate-900 font-mono whitespace-nowrap">
+                    <div className="font-bold text-slate-900 font-numeric whitespace-nowrap">
                       {formatCurrencyVND(claim.claimedAmount)}
                     </div>
                     {claim.approvedAmount > 0 ? (
-                      <div className="text-[11px] text-emerald-600 font-semibold font-mono mt-0.5 whitespace-nowrap">
+                      <div className="text-[11px] text-emerald-600 font-semibold font-numeric mt-0.5 whitespace-nowrap">
                         Duyệt: {formatCurrencyVND(claim.approvedAmount)}
                       </div>
                     ) : claim.status === 'rejected' ? (

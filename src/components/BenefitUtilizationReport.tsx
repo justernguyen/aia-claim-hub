@@ -1,5 +1,5 @@
 import React from 'react';
-import { HeartPulse, AlertTriangle, ShieldCheck, CheckCircle2, ChevronRight } from 'lucide-react';
+import { HeartPulse, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { Policy } from '../types/crm';
 import { formatCurrencyVND } from '../utils/formatters';
 
@@ -93,7 +93,7 @@ export const BenefitUtilizationReport: React.FC<BenefitUtilizationReportProps> =
                   >
                     {row.customerName}
                   </div>
-                  <div className="text-[10px] text-slate-400 font-mono">
+                  <div className="text-[10px] text-slate-400 font-numeric">
                     {row.policyId}
                   </div>
                 </td>
@@ -104,18 +104,18 @@ export const BenefitUtilizationReport: React.FC<BenefitUtilizationReportProps> =
                 </td>
 
                 {/* Hạn mức năm */}
-                <td className="py-3 px-3 text-right font-mono text-slate-600 whitespace-nowrap">
+                <td className="py-3 px-3 text-right font-numeric text-slate-600 whitespace-nowrap">
                   {row.unit === 'days' ? `${row.maxLimit} ngày` : formatCurrencyVND(row.maxLimit)}
                 </td>
 
                 {/* Đã bồi thường */}
-                <td className="py-3 px-3 text-right font-mono font-bold text-slate-900 whitespace-nowrap">
+                <td className="py-3 px-3 text-right font-numeric font-bold text-slate-900 whitespace-nowrap">
                   {row.unit === 'days' ? `${row.usedAmount} ngày` : formatCurrencyVND(row.usedAmount)}
                 </td>
 
                 {/* Tỷ lệ sử dụng */}
                 <td className="py-3 px-3">
-                  <div className="flex items-center justify-between text-[11px] mb-1 font-mono">
+                  <div className="flex items-center justify-between text-[11px] mb-1 font-numeric">
                     <span className="text-slate-500 font-bold">{row.usedPercentage}%</span>
                   </div>
                   <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
@@ -133,7 +133,7 @@ export const BenefitUtilizationReport: React.FC<BenefitUtilizationReportProps> =
                 </td>
 
                 {/* Hạn mức còn lại */}
-                <td className="py-3 px-3 text-right font-mono font-bold text-emerald-700 whitespace-nowrap">
+                <td className="py-3 px-3 text-right font-numeric font-bold text-emerald-700 whitespace-nowrap">
                   {row.unit === 'days' ? `${row.remainingLimit} ngày` : formatCurrencyVND(row.remainingLimit)}
                 </td>
 

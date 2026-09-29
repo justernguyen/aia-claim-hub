@@ -90,7 +90,7 @@ export const ClaimKanbanView: React.FC<ClaimKanbanViewProps> = ({
                       <div className="text-xs font-bold text-slate-900 truncate">
                         {claim.customerName}
                       </div>
-                      <div className="text-[11px] text-slate-500 font-mono flex items-center gap-1 mt-0.5">
+                      <div className="text-[11px] text-slate-500 font-numeric flex items-center gap-1 mt-0.5">
                         <span className="text-aia-red font-semibold">{claim.policyNumber}</span>
                         <span>•</span>
                         <span>{claim.relationship}</span>
@@ -108,14 +108,14 @@ export const ClaimKanbanView: React.FC<ClaimKanbanViewProps> = ({
                       {/* Amount */}
                       <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between">
                         <span className="text-[10px] text-slate-500 font-medium">Số tiền:</span>
-                        <span className="text-xs font-bold font-mono text-slate-900">
+                        <span className="text-xs font-bold font-numeric text-slate-900">
                           {formatCurrencyVND(claim.claimedAmount)}
                         </span>
                       </div>
 
                       {/* Approved amount if applicable */}
                       {claim.approvedAmount > 0 && (
-                        <div className="flex items-center justify-between text-[11px] text-emerald-600 font-mono font-bold">
+                        <div className="flex items-center justify-between text-[11px] text-emerald-600 font-numeric font-bold">
                           <span>Duyệt:</span>
                           <span>{formatCurrencyVND(claim.approvedAmount)}</span>
                         </div>

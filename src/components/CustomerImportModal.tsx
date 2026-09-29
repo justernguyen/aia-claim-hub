@@ -9,7 +9,6 @@ import {
   Users,
   ShieldCheck,
   Tag,
-  Clock,
 } from 'lucide-react';
 import { Customer, Policy, PolicyStatus, BillingFrequency } from '../types/crm';
 import { formatCurrencyVND } from '../utils/formatters';
@@ -125,7 +124,7 @@ export const CustomerImportModal: React.FC<CustomerImportModalProps> = ({
 
     // Find the header row
     let headerIdx = -1;
-    let isAiaPosFormat = false;
+    let _isAiaPosFormat = false;
 
     for (let i = 0; i < Math.min(lines.length, 10); i++) {
       const lineLower = lines[i].toLowerCase();
@@ -145,7 +144,7 @@ export const CustomerImportModal: React.FC<CustomerImportModalProps> = ({
         (lineLower.includes('tình trạng') && lineLower.includes('sản phẩm'))
       ) {
         headerIdx = i;
-        isAiaPosFormat = true;
+        _isAiaPosFormat = true;
         break;
       }
       if (lineLower.includes('họ và tên') || lineLower.includes('tên kh')) {

@@ -3,24 +3,25 @@
  * Ví dụ: 952445 -> "952.445 đ"
  */
 export function formatCurrencyVND(amount: number): string {
-  if (isNaN(amount) || amount === 0) return '0\u00A0đ';
+  if (isNaN(amount) || amount === 0) return '0\u00A0₫';
   const formatted = new Intl.NumberFormat('vi-VN').format(amount);
-  return `${formatted}\u00A0đ`;
+  return `${formatted}\u00A0₫`;
 }
 
 /**
- * Định dạng tiền tệ vắn tắt (triệu đồng / tỷ đồng) cho Metric Cards
- * Ví dụ: 154800000 -> "154.8 tr đ"
+ * Định dạng tiền tệ vắn tắt (triệu / tỷ đồng) cho Metric Cards
+ * Chuẩn tiếng Việt: dấu phẩy phân cách thập phân và đơn vị rõ ràng
+ * Ví dụ: 154800000 -> "154,8 triệu", 1200000000 -> "1,2 tỷ"
  */
 export function formatShortCurrency(amount: number): string {
-  if (isNaN(amount) || amount === 0) return '0\u00A0đ';
+  if (isNaN(amount) || amount === 0) return '0\u00A0₫';
   if (amount >= 1_000_000_000) {
-    const b = (amount / 1_000_000_000).toFixed(1).replace('.0', '');
-    return `${b}\u00A0tỷ\u00A0đ`;
+    const b = (amount / 1_000_000_000).toFixed(1).replace('.0', '').replace('.', ',');
+    return `${b}\u00A0tỷ`;
   }
   if (amount >= 1_000_000) {
-    const m = (amount / 1_000_000).toFixed(1).replace('.0', '');
-    return `${m}\u00A0tr\u00A0đ`;
+    const m = (amount / 1_000_000).toFixed(1).replace('.0', '').replace('.', ',');
+    return `${m}\u00A0triệu`;
   }
   return formatCurrencyVND(amount);
 }
@@ -29,20 +30,20 @@ export function formatShortCurrency(amount: number): string {
  * Định dạng tiền tệ dạng ngắn gọn trực quan (26 tr, 224 tr, 250 tr, 0 đ)
  */
 export function formatCompactVND(amount: number): string {
-  if (isNaN(amount) || amount === 0) return '0\u00A0đ';
+  if (isNaN(amount) || amount === 0) return '0\u00A0₫';
   if (amount >= 1_000_000_000) {
-    const b = (amount / 1_000_000_000).toFixed(1).replace('.0', '');
+    const b = (amount / 1_000_000_000).toFixed(1).replace('.0', '').replace('.', ',');
     return `${b}\u00A0tỷ`;
   }
   if (amount >= 1_000_000) {
-    const m = (amount / 1_000_000).toFixed(1).replace('.0', '');
+    const m = (amount / 1_000_000).toFixed(1).replace('.0', '').replace('.', ',');
     return `${m}\u00A0tr`;
   }
   if (amount >= 1_000) {
     const k = (amount / 1_000).toFixed(0);
     return `${k}\u00A0k`;
   }
-  return `${amount}\u00A0đ`;
+  return `${amount}\u00A0₫`;
 }
 
 /**
@@ -59,6 +60,19 @@ export function formatCCCD(cccd?: string | null): string {
     return `${clean.slice(0, 3)} ${clean.slice(3, 6)} ${clean.slice(6, 9)}`;
   }
   return cccd;
+}
+
+/**
+ * Định dạng số điện thoại theo chuẩn 4-3-3:
+ * Ví dụ: "0912345678" -> "0912 345 678"
+ */
+export function formatPhone(phone?: string | null): string {
+  if (!phone) return '--';
+  const clean = phone.replace(/\s+/g, '');
+  if (clean.length === 10) {
+    return `${clean.slice(0, 4)} ${clean.slice(4, 7)} ${clean.slice(7, 10)}`;
+  }
+  return phone;
 }
 
 /**

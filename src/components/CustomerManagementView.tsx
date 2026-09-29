@@ -33,6 +33,8 @@ interface CustomerManagementViewProps {
   isCreateModalOpen: boolean;
   setIsCreateModalOpen: (open: boolean) => void;
   onBulkImport?: (customers: Omit<Customer, 'id' | 'createdAt'>[], policies: Policy[]) => void;
+  selectedCustomerId?: string | null;
+  onSelectCustomerId?: (id: string | null) => void;
 }
 
 export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
@@ -48,14 +50,21 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
   isCreateModalOpen,
   setIsCreateModalOpen,
   onBulkImport,
+  selectedCustomerId: externalSelectedCustomerId,
+  onSelectCustomerId,
 }) => {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<PolicyStatus | 'all'>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
 
-  // Selected customer for detail drawer
-  const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
+  // Selected customer for detail drawer (controlled or internal)
+  const [internalSelectedCustomerId, setInternalSelectedCustomerId] = useState<string | null>(null);
+  const selectedCustomerId = externalSelectedCustomerId !== undefined ? externalSelectedCustomerId : internalSelectedCustomerId;
+  const setSelectedCustomerId = (id: string | null) => {
+    if (onSelectCustomerId) onSelectCustomerId(id);
+    else setInternalSelectedCustomerId(id);
+  };
   // Customer currently being edited for avatar
   const [editingAvatarCustomer, setEditingAvatarCustomer] = useState<Customer | null>(null);
   const filteredCustomers = useMemo(() => {
@@ -108,7 +117,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
         <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
           <div className="min-w-0 flex-1">
             <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Tổng Khách hàng</p>
-            <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1 font-mono">{customers.length}</p>
+            <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1 font-numeric">{customers.length}</p>
             <p className="text-[11px] text-slate-400 mt-0.5 truncate">Khách hàng được phân công</p>
           </div>
           <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-rose-50 text-aia-red hidden sm:flex items-center justify-center shrink-0">
@@ -120,7 +129,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
         <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
           <div className="min-w-0 flex-1">
             <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">HĐ Đang Hiệu Lực</p>
-            <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1 font-mono">{inForceCount}</p>
+            <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1 font-numeric">{inForceCount}</p>
             <p className="text-[11px] text-slate-400 mt-0.5 truncate">Trên tổng số {policies.length} HĐ</p>
           </div>
           <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-100 text-slate-700 hidden sm:flex items-center justify-center shrink-0">
@@ -132,7 +141,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
         <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
           <div className="min-w-0 flex-1">
             <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Chờ nộp phí (Gia hạn)</p>
-            <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1 font-mono">{pendingCount}</p>
+            <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1 font-numeric">{pendingCount}</p>
             <p className="text-[11px] text-aia-red font-medium mt-0.5 truncate">Cần nhắc phí tránh mất hiệu lực</p>
           </div>
           <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-rose-50 text-aia-red hidden sm:flex items-center justify-center shrink-0">
@@ -144,7 +153,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
         <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
           <div className="min-w-0 flex-1">
             <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Tổng Phí Quản Lý</p>
-            <p className="text-sm sm:text-xl font-extrabold text-slate-900 mt-1 font-mono truncate" title={formatCurrencyVND(totalAnnualPremium)}>
+            <p className="text-sm sm:text-xl font-extrabold text-slate-900 mt-1 font-numeric truncate" title={formatCurrencyVND(totalAnnualPremium)}>
               {formatCurrencyVND(totalAnnualPremium)}
             </p>
             <p className="text-[11px] text-slate-400 mt-0.5 truncate">Phí bảo hiểm thường niên</p>

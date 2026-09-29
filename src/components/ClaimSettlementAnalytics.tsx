@@ -49,10 +49,23 @@ export const ClaimSettlementAnalytics: React.FC<ClaimSettlementAnalyticsProps> =
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-            Tỷ lệ duyệt: <strong className="font-mono">{approvalRate}%</strong>
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>Tỷ lệ duyệt: <strong className="font-numeric">{approvalRate}%</strong></span>
           </span>
+          {pendingClaims.length > 0 && (
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-1">
+              <ShieldAlert className="w-3.5 h-3.5" />
+              <span>Đang xử lý: <strong className="font-numeric">{pendingClaims.length}</strong></span>
+            </span>
+          )}
+          {rejectedClaims.length > 0 && (
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200 flex items-center gap-1">
+              <AlertCircle className="w-3.5 h-3.5" />
+              <span>Từ chối: <strong className="font-numeric">{rejectedClaims.length}</strong></span>
+            </span>
+          )}
         </div>
       </div>
 
@@ -60,7 +73,7 @@ export const ClaimSettlementAnalytics: React.FC<ClaimSettlementAnalyticsProps> =
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
         <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
           <span className="text-slate-400 text-[11px] block">Tổng tiền khách yêu cầu bồi thường:</span>
-          <span className="text-lg font-extrabold text-slate-900 font-mono mt-0.5 block">
+          <span className="text-lg font-extrabold text-slate-900 font-numeric mt-0.5 block">
             {formatCurrencyVND(totalClaimed)}
           </span>
           <span className="text-[10px] text-slate-400">Trên {totalClaims} ca yêu cầu</span>
@@ -70,7 +83,7 @@ export const ClaimSettlementAnalytics: React.FC<ClaimSettlementAnalyticsProps> =
           <span className="text-emerald-700 text-[11px] block font-semibold">
             Tổng tiền AIA thực duyệt chi trả:
           </span>
-          <span className="text-lg font-extrabold text-emerald-700 font-mono mt-0.5 block">
+          <span className="text-lg font-extrabold text-emerald-700 font-numeric mt-0.5 block">
             {formatCurrencyVND(totalApproved)}
           </span>
           <span className="text-[10px] text-emerald-600 font-medium">
@@ -82,7 +95,7 @@ export const ClaimSettlementAnalytics: React.FC<ClaimSettlementAnalyticsProps> =
           <span className="text-amber-800 text-[11px] block font-semibold">
             Tổng tiền giảm trừ hợp lý:
           </span>
-          <span className="text-lg font-extrabold text-amber-700 font-mono mt-0.5 block">
+          <span className="text-lg font-extrabold text-amber-700 font-numeric mt-0.5 block">
             {formatCurrencyVND(totalDeducted)}
           </span>
           <span className="text-[10px] text-amber-700 font-medium">Nâng hạng phòng / ngoài danh mục</span>
@@ -105,11 +118,11 @@ export const ClaimSettlementAnalytics: React.FC<ClaimSettlementAnalyticsProps> =
                 <div className="flex items-center justify-between mb-1.5">
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-slate-800">{CLAIM_TYPE_LABELS[type]}</span>
-                    <span className="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.2 rounded font-mono">
+                    <span className="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.2 rounded font-numeric">
                       {item.count} ca
                     </span>
                   </div>
-                  <span className="font-mono font-extrabold text-slate-900">
+                  <span className="font-numeric font-extrabold text-slate-900">
                     {formatCurrencyVND(item.approvedSum)}
                   </span>
                 </div>

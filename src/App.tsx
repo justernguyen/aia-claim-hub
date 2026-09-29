@@ -22,6 +22,9 @@ export default function App() {
 
   // Navigation tab state
   const [activeTab, setActiveTab] = useState<AppTab>('customers');
+  // Customer selection state for cross-tab deep-linking
+  const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
+
 
   // Modals state
   const [isNewClaimModalOpen, setIsNewClaimModalOpen] = useState(false);
@@ -158,6 +161,8 @@ export default function App() {
             policies={store.policies}
             claims={store.claims}
             careActivities={store.careActivities}
+            selectedCustomerId={selectedCustomerId}
+            onSelectCustomerId={setSelectedCustomerId}
             onAddCustomer={(custData, initialPol) => {
               const newCust = store.addCustomer(custData);
               if (initialPol) {
@@ -174,6 +179,7 @@ export default function App() {
               showNotification('Đã cập nhật avatar khách hàng thành công!');
             }}
             onDeleteCustomer={(id) => {
+              store.deleteCustomer(id);
               showNotification('Đã xóa hồ sơ khách hàng.');
             }}
             onAddCareActivity={(act) => {
@@ -261,6 +267,7 @@ export default function App() {
               showNotification('Đã thêm ghi chú chăm sóc mới!');
             }}
             onSelectCustomer={(custId) => {
+              setSelectedCustomerId(custId);
               setActiveTab('customers');
             }}
             isCreateModalOpen={isNewCareModalOpen}
@@ -276,6 +283,7 @@ export default function App() {
             claims={store.claims}
             onExportCSV={store.exportAllCSV}
             onSelectCustomer={(custId) => {
+              setSelectedCustomerId(custId);
               setActiveTab('customers');
             }}
           />

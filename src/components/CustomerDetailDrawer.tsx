@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { Customer, Policy, CareActivity, POLICY_STATUS_CONFIG, BILLING_FREQ_LABELS, CARE_CHANNEL_CONFIG } from '../types/crm';
 import { ClaimItem, STATUS_CONFIG } from '../types/claim';
-import { formatCurrencyVND, formatCCCD } from '../utils/formatters';
+import { formatCurrencyVND, formatCCCD, formatPhone } from '../utils/formatters';
 import { CustomerAvatar } from './CustomerAvatar';
 
 interface CustomerDetailDrawerProps {
@@ -143,10 +143,10 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                       <span>{customer.segment}</span>
                     </span>
                   )}
-                  <span className="text-xs font-mono text-slate-400">({customer.id})</span>
+                  <span className="text-xs font-numeric text-slate-400">({customer.id})</span>
                 </div>
                 <p className="text-xs text-slate-300 font-medium mt-0.5 line-clamp-2 sm:truncate">{customer.occupation}</p>
-                <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-slate-400 mt-1.5 font-mono">
+                <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-slate-400 mt-1.5 font-numeric">
                   <span className="whitespace-nowrap">{customerPolicies.length} Hợp đồng</span>
                   <span>•</span>
                   <span className="whitespace-nowrap">Tổng phí: <strong className="text-white">{formatCurrencyVND(totalAnnualPremium)}/năm</strong></span>
@@ -294,7 +294,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                     <div className="bg-slate-50/80 p-3 rounded-xl border border-slate-100 flex items-center justify-between">
                       <div>
                         <span className="text-slate-400 block text-[11px]">Số CCCD / Định danh</span>
-                        <span className="font-bold text-slate-900 font-mono text-sm tracking-wide">
+                        <span className="font-bold text-slate-900 font-numeric text-sm tracking-wide">
                           {formatCCCD(customer.cccd)}
                         </span>
                       </div>
@@ -317,7 +317,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
 
                     <div className="bg-slate-50/80 p-3 rounded-xl border border-slate-100">
                       <span className="text-slate-400 block text-[11px]">Ngày sinh & Độ tuổi</span>
-                      <span className="font-bold text-slate-900 font-mono text-sm">
+                      <span className="font-bold text-slate-900 font-numeric text-sm">
                         {customer.birthDate}
                         <span className="text-slate-500 font-sans font-medium text-xs">
                           {getAge(customer.birthDate)}
@@ -335,7 +335,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
 
                     <div className="bg-slate-50/80 p-3 rounded-xl border border-slate-100">
                       <span className="text-slate-400 block text-[11px]">Mã định danh khách hàng</span>
-                      <span className="font-mono font-bold text-slate-800 text-xs">
+                      <span className="font-numeric font-bold text-slate-800 text-xs">
                         {customer.id}
                       </span>
                     </div>
@@ -357,9 +357,9 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                         <span className="text-slate-400 block text-[11px]">Số điện thoại di động</span>
                         <a
                           href={`tel:${customer.phone.replace(/\s+/g, '')}`}
-                          className="font-bold text-slate-900 font-mono text-sm hover:text-aia-red transition-colors"
+                          className="font-bold text-slate-900 font-numeric text-sm hover:text-aia-red transition-colors"
                         >
-                          {customer.phone}
+                          {formatPhone(customer.phone)}
                         </a>
                       </div>
                       <div className="flex items-center gap-1">
@@ -478,7 +478,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                       <div className="flex items-start justify-between">
                         <div>
                           <div className="flex items-center gap-2">
-                            <h4 className="text-base font-bold text-slate-900 font-mono">
+                            <h4 className="text-base font-bold text-slate-900 font-numeric">
                               {policy.id}
                             </h4>
                             <span
@@ -494,7 +494,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                           </p>
                         </div>
                         <div className="text-right">
-                          <p className="text-sm font-bold text-slate-900 font-mono">
+                          <p className="text-sm font-bold text-slate-900 font-numeric">
                             {formatCurrencyVND(policy.premiumAmount)}
                           </p>
                           <p className="text-[11px] text-slate-400">
@@ -507,11 +507,11 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                       <div className="grid grid-cols-2 gap-3 text-xs bg-slate-50 p-3 rounded-xl">
                         <div>
                           <span className="text-slate-400 block text-[11px]">Ngày phát hành HĐ</span>
-                          <span className="font-semibold text-slate-700 font-mono">{policy.issueDate}</span>
+                          <span className="font-semibold text-slate-700 font-numeric">{policy.issueDate}</span>
                         </div>
                         <div>
                           <span className="text-slate-400 block text-[11px]">Kỳ đóng phí tiếp theo</span>
-                          <span className="font-semibold text-slate-700 font-mono">{policy.nextDueDate}</span>
+                          <span className="font-semibold text-slate-700 font-numeric">{policy.nextDueDate}</span>
                         </div>
                       </div>
 
@@ -542,7 +542,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                               >
                                 <div className="flex items-center justify-between text-xs mb-1.5 gap-2">
                                   <span className="font-semibold text-slate-800">{b.name}</span>
-                                  <span className="font-mono text-slate-500 font-bold whitespace-nowrap shrink-0">
+                                  <span className="font-numeric text-slate-500 font-bold whitespace-nowrap shrink-0">
                                     {b.unit === 'days'
                                       ? `${b.usedAmount}/${b.maxLimit} ngày`
                                       : `${formatCurrencyVND(b.usedAmount)} / ${formatCurrencyVND(b.maxLimit)}`}
@@ -560,8 +560,8 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                                 </div>
 
                                 <div className="flex items-center justify-between text-[11px] text-slate-500 gap-2">
-                                  <span className="whitespace-nowrap">Tỷ lệ đã sử dụng: <strong className="font-mono">{pct}%</strong></span>
-                                  <span className="text-slate-700 font-bold font-mono whitespace-nowrap">
+                                  <span className="whitespace-nowrap">Tỷ lệ đã sử dụng: <strong className="font-numeric">{pct}%</strong></span>
+                                  <span className="text-slate-700 font-bold font-numeric whitespace-nowrap">
                                     Hạn mức còn lại: {b.unit === 'days' ? `${b.remainingLimit} ngày` : formatCurrencyVND(b.remainingLimit)}
                                   </span>
                                 </div>
@@ -594,7 +594,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                       <div className="flex items-start justify-between">
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="font-bold text-slate-900 group-hover:text-aia-red font-mono text-sm">
+                            <span className="font-bold text-slate-900 group-hover:text-aia-red font-numeric text-sm">
                               {claim.id}
                             </span>
                             <span
@@ -616,7 +616,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
 
                         <div className="text-right">
                           <p className="text-xs text-slate-400">Yêu cầu: {formatCurrencyVND(claim.claimedAmount)}</p>
-                          <p className="text-sm font-bold text-emerald-600 font-mono mt-0.5">
+                          <p className="text-sm font-bold text-emerald-600 font-numeric mt-0.5">
                             {claim.approvedAmount > 0
                               ? `AIA duyệt: ${formatCurrencyVND(claim.approvedAmount)}`
                               : 'Chờ duyệt'}

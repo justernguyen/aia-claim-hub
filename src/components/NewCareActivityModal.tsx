@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-  X,
-  CalendarPlus,
-  User,
-  ShieldCheck,
-  Calendar,
-  MessageSquare,
-  Clock,
-} from 'lucide-react';
+import { X, CalendarPlus } from 'lucide-react';
 import { Customer, Policy, CareActivity, CareChannel } from '../types/crm';
 
 interface NewCareActivityModalProps {

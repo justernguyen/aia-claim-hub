@@ -32,6 +32,7 @@ export type DocumentStatus = 'received' | 'missing' | 'invalid' | 'verified';
 export interface DocumentItem {
   id: string;
   name: string;
+  category?: string;
   status: DocumentStatus;
   required: boolean;
   fileSize?: string;
@@ -71,6 +72,9 @@ export interface ClaimItem {
   dischargeDate?: string;
   diagnosis: string;
   icd10Code?: string;
+  hospitalCity?: string;
+  claimReason?: string;
+  paymentMethod?: 'bank_transfer' | 'cash';
   totalBillAmount?: number;
   claimedAmount: number;
   approvedAmount: number;

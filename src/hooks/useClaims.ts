@@ -149,7 +149,7 @@ export function useClaims() {
       totalClaimed: isDefaultList ? 154800000 : Math.max(154800000, totalClaimed),
       totalApproved: isDefaultList ? 53900000 : Math.max(53900000, totalApproved),
       overdueSlaCount,
-      approvalRate: 92.4,
+      approvalRate: isDefaultList ? 92.4 : approvalRate,
     };
   }, [claims]);
 

@@ -1,7 +1,7 @@
 ---
 title: "Tích Hợp Avatar Tư Vấn Viên & Logo AIA Chính Thức"
 description: "Chuyển đổi ảnh chân dung của tư vấn viên thành avatar chuẩn và tích hợp logo nhận diện thương hiệu AIA vào ứng dụng CRM."
-status: pending
+status: completed
 priority: P1
 effort: 2h
 tags: [frontend, ui, branding, aia]
@@ -29,16 +29,15 @@ Kế hoạch này thực hiện hai mục tiêu cốt lõi:
 
 | # | Phase | Status |
 |---|-------|--------|
-| 1 | [Phase 1: Chuẩn Hóa Tài Nguyên Avatar & Logo AIA Vector](./phase-01-start.md) | Pending |
-| 2 | [Phase 2: Tích Hợp Avatar & Logo Vào Giao Diện App](./phase-02-integrate-avatar-and-logo.md) | Pending |
-| 3 | [Phase 3: Kiểm Thử Responsive & Đóng Gói Nghiệm Thu](./phase-03-verification-and-testing.md) | Pending |
+| 1 | [Phase 1: Chuẩn Hóa Tài Nguyên Avatar & Logo AIA Vector](./phase-01-start.md) | Done |
+| 2 | [Phase 2: Tích Hợp Avatar & Logo Vào Giao Diện App](./phase-02-integrate-avatar-and-logo.md) | Done |
+| 3 | [Phase 3: Kiểm Thử Responsive & Đóng Gói Nghiệm Thu](./phase-03-verification-and-testing.md) | Done |
 
 ## Success Criteria
 
-- [ ] Avatar được lưu trữ tại `public/avatar-consultant.png`, hiển thị sắc nét ở các kích thước vòng tròn (36px, 48px, 64px) và có fallback mượt mà nếu ảnh không tải được.
-- [ ] Component `<AiaLogo />` hiển thị sắc nét chuẩn vector với biểu tượng Đỉnh núi AIA (Mountain Crest) và chữ AIA đỏ thương hiệu `#D31145`.
-- [ ] `Header.tsx` hiển thị logo AIA chính thức ở góc trái và ảnh đại diện tư vấn viên ở khung profile bên phải.
-- [ ] `index.html` và `public/favicon.svg` được cập nhật đồng bộ sang biểu tượng Đỉnh núi AIA.
-- [ ] Giao diện responsive không bị xô lệch, vỡ dòng trên màn hình điện thoại (mobile < 640px).
-
+- [x] Avatar được lưu trữ tại `public/avatar-consultant.png`, hiển thị sắc nét ở các kích thước vòng tròn (36px, 48px, 64px) và có fallback mượt mà nếu ảnh không tải được.
+- [x] Component `<AiaLogo />` hiển thị sắc nét chuẩn vector với biểu tượng Đỉnh núi AIA (Mountain Crest) và chữ AIA đỏ thương hiệu `#D31145`.
+- [x] `Header.tsx` hiển thị logo AIA chính thức ở góc trái và ảnh đại diện tư vấn viên ở khung profile bên phải.
+- [x] `index.html` và `public/favicon.svg` được cập nhật đồng bộ sang biểu tượng Đỉnh núi AIA.
+- [x] Giao diện responsive không bị xô lệch, vỡ dòng trên màn hình điện thoại (mobile < 640px).
 <!-- slug: aia-avatar-and-logo -->

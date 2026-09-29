@@ -32,11 +32,11 @@ status: todo
 4. Kiểm tra ảnh avatar ở các trạng thái hover / responsive.
 
 ## Todo List
-- [ ] Chạy kiểm tra TypeScript (`tsc --noEmit`).
-- [ ] Chạy build kiểm tra bundle (`npm run build`).
-- [ ] Xác minh hiển thị favicon trên tab trình duyệt.
-- [ ] Kiểm tra responsive trên Desktop (1280px) và Mobile (375px).
-- [ ] Hoàn tất tài liệu nghiệm thu và chuyển giao.
+- [x] Chạy kiểm tra TypeScript (`tsc --noEmit`).
+- [x] Chạy build kiểm tra bundle (`npm run build`).
+- [x] Xác minh hiển thị favicon trên tab trình duyệt.
+- [x] Kiểm tra responsive trên Desktop (1280px) và Mobile (375px).
+- [x] Hoàn tất tài liệu nghiệm thu và chuyển giao.
 
 ## Success Criteria
 - Lệnh build thành công (exit code 0).

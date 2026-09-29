@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react';
 import {
   CheckCircle2,
   Circle,
-  Calendar,
   Search,
   Plus,
   Trash2,
@@ -125,6 +124,23 @@ export const CareScheduleSheet: React.FC<CareScheduleSheetProps> = ({
             </button>
           </div>
 
+          {/* Channel Filter */}
+          <div className="flex items-center gap-1.5 bg-slate-100 px-2.5 py-1 rounded-xl text-xs font-semibold text-slate-700">
+            <Filter className="w-3.5 h-3.5 text-slate-400" />
+            <select
+              value={channelFilter}
+              onChange={(e) => setChannelFilter(e.target.value as CareChannel | 'all')}
+              className="bg-transparent text-xs font-semibold text-slate-700 focus:outline-none cursor-pointer"
+            >
+              <option value="all">Tất cả kênh</option>
+              <option value="call">📞 Điện thoại</option>
+              <option value="zalo">💬 Zalo</option>
+              <option value="meeting">🤝 Gặp trực tiếp</option>
+              <option value="coffee">☕ Cafe trao đổi</option>
+              <option value="gift">🎁 Tặng quà</option>
+              <option value="hospital_visit">🏥 Thăm viện</option>
+            </select>
+          </div>
           <button
             type="button"
             onClick={onOpenNew}

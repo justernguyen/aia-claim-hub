@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrendingUp, Users, ArrowUpRight } from 'lucide-react';
+import { Users, ArrowUpRight } from 'lucide-react';
 import { Customer } from '../types/crm';
 
 interface MonthlyGrowthChartProps {

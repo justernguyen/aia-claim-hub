@@ -46,10 +46,10 @@ status: todo
    - Kiểm tra footer dòng 286: Thêm logo AIA mini chuẩn thay cho text đơn điệu.
 
 ## Todo List
-- [ ] Tích hợp `<AiaLogo />` vào Header góc trái.
-- [ ] Thêm hiển thị `<img>` avatar với fallback xử lý lỗi vào Header góc phải.
-- [ ] Cập nhật `mockClaims.ts` trỏ avatarUrl về ảnh mới.
-- [ ] Cập nhật footer trong `App.tsx` đồng bộ nhận diện AIA.
+- [x] Tích hợp `<AiaLogo />` vào Header góc trái.
+- [x] Thêm hiển thị `<img>` avatar với fallback xử lý lỗi vào Header góc phải.
+- [x] Cập nhật `mockClaims.ts` trỏ avatarUrl về ảnh mới.
+- [x] Cập nhật footer trong `App.tsx` đồng bộ nhận diện AIA.
 
 ## Success Criteria
 - Header hiển thị logo AIA vector sắc nét thay vì chữ AIA text thông thường.

@@ -54,10 +54,10 @@ interface AiaLogoProps {
 4. Cập nhật `index.html` trỏ `<link rel="icon" type="image/svg+xml" href="/favicon.svg" />`.
 
 ## Todo List
-- [ ] Trích xuất và tối ưu hóa `public/avatar-consultant.png` đạt chuẩn 512x512.
-- [ ] Viết component `src/components/AiaLogo.tsx` với đầy đủ các variants và themes.
-- [ ] Cập nhật `public/favicon.svg` với vector đỉnh núi AIA.
-- [ ] Cập nhật thẻ `<link rel="icon">` trong `index.html`.
+- [x] Trích xuất và tối ưu hóa `public/avatar-consultant.png` đạt chuẩn 512x512.
+- [x] Viết component `src/components/AiaLogo.tsx` với đầy đủ các variants và themes.
+- [x] Cập nhật `public/favicon.svg` với vector đỉnh núi AIA.
+- [x] Cập nhật thẻ `<link rel="icon">` trong `index.html`.
 
 ## Success Criteria
 - Tệp `public/avatar-consultant.png` tồn tại, dung lượng < 200KB, hiển thị khuôn mặt tư vấn viên rõ nét.

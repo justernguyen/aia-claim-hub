@@ -16,10 +16,17 @@ import {
   Eye,
   Image as ImageIcon,
   UploadCloud,
-  Plus,
+  MessageSquare,
+  Copy,
+  SendHorizontal,
+  FileWarning,
 } from 'lucide-react';
 import { DocumentImageViewer } from './DocumentImageViewer';
 import { DocumentItem } from '../types/claim';
+import {
+  generateMissingDocZaloMessage,
+  generateClaimSubmittedZaloMessage,
+} from '../utils/claimPresets';
 import {
   ClaimItem,
   ClaimStatus,
@@ -29,7 +36,7 @@ import {
   isBenefitMatchingClaimType,
 } from '../types/claim';
 import { Policy } from '../types/crm';
-import { formatCurrencyVND, formatDate, formatNumberInput, parseNumberInput } from '../utils/formatters';
+import { formatCurrencyVND, formatDate, formatNumberInput, parseNumberInput, formatCCCD, formatPhone } from '../utils/formatters';
 const QUICK_DOC_REASONS = [
   'Bản chụp bị mờ dấu mộc tròn bệnh viện',
   'Chưa xin bảng kê từ quầy thanh toán viện phí',
@@ -70,9 +77,10 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
   const [approvedAmountInput, setApprovedAmountInput] = useState<number>(0);
   const [viewingDoc, setViewingDoc] = useState<DocumentItem | null>(null);
   const [newDocNameInput, setNewDocNameInput] = useState('');
-  const [isAddingDoc, setIsAddingDoc] = useState(false);
   const [editingNoteDocId, setEditingNoteDocId] = useState<string | null>(null);
   const [customNoteInput, setCustomNoteInput] = useState('');
+  const [zaloModalContent, setZaloModalContent] = useState<string | null>(null);
+  const [copiedZalo, setCopiedZalo] = useState(false);
   useEffect(() => {
     if (claim) {
       setSelectedStatus(claim.status);
@@ -183,15 +191,15 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
                 </div>
                 <div>
                   <span className="text-slate-400 block text-[11px]">Số điện thoại:</span>
-                  <span className="font-mono text-slate-800">{claim.customerPhone || 'Chưa cập nhật'}</span>
+                  <span className="font-numeric text-slate-800">{formatPhone(claim.customerPhone)}</span>
                 </div>
                 <div>
                   <span className="text-slate-400 block text-[11px]">Số CCCD:</span>
-                  <span className="font-mono text-slate-800">{claim.customerCccd || 'Chưa cập nhật'}</span>
+                  <span className="font-numeric text-slate-800">{formatCCCD(claim.customerCccd)}</span>
                 </div>
                 <div>
                   <span className="text-slate-400 block text-[11px]">Số hợp đồng AIA:</span>
-                  <span className="font-mono font-bold text-aia-red">{claim.policyNumber}</span>
+                  <span className="font-numeric font-bold text-aia-red">{claim.policyNumber}</span>
                 </div>
                 <div>
                   <span className="text-slate-400 block text-[11px]">Sản phẩm bảo hiểm:</span>
@@ -229,7 +237,7 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
                   <div className="p-2.5 bg-white rounded-xl border border-slate-200 text-slate-900 font-medium">
                     {claim.diagnosis}
                     {claim.icd10Code && (
-                      <span className="ml-2 font-mono text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-bold">
+                      <span className="ml-2 font-numeric text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-bold">
                         {claim.icd10Code}
                       </span>
                     )}
@@ -247,13 +255,13 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
               <div className="grid grid-cols-2 gap-3 text-xs mb-3">
                 <div className="p-3 bg-white rounded-xl border border-slate-200">
                   <span className="text-slate-400 text-[11px] block">Số tiền yêu cầu bồi thường:</span>
-                  <span className="text-base font-extrabold text-slate-900 font-mono">
+                  <span className="text-base font-extrabold text-slate-900 font-numeric">
                     {formatCurrencyVND(claim.claimedAmount)}
                   </span>
                 </div>
                 <div className="p-3 bg-white rounded-xl border border-emerald-200 bg-emerald-50/30">
                   <span className="text-emerald-700 text-[11px] block font-medium">Số tiền AIA duyệt chi trả:</span>
-                  <span className="text-base font-extrabold text-emerald-700 font-mono">
+                  <span className="text-base font-extrabold text-emerald-700 font-numeric">
                     {formatCurrencyVND(claim.approvedAmount)}
                   </span>
                 </div>
@@ -280,7 +288,7 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
                         <ShieldCheck className="w-3.5 h-3.5 text-aia-red" />
                         <span>Đối chiếu: {matchingBenefit.name}</span>
                       </span>
-                      <span className="font-mono text-[11px] font-bold text-slate-800">
+                      <span className="font-numeric text-[11px] font-bold text-slate-800">
                         Hạn mức năm: {matchingBenefit.unit === 'days' ? `${max} ngày` : formatCurrencyVND(max)}
                       </span>
                     </div>
@@ -294,13 +302,12 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
                       />
                     </div>
 
-                    <div className="flex items-center justify-between text-[11px] text-slate-500 font-mono">
+                    <div className="flex items-center justify-between text-[11px] text-slate-500 font-numeric">
                       <span>Đã bồi thường: {matchingBenefit.unit === 'days' ? `${used} ngày` : formatCurrencyVND(used)}</span>
                       <span className="font-bold text-emerald-700">
                         Còn lại: {matchingBenefit.unit === 'days' ? `${rem} ngày` : formatCurrencyVND(rem)}
                       </span>
                     </div>
-
                     {isOverLimit && (
                       <div className="mt-2 p-2 bg-rose-50 border border-rose-200 rounded-lg text-rose-800 text-[11px] flex items-center gap-1.5 font-medium">
                         <AlertTriangle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
@@ -327,7 +334,7 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
               {claim.bankAccount && (
                 <div className="pt-2 border-t border-slate-200/60 text-xs flex items-center justify-between text-slate-600">
                   <span>Tài khoản nhận tiền:</span>
-                  <span className="font-mono font-semibold text-slate-800">
+                  <span className="font-numeric font-semibold text-slate-800">
                     {claim.bankAccount.bankName} - {claim.bankAccount.accountNumber} ({claim.bankAccount.accountHolder})
                   </span>
                 </div>
@@ -705,9 +712,57 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
             </div>
           </div>
 
+          {/* 1-Click Quick Actions Bar */}
+          <div className="px-4 py-2.5 bg-gradient-to-r from-rose-50/70 to-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2 text-xs">
+            <div className="flex items-center gap-1.5 font-bold text-slate-700">
+              <MessageSquare className="w-3.5 h-3.5 text-aia-red" />
+              <span>Thao tác nhanh 1-Chạm:</span>
+            </div>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => {
+                  const missing = claim.documents?.filter(
+                    (d) => d.status === 'missing' || d.status === 'invalid'
+                  ).map((d) => d.name) || ['Giấy ra viện (Mộc đỏ)', 'Bảng kê chi tiết viện phí', 'Hóa đơn VAT'];
+                  const msg = generateMissingDocZaloMessage({
+                    customerName: claim.customerName,
+                    claimId: claim.id,
+                    policyNumber: claim.policyNumber,
+                    hospitalName: claim.hospitalName,
+                    missingDocs: missing.length > 0 ? missing : ['Giấy tờ viện phí liên quan'],
+                  });
+                  setZaloModalContent(msg);
+                  setCopiedZalo(false);
+                }}
+                className="px-2.5 py-1.5 bg-white hover:bg-rose-50 text-slate-700 hover:text-aia-red border border-slate-200 hover:border-rose-300 font-semibold rounded-lg shadow-2xs flex items-center gap-1.5 transition-all"
+              >
+                <FileWarning className="w-3.5 h-3.5 text-amber-500" />
+                <span>Mẫu Zalo báo thiếu giấy tờ</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const msg = generateClaimSubmittedZaloMessage({
+                    customerName: claim.customerName,
+                    claimId: claim.id,
+                    policyNumber: claim.policyNumber,
+                    claimedAmount: formatCurrencyVND(claim.claimedAmount),
+                  });
+                  setZaloModalContent(msg);
+                  setCopiedZalo(false);
+                }}
+                className="px-2.5 py-1.5 bg-white hover:bg-blue-50 text-slate-700 hover:text-blue-600 border border-slate-200 hover:border-blue-300 font-semibold rounded-lg shadow-2xs flex items-center gap-1.5 transition-all"
+              >
+                <SendHorizontal className="w-3.5 h-3.5 text-blue-500" />
+                <span>Mẫu Zalo đã nộp iClaim</span>
+              </button>
+            </div>
+          </div>
+
           {/* Drawer Footer Actions */}
           <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-            {/* Quick Delete */}
             <button
               type="button"
               onClick={() => {
@@ -731,10 +786,10 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
                     inputMode="numeric"
                     value={approvedAmountInput > 0 ? formatNumberInput(approvedAmountInput) : ''}
                     onChange={(e) => setApprovedAmountInput(parseNumberInput(e.target.value))}
-                    className="w-28 text-xs font-bold font-mono text-emerald-800 focus:outline-none"
+                    className="w-28 text-xs font-bold font-numeric text-emerald-800 focus:outline-none"
                     placeholder="0"
                   />
-                  <span className="text-xs font-bold text-emerald-600 select-none">đ</span>
+                  <span className="text-xs font-bold text-emerald-600 select-none">₫</span>
                 </div>
               )}
 
@@ -783,6 +838,68 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
         </div>
       </div>
     </div>
+      {/* Zalo Quick Message Modal */}
+      {zaloModalContent && (
+        <div className="fixed inset-0 z-60 overflow-y-auto">
+          <div
+            onClick={() => setZaloModalContent(null)}
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-2xs transition-opacity"
+          />
+          <div className="flex min-h-full items-center justify-center p-4">
+            <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
+              <div className="px-5 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 bg-blue-500 text-white rounded-lg">
+                    <MessageSquare className="w-4 h-4" />
+                  </div>
+                  <h3 className="text-sm font-bold text-slate-900">
+                    Mẫu Tin Nhắn Zalo Chăm Sóc Claim
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setZaloModalContent(null)}
+                  className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="p-5 space-y-3">
+                <p className="text-xs text-slate-500">
+                  Tin nhắn đã được cá nhân hóa tự động theo hồ sơ của khách hàng <strong>{claim.customerName}</strong>. Bấm sao chép và dán vào Zalo/SMS:
+                </p>
+                <textarea
+                  readOnly
+                  rows={9}
+                  value={zaloModalContent}
+                  className="w-full text-xs font-mono p-3 bg-slate-50 border border-slate-200 rounded-xl leading-relaxed text-slate-800 focus:outline-none"
+                />
+              </div>
+              <div className="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setZaloModalContent(null)}
+                  className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-xl"
+                >
+                  Đóng
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText(zaloModalContent);
+                    setCopiedZalo(true);
+                    setTimeout(() => setCopiedZalo(false), 2000);
+                  }}
+                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs"
+                >
+                  {copiedZalo ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  <span>{copiedZalo ? 'Đã sao chép!' : 'Sao chép tin nhắn'}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Full-Screen Document Image Lightbox Viewer */}
       <DocumentImageViewer
         document={viewingDoc}

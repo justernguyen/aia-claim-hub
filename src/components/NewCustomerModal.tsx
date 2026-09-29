@@ -313,6 +313,17 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
                   className="w-full p-2.5 rounded-xl border border-slate-200 focus:outline-aia-red"
                 />
               </div>
+
+              <div>
+                <label className="block font-semibold text-slate-700 mb-1">Ghi chú đặc điểm khách hàng</label>
+                <input
+                  type="text"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="Khách VIP, gia đình có 2 con nhỏ, quan tâm hưu trí..."
+                  className="w-full p-2.5 rounded-xl border border-slate-200 focus:outline-aia-red"
+                />
+              </div>
             </div>
           </div>
 

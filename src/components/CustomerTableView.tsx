@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { Customer, Policy, POLICY_STATUS_CONFIG } from '../types/crm';
 import { ClaimItem } from '../types/claim';
-import { formatCurrencyVND, formatCCCD } from '../utils/formatters';
+import { formatCurrencyVND, formatCCCD, formatPhone } from '../utils/formatters';
 import { CustomerAvatar } from './CustomerAvatar';
 
 interface CustomerTableViewProps {
@@ -89,7 +89,7 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
                           <span>{cust.name}</span>
                           <span className="text-[10px] text-slate-400 font-normal">({cust.gender})</span>
                         </div>
-                        <div className="text-[11px] text-slate-400 font-mono whitespace-nowrap">
+                        <div className="text-[11px] text-slate-400 font-numeric whitespace-nowrap">
                           CCCD: {formatCCCD(cust.cccd)}
                         </div>
                       </div>
@@ -98,9 +98,9 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
 
                   {/* SĐT / Địa chỉ */}
                   <td className="py-3.5 px-4">
-                    <div className="flex items-center gap-1 text-slate-700 font-mono font-medium whitespace-nowrap">
+                    <div className="flex items-center gap-1 text-slate-700 font-numeric font-medium whitespace-nowrap">
                       <Phone className="w-3 h-3 text-slate-400 shrink-0" />
-                      <span>{cust.phone}</span>
+                      <span>{formatPhone(cust.phone)}</span>
                     </div>
                     <div className="text-[11px] text-slate-400 truncate max-w-[180px]" title={cust.address}>
                       {cust.address}
@@ -113,7 +113,7 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
                       <div>
                         <div className="font-semibold text-slate-800 flex items-center gap-1 whitespace-nowrap">
                           <ShieldCheck className="w-3.5 h-3.5 text-aia-red shrink-0" />
-                          <span className="font-mono whitespace-nowrap">{primaryPol.id}</span>
+                          <span className="font-numeric font-medium whitespace-nowrap">{primaryPol.id}</span>
                           {custPolicies.length > 1 && (
                             <span className="text-[10px] bg-slate-100 text-slate-600 px-1 rounded font-bold shrink-0">
                               +{custPolicies.length - 1}
@@ -148,7 +148,7 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
                   </td>
 
                   {/* Phí định kỳ */}
-                  <td className="py-3.5 px-4 text-right font-mono font-bold text-slate-900 whitespace-nowrap">
+                  <td className="py-3.5 px-4 text-right font-numeric font-bold text-slate-900 whitespace-nowrap">
                     {formatCurrencyVND(totalPremium)}
                   </td>
 
@@ -161,7 +161,7 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
                             <HeartPulse className="w-3 h-3 text-aia-red shrink-0" />
                             <span>{pct}% đã dùng</span>
                           </span>
-                          <span className="font-mono text-slate-700 font-bold shrink-0">
+                          <span className="font-numeric text-slate-700 font-bold shrink-0">
                             Còn {formatCurrencyVND(remaining)}
                           </span>
                         </div>
@@ -182,7 +182,7 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
                   {/* Claim count */}
                   <td className="py-3.5 px-4 text-center whitespace-nowrap">
                     <span
-                      className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[11px] font-bold font-mono whitespace-nowrap ${
+                      className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[11px] font-bold font-numeric whitespace-nowrap ${
                         custClaims.length > 0 ? 'bg-rose-50 text-aia-red border border-rose-200' : 'bg-slate-100 text-slate-500'
                       }`}
                     >

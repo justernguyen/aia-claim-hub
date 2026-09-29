@@ -4,7 +4,6 @@ import {
   Policy,
   CareActivity,
   CareAlert,
-  PolicyStatus,
 } from '../types/crm';
 import {
   ClaimItem,
@@ -78,6 +77,9 @@ export const useCRMStore = () => {
                 const actualCust = actualPolicy
                   ? customers.find((cust: Customer) => cust.id === actualPolicy.customerId)
                   : customers.find((cust: Customer) => cust.name === c.customerName || cust.cccd === c.customerCccd);
+                if (actualCust) {
+                  return { ...c, customerId: actualCust.id };
+                }
               }
             }
             return c;
@@ -466,6 +468,12 @@ export const useCRMStore = () => {
       admissionDate: newClaimData.admissionDate || new Date().toISOString().split('T')[0],
       dischargeDate: newClaimData.dischargeDate,
       diagnosis: newClaimData.diagnosis || '',
+      icd10Code: newClaimData.icd10Code,
+      hospitalCity: newClaimData.hospitalCity,
+      claimReason: newClaimData.claimReason,
+      paymentMethod: newClaimData.paymentMethod,
+      bankAccount: newClaimData.bankAccount,
+      totalBillAmount: newClaimData.totalBillAmount || newClaimData.claimedAmount || 0,
       claimedAmount: newClaimData.claimedAmount || 0,
       approvedAmount: 0,
       intakeDate: new Date().toISOString().split('T')[0],

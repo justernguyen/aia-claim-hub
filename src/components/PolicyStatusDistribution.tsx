@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, Coins, PieChart, AlertCircle } from 'lucide-react';
+import { Coins, PieChart } from 'lucide-react';
 import { Policy } from '../types/crm';
 import { formatCurrencyVND } from '../utils/formatters';
 
@@ -55,10 +55,9 @@ export const PolicyStatusDistribution: React.FC<PolicyStatusDistributionProps> =
 
         <div className="text-right">
           <span className="text-xs font-semibold text-slate-400 block">Tỷ lệ duy trì K1</span>
-          <span className="text-sm font-extrabold text-slate-900 font-mono">92.4%</span>
+          <span className="text-sm font-extrabold text-slate-900 font-numeric">92.4%</span>
         </div>
       </div>
-
       {/* 1. Policy Status Segmented Bar */}
       <div>
         <div className="flex items-center justify-between text-xs font-bold mb-2">
@@ -92,7 +91,7 @@ export const PolicyStatusDistribution: React.FC<PolicyStatusDistributionProps> =
               <span className="w-2 h-2 rounded-full bg-slate-800" />
               <span>Đang hiệu lực</span>
             </div>
-            <p className="text-base font-extrabold font-mono text-slate-900 mt-1">
+            <p className="text-base font-extrabold font-numeric text-slate-900 mt-1">
               {inForceCount} <span className="text-xs font-medium">({inForcePct}%)</span>
             </p>
           </div>
@@ -102,7 +101,7 @@ export const PolicyStatusDistribution: React.FC<PolicyStatusDistributionProps> =
               <span className="w-2 h-2 rounded-full bg-aia-red" />
               <span>Chờ nộp phí</span>
             </div>
-            <p className="text-base font-extrabold font-mono text-aia-red mt-1">
+            <p className="text-base font-extrabold font-numeric text-aia-red mt-1">
               {pendingCount} <span className="text-xs font-medium">({pendingPct}%)</span>
             </p>
           </div>
@@ -112,7 +111,7 @@ export const PolicyStatusDistribution: React.FC<PolicyStatusDistributionProps> =
               <span className="w-2 h-2 rounded-full bg-slate-400" />
               <span>Mất hiệu lực</span>
             </div>
-            <p className="text-base font-extrabold font-mono text-slate-800 mt-1">
+            <p className="text-base font-extrabold font-numeric text-slate-800 mt-1">
               {lapsedCount} <span className="text-xs font-medium">({lapsedPct}%)</span>
             </p>
           </div>
@@ -132,7 +131,7 @@ export const PolicyStatusDistribution: React.FC<PolicyStatusDistributionProps> =
             <span className="text-slate-500 text-[11px] block font-medium">
               Phí Năm Đầu (FYP - HĐ Mới)
             </span>
-            <span className="text-base font-extrabold text-blue-700 font-mono mt-0.5 block">
+            <span className="text-base font-extrabold text-blue-700 font-numeric mt-0.5 block">
               {formatCurrencyVND(fypAmount)}
             </span>
             <span className="text-[10px] text-slate-400">Doanh số khai thác năm 2025-2026</span>
@@ -143,7 +142,7 @@ export const PolicyStatusDistribution: React.FC<PolicyStatusDistributionProps> =
             <span className="text-slate-500 text-[11px] block font-medium">
               Phí Tái Tục (RYP - Năm 2+)
             </span>
-            <span className="text-base font-extrabold text-slate-900 font-mono mt-0.5 block">
+            <span className="text-base font-extrabold text-slate-900 font-numeric mt-0.5 block">
               {formatCurrencyVND(rypAmount)}
             </span>
             <span className="text-[10px] text-slate-400">Khách hàng đóng phí định kỳ</span>
@@ -154,7 +153,7 @@ export const PolicyStatusDistribution: React.FC<PolicyStatusDistributionProps> =
             <span className="text-aia-red text-[11px] block font-medium">
               Phí Đang Chờ Thu (Gia hạn)
             </span>
-            <span className="text-base font-extrabold text-aia-red font-mono mt-0.5 block">
+            <span className="text-base font-extrabold text-aia-red font-numeric mt-0.5 block">
               {formatCurrencyVND(pendingAmount)}
             </span>
             <span className="text-[10px] text-aia-red/80 font-medium">Cần hoàn tất trong 60 ngày</span>
@@ -163,7 +162,7 @@ export const PolicyStatusDistribution: React.FC<PolicyStatusDistributionProps> =
 
         <div className="p-3 bg-slate-900 text-white rounded-xl flex items-center justify-between text-xs">
           <span className="font-semibold text-slate-300">Tổng phí bảo hiểm thường niên quản lý (APE):</span>
-          <span className="font-mono text-base font-extrabold text-white">
+          <span className="font-numeric text-base font-extrabold text-white">
             {formatCurrencyVND(totalAnnualPremium)}
           </span>
         </div>
