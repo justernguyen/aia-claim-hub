@@ -117,9 +117,9 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
         {/* KPI 1: Tổng khách hàng */}
         <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
           <div className="min-w-0 flex-1">
-            <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Tổng Khách hàng</p>
-            <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1 font-numeric">{customers.length}</p>
-            <p className="text-[11px] text-slate-400 mt-0.5 truncate">Khách hàng được phân công</p>
+            <p className="text-xs font-bold text-slate-700 uppercase tracking-wider truncate">Tổng Khách hàng</p>
+            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1 font-numeric">{customers.length}</p>
+            <p className="text-xs text-slate-600 font-medium mt-0.5 truncate">Khách hàng được phân công</p>
           </div>
           <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-rose-50 text-aia-red hidden sm:flex items-center justify-center shrink-0">
             <Users className="w-5 h-5" />
@@ -129,9 +129,9 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
         {/* KPI 2: Hợp đồng hiệu lực */}
         <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
           <div className="min-w-0 flex-1">
-            <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">HĐ Đang Hiệu Lực</p>
-            <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1 font-numeric">{inForceCount}</p>
-            <p className="text-[11px] text-slate-400 mt-0.5 truncate">Trên tổng số {policies.length} HĐ</p>
+            <p className="text-xs font-bold text-slate-700 uppercase tracking-wider truncate">HĐ Đang Hiệu Lực</p>
+            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1 font-numeric">{inForceCount}</p>
+            <p className="text-xs text-slate-600 font-medium mt-0.5 truncate">Trên tổng số {policies.length} HĐ</p>
           </div>
           <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-100 text-slate-700 hidden sm:flex items-center justify-center shrink-0">
             <ShieldCheck className="w-5 h-5" />
@@ -141,23 +141,23 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
         {/* KPI 3: Hợp đồng chờ nộp phí */}
         <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
           <div className="min-w-0 flex-1">
-            <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Chờ nộp phí (Gia hạn)</p>
-            <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1 font-numeric">{pendingCount}</p>
-            <p className="text-[11px] text-aia-red font-medium mt-0.5 truncate">Cần nhắc phí gia hạn</p>
+            <p className="text-xs font-bold text-slate-700 uppercase tracking-wider truncate">Chờ nộp phí (Gia hạn)</p>
+            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1 font-numeric">{pendingCount}</p>
+            <p className="text-xs text-aia-red font-bold mt-0.5 truncate">Cần nhắc phí gia hạn</p>
           </div>
           <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-rose-50 text-aia-red hidden sm:flex items-center justify-center shrink-0">
             <TrendingUp className="w-5 h-5" />
           </div>
         </div>
 
-        {/* KPI 4: Doanh số phí thường niên - Smart Non-Truncated Formatting */}
+        {/* KPI 4: Doanh số phí thường niên */}
         <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
           <div className="min-w-0 flex-1">
-            <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Tổng Phí Quản Lý</p>
-            <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1 font-numeric truncate" title={formatCurrencyVND(totalAnnualPremium)}>
+            <p className="text-xs font-bold text-slate-700 uppercase tracking-wider truncate">Tổng Phí Quản Lý</p>
+            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1 font-numeric truncate" title={formatCurrencyVND(totalAnnualPremium)}>
               {formatShortCurrency(totalAnnualPremium)}
             </p>
-            <p className="text-[11px] text-slate-400 mt-0.5 truncate">Phí bảo hiểm thường niên</p>
+            <p className="text-xs text-slate-600 font-medium mt-0.5 truncate">Phí bảo hiểm thường niên</p>
           </div>
           <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-100 text-slate-700 hidden sm:flex items-center justify-center shrink-0">
             <Coins className="w-5 h-5" />
@@ -165,37 +165,37 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
         </div>
       </div>
 
-      {/* Search, Filter & View Controls - Aligned with AIA Design System */}
+      {/* Search, Filter & View Controls */}
       <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
         {/* Search Input */}
         <div className="relative flex-1">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Tìm theo Tên KH, Số điện thoại, CCCD, Số HĐ (AIA-...), Địa chỉ..."
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-aia-red/20 focus:border-aia-red transition-all"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder:text-slate-500 font-medium focus:outline-none focus:ring-2 focus:ring-aia-red/20 focus:border-aia-red focus:bg-white transition-all"
           />
         </div>
 
-        {/* Status Filter Pills - Matching Tab 2 Standard */}
+        {/* Status Filter Pills */}
         <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1">
           <button
             type="button"
             onClick={() => setStatusFilter('all')}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all select-none ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all select-none ${
               statusFilter === 'all'
                 ? 'bg-aia-red text-white shadow-xs'
-                : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200/70'
+                : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-300'
             }`}
           >
             <span>Tất cả</span>
             <span
-              className={`text-[10px] font-bold px-1.5 py-0.2 rounded-full ${
+              className={`text-[11px] font-extrabold px-1.5 py-0.2 rounded-full ${
                 statusFilter === 'all'
                   ? 'bg-white/20 text-white'
-                  : 'bg-slate-200/80 text-slate-700'
+                  : 'bg-slate-200 text-slate-800'
               }`}
             >
               {customers.length}
@@ -204,18 +204,18 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
           <button
             type="button"
             onClick={() => setStatusFilter('in_force')}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all select-none ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all select-none ${
               statusFilter === 'in_force'
                 ? 'bg-aia-red text-white shadow-xs'
-                : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200/70'
+                : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-300'
             }`}
           >
             <span>Đang hiệu lực</span>
             <span
-              className={`text-[10px] font-bold px-1.5 py-0.2 rounded-full ${
+              className={`text-[11px] font-extrabold px-1.5 py-0.2 rounded-full ${
                 statusFilter === 'in_force'
                   ? 'bg-white/20 text-white'
-                  : 'bg-slate-200/80 text-slate-700'
+                  : 'bg-slate-200 text-slate-800'
               }`}
             >
               {inForceCount}
@@ -224,25 +224,24 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
           <button
             type="button"
             onClick={() => setStatusFilter('pending_payment')}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all select-none ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all select-none ${
               statusFilter === 'pending_payment'
                 ? 'bg-aia-red text-white shadow-xs'
-                : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200/70'
+                : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-300'
             }`}
           >
             <span>Chờ nộp phí</span>
             <span
-              className={`text-[10px] font-bold px-1.5 py-0.2 rounded-full ${
+              className={`text-[11px] font-extrabold px-1.5 py-0.2 rounded-full ${
                 statusFilter === 'pending_payment'
                   ? 'bg-white/20 text-white'
-                  : 'bg-slate-200/80 text-slate-700'
+                  : 'bg-slate-200 text-slate-800'
               }`}
             >
               {pendingCount}
             </span>
           </button>
         </div>
-
         {/* View Mode Toggle & Primary Actions */}
         <div className="flex items-center gap-2 border-t md:border-t-0 md:border-l border-slate-200 pt-2 md:pt-0 md:pl-3 shrink-0">
           <div className="bg-slate-100 p-1 rounded-xl flex items-center gap-1 border border-slate-200/80">

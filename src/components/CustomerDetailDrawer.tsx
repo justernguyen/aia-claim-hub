@@ -355,7 +355,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                       </div>
                       <div>
                         <h4 className="font-bold text-slate-900 text-sm">Thông tin Định danh & Pháp lý</h4>
-                        <p className="text-[11px] text-slate-400">Giấy tờ tùy thân và căn cước công dân đã xác minh</p>
+                        <p className="text-xs text-slate-600 font-medium mt-0.5">Giấy tờ tùy thân và căn cước công dân đã xác minh</p>
                       </div>
                     </div>
                     {customer.segment && (
@@ -368,9 +368,9 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
                     {/* Field 1: CCCD */}
-                    <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-200/60 hover:border-slate-300 transition-colors">
+                    <div className="p-3 rounded-xl bg-slate-50/90 border border-slate-200 hover:border-slate-300 transition-colors shadow-2xs">
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                        <span className="text-xs font-bold text-slate-600 uppercase tracking-wider">
                           Số CCCD / Định danh
                         </span>
                         <button
@@ -394,8 +394,8 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                     </div>
 
                     {/* Field 2: Ngày sinh */}
-                    <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-200/60 hover:border-slate-300 transition-colors">
-                      <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">
+                    <div className="p-3 rounded-xl bg-slate-50/90 border border-slate-200 hover:border-slate-300 transition-colors shadow-2xs">
+                      <span className="text-xs font-bold text-slate-600 uppercase tracking-wider block mb-1">
                         Ngày sinh & Độ tuổi
                       </span>
                       <span className="font-bold text-slate-900 font-numeric text-sm block">
@@ -407,8 +407,8 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                     </div>
 
                     {/* Field 3: Giới tính */}
-                    <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-200/60 hover:border-slate-300 transition-colors">
-                      <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">
+                    <div className="p-3 rounded-xl bg-slate-50/90 border border-slate-200 hover:border-slate-300 transition-colors shadow-2xs">
+                      <span className="text-xs font-bold text-slate-600 uppercase tracking-wider block mb-1">
                         Giới tính
                       </span>
                       <span className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
@@ -418,8 +418,8 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                     </div>
 
                     {/* Field 4: Mã KH */}
-                    <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-200/60 hover:border-slate-300 transition-colors">
-                      <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">
+                    <div className="p-3 rounded-xl bg-slate-50/90 border border-slate-200 hover:border-slate-300 transition-colors shadow-2xs">
+                      <span className="text-xs font-bold text-slate-600 uppercase tracking-wider block mb-1">
                         Mã khách hàng
                       </span>
                       <span className="font-mono font-bold text-slate-900 text-sm block">
@@ -437,10 +437,9 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                     </div>
                     <div>
                       <h4 className="font-bold text-slate-900 text-sm">Thông tin Liên hệ & Địa chỉ</h4>
-                      <p className="text-[11px] text-slate-400">Kênh kết nối trực tiếp và địa chỉ cư trú của khách hàng</p>
+                      <p className="text-xs text-slate-600 font-medium mt-0.5">Kênh kết nối trực tiếp và địa chỉ cư trú của khách hàng</p>
                     </div>
                   </div>
-
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     {/* SĐT */}
                     <div className="p-3.5 rounded-xl bg-slate-50/70 border border-slate-200/60 flex items-center justify-between">
@@ -601,24 +600,23 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                           </p>
                         </div>
                         <div className="text-right shrink-0">
-                          <p className="text-base font-black text-slate-900 font-numeric">
+                          <p className="text-base sm:text-lg font-black text-slate-900 font-numeric">
                             {formatCurrencyVND(policy.premiumAmount)}
                           </p>
-                          <p className="text-[11px] font-semibold text-slate-400">
+                          <p className="text-xs font-bold text-slate-600">
                             {BILLING_FREQ_LABELS[policy.billingFrequency]}
                           </p>
                         </div>
                       </div>
-
                       {/* Payment Dates & Grace Period Alert */}
-                      <div className="grid grid-cols-2 gap-3 text-xs bg-slate-50/80 p-3.5 rounded-xl border border-slate-200/60">
+                      <div className="grid grid-cols-2 gap-3 text-xs bg-slate-50 p-3.5 rounded-xl border border-slate-200 shadow-2xs">
                         <div>
-                          <span className="text-slate-400 block text-[11px]">Ngày phát hành HĐ</span>
-                          <span className="font-semibold text-slate-800 font-numeric text-xs sm:text-sm">{policy.issueDate}</span>
+                          <span className="text-slate-600 block text-xs font-bold mb-0.5">Ngày phát hành HĐ</span>
+                          <span className="font-bold text-slate-900 font-numeric text-xs sm:text-sm">{policy.issueDate}</span>
                         </div>
                         <div>
-                          <span className="text-slate-400 block text-[11px]">Kỳ đóng phí tiếp theo</span>
-                          <span className="font-semibold text-slate-800 font-numeric text-xs sm:text-sm">{policy.nextDueDate}</span>
+                          <span className="text-slate-600 block text-xs font-bold mb-0.5">Kỳ đóng phí tiếp theo</span>
+                          <span className="font-bold text-slate-900 font-numeric text-xs sm:text-sm">{policy.nextDueDate}</span>
                         </div>
                       </div>
 
@@ -672,9 +670,9 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                                   />
                                 </div>
 
-                                <div className="flex items-center justify-between text-[11px] text-slate-500 gap-2">
-                                  <span className="whitespace-nowrap">Tỷ lệ đã sử dụng: <strong className="font-numeric font-bold text-slate-700">{pct}%</strong></span>
-                                  <span className="text-slate-800 font-bold font-numeric whitespace-nowrap">
+                                <div className="flex items-center justify-between text-xs text-slate-600 gap-2">
+                                  <span className="whitespace-nowrap">Tỷ lệ đã sử dụng: <strong className="font-numeric font-bold text-slate-900">{pct}%</strong></span>
+                                  <span className="text-emerald-800 font-extrabold font-numeric whitespace-nowrap">
                                     Hạn mức còn lại: {b.unit === 'days' ? `${b.remainingLimit} ngày` : formatCurrencyVND(b.remainingLimit)}
                                   </span>
                                 </div>

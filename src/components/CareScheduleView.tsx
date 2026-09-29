@@ -47,13 +47,13 @@ export const CareScheduleView: React.FC<CareScheduleViewProps> = ({
         {/* KPI 1: Tổng việc cần xử lý */}
         <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
           <div className="min-w-0 flex-1">
-            <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">
+            <p className="text-xs font-bold text-slate-700 uppercase tracking-wider truncate">
               Tổng Sự Kiện Cần Xử Lý
             </p>
-            <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1 font-numeric">
+            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1 font-numeric">
               {alerts.length}
             </p>
-            <p className="text-[11px] text-slate-400 mt-0.5 truncate">
+            <p className="text-xs text-slate-600 font-medium mt-0.5 truncate">
               Cảnh báo & nhắc lịch tự động
             </p>
           </div>
@@ -65,13 +65,13 @@ export const CareScheduleView: React.FC<CareScheduleViewProps> = ({
         {/* KPI 2: Sinh nhật sắp tới */}
         <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
           <div className="min-w-0 flex-1">
-            <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">
+            <p className="text-xs font-bold text-slate-700 uppercase tracking-wider truncate">
               Sinh Nhật Trong Tháng
             </p>
-            <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1 font-numeric">
+            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1 font-numeric">
               {birthdayAlerts.length}
             </p>
-            <p className="text-[11px] text-rose-600 font-medium mt-0.5 truncate">
+            <p className="text-xs text-rose-700 font-bold mt-0.5 truncate">
               Chuẩn bị thiệp & quà tặng
             </p>
           </div>
@@ -83,13 +83,13 @@ export const CareScheduleView: React.FC<CareScheduleViewProps> = ({
         {/* KPI 3: Hạn nộp phí & Gia hạn */}
         <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
           <div className="min-w-0 flex-1">
-            <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">
+            <p className="text-xs font-bold text-slate-700 uppercase tracking-wider truncate">
               Hạn Đóng Phí & Gia Hạn
             </p>
-            <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1 font-numeric">
+            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1 font-numeric">
               {premiumAlerts.length}
             </p>
-            <p className="text-[11px] text-amber-700 font-medium mt-0.5 truncate">
+            <p className="text-xs text-amber-800 font-bold mt-0.5 truncate">
               Nhắc phí tránh mất hiệu lực
             </p>
           </div>
@@ -101,13 +101,13 @@ export const CareScheduleView: React.FC<CareScheduleViewProps> = ({
         {/* KPI 4: Chăm sóc sau claim & hoàn tất */}
         <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
           <div className="min-w-0 flex-1">
-            <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">
+            <p className="text-xs font-bold text-slate-700 uppercase tracking-wider truncate">
               Chăm Sóc Sau Claim
             </p>
-            <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1 font-numeric">
+            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1 font-numeric">
               {postClaimAlerts.length}
             </p>
-            <p className="text-[11px] text-emerald-600 font-medium mt-0.5 truncate">
+            <p className="text-xs text-emerald-800 font-bold mt-0.5 truncate">
               Đã hoàn tất {completedCount} tương tác
             </p>
           </div>

@@ -78,9 +78,9 @@ export const CareScheduleSheet: React.FC<CareScheduleSheetProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden space-y-4 p-5">
+    <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
       {/* Top Filter and Search Bar */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 p-4 sm:p-5">
         <div className="relative flex-1">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
           <input
@@ -153,19 +153,19 @@ export const CareScheduleSheet: React.FC<CareScheduleSheetProps> = ({
       </div>
 
       {/* Spreadsheet Grid Table */}
-      <div className="overflow-x-auto border border-slate-200 rounded-xl">
-        <table className="w-full min-w-[1050px] text-left text-xs border-collapse">
+      <div className="overflow-x-auto border-t border-slate-200">
+        <table className="w-full min-w-[960px] text-left text-xs border-collapse">
           <thead>
-            <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
-              <th className="py-3 px-3 w-12 text-center whitespace-nowrap">Xong</th>
-              <th className="py-3 px-3 w-28 whitespace-nowrap">Ngày</th>
-              <th className="py-3 px-3 min-w-[150px] whitespace-nowrap">Khách hàng</th>
-              <th className="py-3 px-3 min-w-[120px] whitespace-nowrap">Kênh</th>
-              <th className="py-3 px-3 min-w-[240px]">Nội dung trao đổi / Tư vấn</th>
-              <th className="py-3 px-3 min-w-[180px]">Kết quả</th>
-              <th className="py-3 px-3 min-w-[200px]">Việc tiếp theo (Next Action)</th>
-              <th className="py-3 px-3 w-28 whitespace-nowrap">Hẹn tiếp</th>
-              <th className="py-3 px-2 w-12 text-center whitespace-nowrap">Xóa</th>
+            <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
+              <th className="py-3 px-2 w-11 text-center whitespace-nowrap">Xong</th>
+              <th className="py-3 px-2.5 w-24 whitespace-nowrap">Ngày</th>
+              <th className="py-3 px-3 min-w-[135px] whitespace-nowrap">Khách hàng</th>
+              <th className="py-3 px-2.5 min-w-[105px] whitespace-nowrap">Kênh</th>
+              <th className="py-3 px-3 min-w-[200px]">Nội dung trao đổi / Tư vấn</th>
+              <th className="py-3 px-3 min-w-[150px]">Kết quả</th>
+              <th className="py-3 px-3 min-w-[160px]">Việc tiếp theo (Next Action)</th>
+              <th className="py-3 px-2.5 w-24 whitespace-nowrap">Hẹn tiếp</th>
+              <th className="py-3 px-2 w-10 text-center whitespace-nowrap">Xóa</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 font-medium">
@@ -186,7 +186,7 @@ export const CareScheduleSheet: React.FC<CareScheduleSheetProps> = ({
                     }`}
                   >
                     {/* Toggle Done Button */}
-                    <td className="py-3 px-3 text-center">
+                    <td className="py-3 px-2 text-center">
                       <button
                         type="button"
                         onClick={() => onToggleStatus(act.id)}
@@ -206,7 +206,7 @@ export const CareScheduleSheet: React.FC<CareScheduleSheetProps> = ({
                     </td>
 
                     {/* Ngày */}
-                    <td className="py-3 px-3 font-mono text-slate-500 whitespace-nowrap">
+                    <td className="py-3 px-2.5 font-mono text-slate-500 whitespace-nowrap">
                       {act.date}
                     </td>
 
@@ -226,7 +226,7 @@ export const CareScheduleSheet: React.FC<CareScheduleSheetProps> = ({
                     </td>
 
                     {/* Kênh */}
-                    <td className="py-3 px-3 whitespace-nowrap">
+                    <td className="py-3 px-2.5 whitespace-nowrap">
                       <span
                         className={`inline-flex items-center gap-1 px-2.5 py-0.8 rounded-md text-[10px] font-semibold border ${
                           CARE_CHANNEL_CONFIG[act.channel]?.badgeClass
@@ -264,10 +264,9 @@ export const CareScheduleSheet: React.FC<CareScheduleSheetProps> = ({
                     </td>
 
                     {/* Ngày hẹn tiếp theo */}
-                    <td className="py-3 px-3 font-mono text-[11px] text-slate-500 whitespace-nowrap">
+                    <td className="py-3 px-2.5 font-mono text-[11px] text-slate-500 whitespace-nowrap">
                       {act.nextFollowUpDate || '-'}
                     </td>
-
                     {/* Nút xóa */}
                     <td className="py-3 px-2 text-center">
                       <button

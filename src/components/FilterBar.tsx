@@ -110,27 +110,27 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             <button
               type="button"
               onClick={() => onViewModeChange('table')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 viewMode === 'table'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-white shadow-xs text-aia-red'
+                  : 'text-slate-500 hover:text-slate-900'
               }`}
               title="Chế độ xem Bảng dữ liệu"
             >
-              <TableIcon className="w-3.5 h-3.5 text-aia-red" />
+              <TableIcon className="w-3.5 h-3.5" />
               <span>Bảng</span>
             </button>
             <button
               type="button"
               onClick={() => onViewModeChange('kanban')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 viewMode === 'kanban'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-white shadow-xs text-aia-red'
+                  : 'text-slate-500 hover:text-slate-900'
               }`}
               title="Chế độ xem Bảng luồng Kanban"
             >
-              <LayoutGrid className="w-3.5 h-3.5 text-aia-red" />
+              <LayoutGrid className="w-3.5 h-3.5" />
               <span>Kanban</span>
             </button>
           </div>

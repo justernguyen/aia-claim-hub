@@ -19,8 +19,9 @@ import {
   Loader2,
   Lock,
   FileText,
+  Sparkles,
 } from 'lucide-react';
-import { Customer, Policy } from '../types/crm';
+import { Customer, Policy, BenefitQuota } from '../types/crm';
 import { ClaimItem, ClaimType } from '../types/claim';
 import {
   formatCurrencyVND,
@@ -152,9 +153,100 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
     }
   };
 
-  const selectedPolicy = policies.find((p) => p.id === policyNumber || p.customerId === selectedCustomerId);
-  const matchingBenefit = selectedPolicy?.benefits.find((b) => b.type === claimType) || selectedPolicy?.benefits[0];
+  // Quick fill sample scenarios according to 4 steps of AIA iClaim
+  const handleFillSample = (preset: 'outpatient' | 'inpatient' | 'dental') => {
+    const sampleCust = customers[0] || {
+      id: 'cust-mai-anh',
+      name: 'Nguyễn Thị Mai Anh',
+      phone: '079198002341',
+      cccd: '079198002341',
+    };
 
+    setSelectedCustomerId(sampleCust.id);
+    setCustomerName(sampleCust.name);
+    setInsuredPersonName(sampleCust.name);
+    setCustomerPhone(sampleCust.phone);
+    setCustomerCccd(sampleCust.cccd);
+    setBankAccountHolder(sampleCust.name.toUpperCase());
+    setPolicyNumber(policies[0]?.id || 'AIA-1108924');
+    setProductName(policies[0]?.productName || AIA_PRODUCTS[0]);
+
+    if (preset === 'outpatient') {
+      setClaimType('outpatient');
+      setHospitalCity('TP. Hồ Chí Minh');
+      setHospitalName('Bệnh viện Đa khoa Quốc tế Vinmec Central Park');
+      setClaimReason('Bệnh tật / Ốm đau');
+      setIcd10Search('K29');
+      setSelectedIcd10('K29 - Viêm dạ dày và tá tràng');
+      setDiagnosis('Viêm dạ dày và tá tràng cấp tính, điều trị ngoại trú theo toa bác sĩ');
+      setClaimedAmountStr('601.873');
+      setPaymentMethod('bank_transfer');
+      setBankName('Vietcombank');
+      setBankAccountNumber('0071001234567');
+
+      // Generate realistic sample medical document preview
+      const sampleSvgInvoice = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500"><rect width="100%" height="100%" fill="%23FFFFFF"/><rect x="20" y="20" width="360" height="460" rx="8" fill="none" stroke="%23D31145" stroke-width="2"/><text x="40" y="60" font-family="sans-serif" font-size="14" font-weight="bold" fill="%23D31145">HOÁ ĐƠN ĐIỆN TỬ - BV VINMEC</text><text x="40" y="90" font-family="sans-serif" font-size="11" fill="%23334155">Khách hàng: NGUYỄN THỊ MAI ANH</text><text x="40" y="115" font-family="sans-serif" font-size="11" fill="%23334155">Chẩn đoán: Viêm dạ dày tá tràng (K29)</text><line x1="40" y1="130" x2="360" y2="130" stroke="%23E2E8F0"/><text x="40" y="160" font-family="sans-serif" font-size="11" fill="%2364748B">1. Tiền khám chuyên khoa tiêu hoá: 450.000đ</text><text x="40" y="185" font-family="sans-serif" font-size="11" fill="%2364748B">2. Thuốc điều trị theo đơn: 151.873đ</text><text x="40" y="230" font-family="sans-serif" font-size="13" font-weight="bold" fill="%23D31145">TỔNG CỘNG: 601.873 VND</text><circle cx="300" cy="380" r="45" fill="none" stroke="%23DC2626" stroke-width="2" stroke-dasharray="4"/><text x="270" y="385" font-family="sans-serif" font-size="11" font-weight="bold" fill="%23DC2626">ĐÃ THU TIỀN</text></svg>`;
+      const sampleSvgRx = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500"><rect width="100%" height="100%" fill="%23F8FAFC"/><rect x="20" y="20" width="360" height="460" rx="8" fill="none" stroke="%230284C7" stroke-width="2"/><text x="40" y="60" font-family="sans-serif" font-size="14" font-weight="bold" fill="%230284C7">ĐƠN THUỐC ĐIỀU TRỊ NGOẠI TRÚ</text><text x="40" y="90" font-family="sans-serif" font-size="11" fill="%23334155">Bác sĩ kê đơn: BS.CKII Lê Hoàng</text><text x="40" y="115" font-family="sans-serif" font-size="11" fill="%23334155">Thuốc: Nexium 40mg + Phosphalugel</text><text x="40" y="145" font-family="sans-serif" font-size="11" fill="%23334155">Dặn dò: Uống trước bữa ăn 30 phút</text></svg>`;
+
+      setUploadedDocs([
+        {
+          id: 'doc-sample-1',
+          name: 'HoaDon_Vinmec_601k.png',
+          category: 'invoice',
+          url: sampleSvgInvoice,
+          size: '142 KB',
+          timestamp: Date.now(),
+        },
+        {
+          id: 'doc-sample-2',
+          name: 'ToaThuoc_K29_Nexium.png',
+          category: 'prescription',
+          url: sampleSvgRx,
+          size: '118 KB',
+          timestamp: Date.now(),
+        },
+      ]);
+    } else if (preset === 'inpatient') {
+      setClaimType('inpatient');
+      setHospitalCity('TP. Hồ Chí Minh');
+      setHospitalName('Bệnh viện FV (Pháp Việt)');
+      setClaimReason('Phẫu thuật');
+      setIcd10Search('K35');
+      setSelectedIcd10('K35 - Viêm ruột thừa cấp');
+      setDiagnosis('Phẫu thuật nội soi cắt ruột thừa viêm cấp, lưu viện 3 ngày');
+      setClaimedAmountStr('14.500.000');
+      setPaymentMethod('bank_transfer');
+      setBankName('Techcombank');
+      setBankAccountNumber('19036888999018');
+
+      const sampleSvgDischarge = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500"><rect width="100%" height="100%" fill="%23FFFFFF"/><rect x="20" y="20" width="360" height="460" rx="8" fill="none" stroke="%23D31145" stroke-width="2"/><text x="40" y="60" font-family="sans-serif" font-size="14" font-weight="bold" fill="%23D31145">GIẤY RA VIỆN - BV FV</text><text x="40" y="90" font-family="sans-serif" font-size="11" fill="%23334155">Bệnh nhân: NGUYỄN THỊ MAI ANH</text><text x="40" y="115" font-family="sans-serif" font-size="11" fill="%23334155">Chẩn đoán: Viêm ruột thừa cấp (K35)</text><text x="40" y="140" font-family="sans-serif" font-size="11" fill="%23334155">Phương pháp: Phẫu thuật nội soi</text><text x="40" y="165" font-family="sans-serif" font-size="11" fill="%23334155">Thời gian nằm viện: 3 ngày</text><circle cx="300" cy="380" r="45" fill="none" stroke="%23DC2626" stroke-width="2"/><text x="265" y="385" font-family="sans-serif" font-size="11" font-weight="bold" fill="%23DC2626">MỘC TRÒN BV</text></svg>`;
+
+      setUploadedDocs([
+        {
+          id: 'doc-sample-discharge',
+          name: 'GiayRaVien_FV_K35.png',
+          category: 'discharge_cert',
+          url: sampleSvgDischarge,
+          size: '210 KB',
+          timestamp: Date.now(),
+        },
+      ]);
+    } else {
+      setClaimType('dental');
+      setHospitalCity('TP. Hồ Chí Minh');
+      setHospitalName('Bệnh viện Răng Hàm Mặt Trung Ương TP.HCM');
+      setClaimReason('Bệnh lý răng miệng');
+      setIcd10Search('K05');
+      setSelectedIcd10('K05 - Viêm nướu và bệnh nha chu');
+      setDiagnosis('Cạo vôi răng và điều trị viêm nướu nha chu 2 hàm');
+      setClaimedAmountStr('1.850.000');
+      setPaymentMethod('cash');
+      setUploadedDocs([]);
+    }
+  };
+
+  const selectedPolicy = policies.find((p) => p.id === policyNumber || p.customerId === selectedCustomerId);
+  const matchingBenefit = selectedPolicy?.benefits.find((b: BenefitQuota) => b.type === claimType) || selectedPolicy?.benefits[0];
   const parsedAmount = Number(claimedAmountStr.replace(/\D/g, '')) || 0;
 
   // File upload trigger for a specific category
@@ -373,14 +465,14 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
             </div>
           </div>
 
-          {/* Quick CRM Selection Toolbar */}
-          <div className="px-4 sm:px-6 py-2.5 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2 shrink-0 text-xs">
+          {/* Quick CRM Selection & Sample Fill Toolbar */}
+          <div className="px-4 sm:px-6 py-2 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2 shrink-0 text-xs">
             <div className="flex items-center gap-2 flex-1 min-w-[240px]">
               <User className="w-4 h-4 text-aia-red shrink-0" />
               <select
                 value={selectedCustomerId}
                 onChange={(e) => handleCustomerSelect(e.target.value)}
-                className="w-full sm:w-auto flex-1 max-w-sm px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold text-slate-800 focus:outline-aia-red shadow-xs"
+                className="w-full sm:w-auto flex-1 max-w-xs px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold text-slate-800 focus:outline-aia-red shadow-xs"
               >
                 <option value="">-- Chọn nhanh Khách hàng từ Danh bạ AIA --</option>
                 {customers.map((c) => {
@@ -392,6 +484,36 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
                   );
                 })}
               </select>
+
+              {/* Quick Fill Samples Dropdown / Buttons */}
+              <div className="flex items-center gap-1 bg-white border border-rose-200 rounded-lg px-2 py-1 shadow-xs">
+                <Sparkles className="w-3.5 h-3.5 text-aia-red shrink-0" />
+                <span className="text-[11px] font-bold text-slate-700 hidden sm:inline">Mẫu:</span>
+                <button
+                  type="button"
+                  onClick={() => handleFillSample('outpatient')}
+                  className="px-1.5 py-0.5 rounded bg-rose-50 hover:bg-rose-100 text-aia-red text-[10px] font-semibold transition-colors"
+                  title="Điền mẫu Ngoại trú: Viêm dạ dày BV Vinmec (601k) + Hóa đơn + Đơn thuốc"
+                >
+                  Ngoại trú
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleFillSample('inpatient')}
+                  className="px-1.5 py-0.5 rounded bg-blue-50 hover:bg-blue-100 text-blue-700 text-[10px] font-semibold transition-colors"
+                  title="Điền mẫu Nội trú: Phẫu thuật ruột thừa BV FV (14.5tr) + Giấy ra viện"
+                >
+                  Nội trú
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleFillSample('dental')}
+                  className="px-1.5 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-[10px] font-semibold transition-colors"
+                  title="Điền mẫu Nha khoa: Viêm nướu BV RHM (1.85tr)"
+                >
+                  Nha khoa
+                </button>
+              </div>
             </div>
 
             {selectedPolicy && matchingBenefit && (
@@ -405,7 +527,6 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
               </div>
             )}
           </div>
-
           {/* Step Progress Bar - Styled Exactly like AIA iClaim Mobile App (1) - (2) - (3) - (4) */}
           <div className="px-4 sm:px-8 py-3 bg-white border-b border-slate-100 shrink-0">
             <div className="flex items-center justify-between max-w-lg mx-auto relative">
@@ -581,7 +702,7 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
                       {AIA_11_BENEFITS.map((b) => {
                         const isSelected = claimType === b.id;
                         const hasInPolicy = selectedPolicy?.benefits?.some(
-                          (pb) => pb.type === b.id || (pb.type === 'medical_expense' && (b.id === 'inpatient' || b.id === 'outpatient'))
+                          (pb: BenefitQuota) => pb.type === b.id || (pb.type === 'medical_expense' && (b.id === 'inpatient' || b.id === 'outpatient'))
                         );
                         return (
                           <div
@@ -1036,39 +1157,68 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
                   </p>
                 </div>
 
-                <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-4">
-                  {/* Option 1: Nhận tiền qua tài khoản ngân hàng */}
-                  <label
-                    className={`block p-3.5 rounded-xl border cursor-pointer transition-all ${
-                      paymentMethod === 'bank_transfer'
-                        ? 'border-aia-red bg-white ring-1 ring-aia-red shadow-xs'
-                        : 'border-slate-200 bg-white hover:border-slate-300'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
+                <div className="space-y-4">
+                  {/* Single Clean Card containing both Radio options (Exact AIA Mobile Layout) */}
+                  <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs divide-y divide-slate-100">
+                    {/* Option 1: Nhận tiền qua tài khoản ngân hàng */}
+                    <label
+                      className={`flex items-center gap-3.5 p-4 cursor-pointer transition-colors ${
+                        paymentMethod === 'bank_transfer' ? 'bg-rose-50/30' : 'hover:bg-slate-50'
+                      }`}
+                    >
                       <input
                         type="radio"
                         name="paymentMethod"
                         value="bank_transfer"
                         checked={paymentMethod === 'bank_transfer'}
                         onChange={() => setPaymentMethod('bank_transfer')}
-                        className="w-4 h-4 text-aia-red focus:ring-aia-red"
+                        className="w-4 h-4 text-aia-red focus:ring-aia-red border-slate-300"
                       />
-                      <span className="text-xs font-bold text-slate-900">
+                      <span className={`text-sm ${paymentMethod === 'bank_transfer' ? 'font-bold text-slate-900' : 'font-medium text-slate-700'}`}>
                         Nhận tiền qua tài khoản ngân hàng
                       </span>
-                    </div>
+                    </label>
 
-                    {paymentMethod === 'bank_transfer' && (
-                      <div className="mt-3.5 pt-3.5 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    {/* Option 2: Nhận tiền mặt tại Ngân hàng */}
+                    <label
+                      className={`flex items-center gap-3.5 p-4 cursor-pointer transition-colors ${
+                        paymentMethod === 'cash' ? 'bg-rose-50/30' : 'hover:bg-slate-50'
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="cash"
+                        checked={paymentMethod === 'cash'}
+                        onChange={() => setPaymentMethod('cash')}
+                        className="w-4 h-4 text-aia-red focus:ring-aia-red border-slate-300"
+                      />
+                      <span className={`text-sm ${paymentMethod === 'cash' ? 'font-bold text-slate-900' : 'font-medium text-slate-700'}`}>
+                        Nhận tiền mặt tại Ngân hàng
+                      </span>
+                    </label>
+                  </div>
+
+                  {/* Bank Account Details Form - Clean standalone card when bank_transfer is active */}
+                  {paymentMethod === 'bank_transfer' && (
+                    <div className="bg-slate-50/70 border border-slate-200 rounded-xl p-4 sm:p-5 space-y-4">
+                      <div className="flex items-center justify-between border-b border-slate-200 pb-2.5">
+                        <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
+                          <Building2 className="w-4 h-4 text-aia-red" />
+                          Chi tiết tài khoản nhận thụ hưởng
+                        </h4>
+                        <span className="text-[11px] text-slate-500 font-medium">Bắt buộc nhập chính xác</span>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
                         <div>
-                          <label className="block text-slate-600 font-semibold mb-1">
+                          <label className="block text-slate-700 font-semibold mb-1">
                             Ngân hàng thụ hưởng <span className="text-rose-500">*</span>
                           </label>
                           <select
                             value={bankName}
                             onChange={(e) => setBankName(e.target.value)}
-                            className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-medium text-slate-800 focus:outline-aia-red"
+                            className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl font-medium text-slate-800 focus:outline-aia-red shadow-xs"
                           >
                             {VIETNAM_BANKS.map((b) => (
                               <option key={b.code} value={b.shortName}>
@@ -1079,7 +1229,7 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
                         </div>
 
                         <div>
-                          <label className="block text-slate-600 font-semibold mb-1">
+                          <label className="block text-slate-700 font-semibold mb-1">
                             Số tài khoản ngân hàng <span className="text-rose-500">*</span>
                           </label>
                           <input
@@ -1087,60 +1237,40 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
                             value={bankAccountNumber}
                             onChange={(e) => setBankAccountNumber(e.target.value)}
                             placeholder="Nhập số tài khoản"
-                            className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono font-bold text-slate-900 focus:outline-aia-red"
+                            className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl font-mono font-bold text-slate-900 focus:outline-aia-red shadow-xs"
                           />
                         </div>
 
                         <div className="sm:col-span-2">
-                          <label className="block text-slate-600 font-semibold mb-1">
+                          <label className="block text-slate-700 font-semibold mb-1">
                             Tên chủ tài khoản (Chữ in hoa không dấu) <span className="text-rose-500">*</span>
                           </label>
                           <input
                             type="text"
                             value={bankAccountHolder}
                             onChange={(e) => setBankAccountHolder(e.target.value.toUpperCase())}
-                            placeholder="VD: NGUYEN VAN AN"
-                            className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono font-bold text-slate-900 focus:outline-aia-red uppercase"
+                            placeholder="VD: NGUYEN THI MAI ANH"
+                            className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl font-mono font-bold text-slate-900 focus:outline-aia-red uppercase shadow-xs"
                           />
-                          <p className="text-[11px] text-slate-400 mt-1">
+                          <p className="text-[11px] text-slate-400 mt-1.5 flex items-center gap-1">
+                            <Info className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                             Tên chủ tài khoản phải trùng khớp với Người được bảo hiểm hoặc Bên mua bảo hiểm.
                           </p>
                         </div>
                       </div>
-                    )}
-                  </label>
-
-                  {/* Option 2: Nhận tiền mặt tại Ngân hàng */}
-                  <label
-                    className={`block p-3.5 rounded-xl border cursor-pointer transition-all ${
-                      paymentMethod === 'cash'
-                        ? 'border-aia-red bg-white ring-1 ring-aia-red shadow-xs'
-                        : 'border-slate-200 bg-white hover:border-slate-300'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value="cash"
-                        checked={paymentMethod === 'cash'}
-                        onChange={() => setPaymentMethod('cash')}
-                        className="w-4 h-4 text-aia-red focus:ring-aia-red"
-                      />
-                      <span className="text-xs font-bold text-slate-900">
-                        Nhận tiền mặt tại Ngân hàng
-                      </span>
                     </div>
-                    {paymentMethod === 'cash' && (
-                      <p className="mt-2 text-xs text-slate-500 pl-7">
-                        Khách hàng mang theo bản gốc Căn cước công dân đến chi nhánh Vietcombank hoặc Sacombank gần nhất sau khi AIA duyệt chi trả.
-                      </p>
-                    )}
-                  </label>
+                  )}
 
-                  {/* Red Notice Banner from Photo 9 */}
-                  <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700 font-medium">
-                    <strong>Lưu ý:</strong> Không áp dụng Ủy quyền nhận tiền cho các loại yêu cầu Giải quyết quyền lợi bảo hiểm!
+                  {/* Cash withdrawal note when cash option is selected */}
+                  {paymentMethod === 'cash' && (
+                    <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 leading-relaxed">
+                      <strong className="font-semibold text-amber-900">Hướng dẫn nhận tiền mặt:</strong> Khách hàng mang theo bản gốc Căn cước công dân đến chi nhánh Vietcombank hoặc Sacombank gần nhất trên toàn quốc sau khi nhận tin nhắn/thông báo AIA duyệt chi trả quyền lợi.
+                    </div>
+                  )}
+
+                  {/* Red Notice Banner from AIA Portal (Photo 9) */}
+                  <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700 font-medium leading-relaxed">
+                    <strong className="text-aia-red font-bold">Lưu ý:</strong> Không áp dụng Ủy quyền nhận tiền cho các loại yêu cầu Giải quyết quyền lợi bảo hiểm!
                   </div>
                 </div>
               </div>

@@ -230,11 +230,10 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
             </div>
             <div>
               <h3 className="text-base font-bold">Thêm Khách Hàng & Hợp Đồng Mới</h3>
-              <p className="text-xs text-slate-400">Khởi tạo hồ sơ khách hàng và gói quyền lợi AIA</p>
+              <p className="text-xs text-slate-200 font-medium mt-0.5">Khởi tạo hồ sơ khách hàng và gói quyền lợi AIA</p>
             </div>
           </div>
           <button
-            type="button"
             onClick={onClose}
             className="p-1.5 text-slate-400 hover:text-white rounded-lg transition-colors cursor-pointer"
           >
@@ -283,7 +282,7 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">
+                <label className="block font-bold text-slate-800 mb-1 text-xs">
                   Họ và tên khách hàng <span className="text-rose-500">*</span>
                 </label>
                 <input
@@ -292,45 +291,45 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Ví dụ: Nguyễn Văn An"
                   className={`w-full p-2.5 rounded-xl border ${
-                    errors.name ? 'border-rose-400 bg-rose-50/50' : 'border-slate-200'
-                  } focus:outline-aia-red`}
+                    errors.name ? 'border-rose-400 bg-rose-50/50' : 'border-slate-300'
+                  } bg-white text-slate-900 font-medium placeholder:text-slate-400 focus:outline-aia-red`}
                 />
                 {errors.name && <p className="text-rose-500 text-[11px] mt-1">{errors.name}</p>}
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">
+                <label className="block font-bold text-slate-800 mb-1 text-xs">
                   Số điện thoại <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative">
-                  <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                  <Phone className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
                   <input
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="0912 345 678"
                     className={`w-full pl-9 pr-3 py-2.5 rounded-xl border ${
-                      errors.phone ? 'border-rose-400 bg-rose-50/50' : 'border-slate-200'
-                    } focus:outline-aia-red font-mono`}
+                      errors.phone ? 'border-rose-400 bg-rose-50/50' : 'border-slate-300'
+                    } bg-white text-slate-900 font-bold placeholder:text-slate-400 focus:outline-aia-red font-mono`}
                   />
                 </div>
                 {errors.phone && <p className="text-rose-500 text-[11px] mt-1">{errors.phone}</p>}
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">
+                <label className="block font-bold text-slate-800 mb-1 text-xs">
                   Số CCCD / Định danh <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative">
-                  <CreditCard className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                  <CreditCard className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
                   <input
                     type="text"
                     value={cccd}
                     onChange={(e) => setCccd(e.target.value)}
                     placeholder="079198002341"
                     className={`w-full pl-9 pr-3 py-2.5 rounded-xl border ${
-                      errors.cccd ? 'border-rose-400 bg-rose-50/50' : 'border-slate-200'
-                    } focus:outline-aia-red font-mono`}
+                      errors.cccd ? 'border-rose-400 bg-rose-50/50' : 'border-slate-300'
+                    } bg-white text-slate-900 font-bold placeholder:text-slate-400 focus:outline-aia-red font-mono`}
                   />
                 </div>
                 {errors.cccd && <p className="text-rose-500 text-[11px] mt-1">{errors.cccd}</p>}
@@ -338,20 +337,20 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Ngày sinh</label>
+                  <label className="block font-bold text-slate-800 mb-1 text-xs">Ngày sinh</label>
                   <input
                     type="date"
                     value={birthDate}
                     onChange={(e) => setBirthDate(e.target.value)}
-                    className="w-full p-2.5 rounded-xl border border-slate-200 focus:outline-aia-red font-mono text-xs"
+                    className="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-semibold focus:outline-aia-red font-mono text-xs"
                   />
                 </div>
                 <div>
-                  <label className="block font-semibold text-slate-700 mb-1">Giới tính</label>
+                  <label className="block font-bold text-slate-800 mb-1 text-xs">Giới tính</label>
                   <select
                     value={gender}
                     onChange={(e) => setGender(e.target.value as 'Nam' | 'Nữ')}
-                    className="w-full p-2.5 rounded-xl border border-slate-200 focus:outline-aia-red bg-white text-xs"
+                    className="w-full p-2.5 rounded-xl border border-slate-300 focus:outline-aia-red bg-white text-xs font-semibold text-slate-900"
                   >
                     <option value="Nữ">Nữ</option>
                     <option value="Nam">Nam</option>
@@ -360,54 +359,54 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
               </div>
 
               <div className="sm:col-span-2">
-                <label className="block font-semibold text-slate-700 mb-1">
+                <label className="block font-bold text-slate-800 mb-1 text-xs">
                   Địa chỉ liên hệ <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative">
-                  <MapPin className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                  <MapPin className="w-4 h-4 text-slate-500 absolute left-3 top-3" />
                   <input
                     type="text"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                     placeholder="Ví dụ: Chung cư Vinhomes Central Park, Bình Thạnh, TP.HCM"
                     className={`w-full pl-9 pr-3 py-2.5 rounded-xl border ${
-                      errors.address ? 'border-rose-400 bg-rose-50/50' : 'border-slate-200'
-                    } focus:outline-aia-red`}
+                      errors.address ? 'border-rose-400 bg-rose-50/50' : 'border-slate-300'
+                    } bg-white text-slate-900 font-medium placeholder:text-slate-400 focus:outline-aia-red`}
                   />
                 </div>
                 {errors.address && <p className="text-rose-500 text-[11px] mt-1">{errors.address}</p>}
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Nghề nghiệp</label>
+                <label className="block font-bold text-slate-800 mb-1 text-xs">Nghề nghiệp</label>
                 <input
                   type="text"
                   value={occupation}
                   onChange={(e) => setOccupation(e.target.value)}
                   placeholder="Kỹ sư phần mềm / Doanh nhân..."
-                  className="w-full p-2.5 rounded-xl border border-slate-200 focus:outline-aia-red"
+                  className="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium placeholder:text-slate-400 focus:outline-aia-red"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">Email</label>
+                <label className="block font-bold text-slate-800 mb-1 text-xs">Email</label>
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="customer@gmail.com"
-                  className="w-full p-2.5 rounded-xl border border-slate-200 focus:outline-aia-red"
+                  className="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium placeholder:text-slate-400 focus:outline-aia-red"
                 />
               </div>
 
               <div className="sm:col-span-2">
-                <label className="block font-semibold text-slate-700 mb-1">Ghi chú đặc điểm khách hàng</label>
+                <label className="block font-bold text-slate-800 mb-1 text-xs">Ghi chú đặc điểm khách hàng</label>
                 <input
                   type="text"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Khách VIP, gia đình có 2 con nhỏ, quan tâm hưu trí..."
-                  className="w-full p-2.5 rounded-xl border border-slate-200 focus:outline-aia-red"
+                  className="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-medium placeholder:text-slate-400 focus:outline-aia-red"
                 />
               </div>
             </div>

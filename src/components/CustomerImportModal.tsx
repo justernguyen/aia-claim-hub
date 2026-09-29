@@ -650,61 +650,61 @@ export const CustomerImportModal: React.FC<CustomerImportModalProps> = ({
 
               <div className="max-h-56 overflow-y-auto border border-slate-200 rounded-xl shadow-2xs">
                 <table className="w-full text-left text-[11px] border-collapse">
-                  <thead className="bg-slate-50 sticky top-0 border-b border-slate-200 text-slate-500 font-semibold uppercase">
+                  <thead className="bg-slate-100 sticky top-0 border-b border-slate-200 text-slate-700 font-bold uppercase text-xs">
                     <tr>
-                      <th className="p-2">Số HĐ</th>
-                      <th className="p-2">Tình trạng</th>
-                      <th className="p-2">Bên mua bảo hiểm</th>
-                      <th className="p-2">Người được BH</th>
-                      <th className="p-2">Sản phẩm chính</th>
-                      <th className="p-2">Phân khúc</th>
-                      <th className="p-2 text-right">Phí định kỳ</th>
+                      <th className="p-2.5">Số HĐ</th>
+                      <th className="p-2.5">Tình trạng</th>
+                      <th className="p-2.5">Bên mua bảo hiểm</th>
+                      <th className="p-2.5">Người được BH</th>
+                      <th className="p-2.5">Sản phẩm chính</th>
+                      <th className="p-2.5">Phân khúc</th>
+                      <th className="p-2.5 text-right">Phí định kỳ</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {parsedRows.map((r, i) => (
-                      <tr key={i} className="hover:bg-slate-50 font-medium">
-                        <td className="p-2 font-mono font-bold text-aia-red">{r.policyId}</td>
-                        <td className="p-2">
+                      <tr key={i} className="hover:bg-slate-50 font-medium text-xs">
+                        <td className="p-2.5 font-mono font-bold text-aia-red">{r.policyId}</td>
+                        <td className="p-2.5">
                           <span
-                            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border ${
+                            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold border ${
                               r.status === 'in_force'
-                                ? 'bg-slate-100 text-slate-800 border-slate-200'
+                                ? 'bg-slate-100 text-slate-900 border-slate-300'
                                 : r.status === 'pending_payment'
-                                ? 'bg-rose-50 text-aia-red border-rose-200 font-semibold'
-                                : 'bg-slate-100 text-slate-500 border-slate-200'
+                                ? 'bg-rose-50 text-aia-red border-rose-300 font-bold'
+                                : 'bg-slate-100 text-slate-700 border-slate-300'
                             }`}
                           >
                             <span
                               className={`w-1.5 h-1.5 rounded-full ${
                                 r.status === 'in_force'
-                                  ? 'bg-slate-700'
+                                  ? 'bg-slate-800'
                                   : r.status === 'pending_payment'
                                   ? 'bg-aia-red'
-                                  : 'bg-slate-400'
+                                  : 'bg-slate-500'
                               }`}
                             />
                             <span>{r.statusRaw}</span>
                           </span>
                         </td>
-                        <td className="p-2 font-bold text-slate-900">{r.name}</td>
-                        <td className="p-2 text-slate-600">{r.insuredPersonName}</td>
-                        <td className="p-2 text-slate-700 truncate max-w-[200px]" title={r.productName}>
+                        <td className="p-2.5 font-bold text-slate-900">{r.name}</td>
+                        <td className="p-2.5 text-slate-700 font-medium">{r.insuredPersonName}</td>
+                        <td className="p-2.5 text-slate-800 font-medium truncate max-w-[200px]" title={r.productName}>
                           {r.productName}
                         </td>
-                        <td className="p-2">
+                        <td className="p-2.5">
                           {r.segment && r.segment !== 'N/A' ? (
-                            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200 text-[10px] font-semibold">
-                              <Tag className="w-2.5 h-2.5" />
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-100 text-slate-800 border border-slate-200 text-xs font-bold">
+                              <Tag className="w-3 h-3 text-slate-500" />
                               <span>{r.segment}</span>
                             </span>
                           ) : (
                             <span className="text-slate-400">N/A</span>
                           )}
                         </td>
-                        <td className="p-2 text-right font-mono font-bold text-slate-800">
+                        <td className="p-2.5 text-right font-mono font-black text-slate-900">
                           {formatCurrencyVND(r.premiumAmount)}
-                          <span className="text-[10px] text-slate-400 block font-normal font-sans">
+                          <span className="text-xs text-slate-600 block font-semibold font-sans">
                             {r.freqRaw || 'Năm'}
                           </span>
                         </td>
