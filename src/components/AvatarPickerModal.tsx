@@ -9,6 +9,8 @@ import {
 } from 'lucide-react';
 import {
   AVATAR_CATALOG,
+  AVATAR_CATEGORIES,
+  AvatarCategory,
   AvatarItem,
   getAvatarById,
   getDefaultAvatarForCustomer,
@@ -41,6 +43,7 @@ const AvatarPickerContent: React.FC<Omit<AvatarPickerModalProps, 'isOpen'>> = ({
   }, [currentAvatarId, customer]);
 
   const [activeTab, setActiveTab] = useState<'preset' | 'upload'>('preset');
+  const [selectedCategory, setSelectedCategory] = useState<AvatarCategory>('all');
   const [selectedId, setSelectedId] = useState<string>(initialSelected);
   const [uploadedPreview, setUploadedPreview] = useState<string | null>(
     initialSelected.startsWith('data:image') || initialSelected.startsWith('http')
@@ -48,6 +51,11 @@ const AvatarPickerContent: React.FC<Omit<AvatarPickerModalProps, 'isOpen'>> = ({
       : null
   );
   const [imageUrlInput, setImageUrlInput] = useState('');
+
+  const filteredAvatars = useMemo(() => {
+    if (selectedCategory === 'all') return AVATAR_CATALOG;
+    return AVATAR_CATALOG.filter((a) => a.category === selectedCategory);
+  }, [selectedCategory]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Close on Escape
@@ -111,9 +119,9 @@ const AvatarPickerContent: React.FC<Omit<AvatarPickerModalProps, 'isOpen'>> = ({
         onChange={handleFileUpload}
       />
 
-      <div className="flex min-h-full items-center justify-center p-3 sm:p-5 text-center">
+      <div className="relative z-10 flex min-h-full items-center justify-center p-3 sm:p-5 text-center">
         <div
-          className="w-full max-w-lg transform overflow-hidden rounded-3xl bg-white text-left align-middle shadow-2xl transition-all border border-slate-200 flex flex-col max-h-[92vh]"
+          className="w-full max-w-xl transform overflow-hidden rounded-3xl bg-white text-left align-middle shadow-2xl transition-all border border-slate-200 flex flex-col max-h-[92vh]"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header - Styled Exactly like Image #1 */}
@@ -195,15 +203,42 @@ const AvatarPickerContent: React.FC<Omit<AvatarPickerModalProps, 'isOpen'>> = ({
               </button>
             </div>
 
-            {/* 3. Tab Content: HÌNH MẪU (Lưới 16 khuôn mặt hoạt hình biểu cảm chuẩn Image #1) */}
+            {/* 3. Tab Content: HÌNH MẪU (Kho 50 khuôn mặt hoạt hình biểu cảm phân loại) */}
             {activeTab === 'preset' && (
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-xs text-slate-500 px-1">
-                  <span>Chọn 1 khuôn mặt bạn thích:</span>
+              <div className="space-y-3.5">
+                {/* Category Filter Tabs */}
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                  {AVATAR_CATEGORIES.map((cat) => {
+                    const isCatActive = selectedCategory === cat.key;
+                    return (
+                      <button
+                        key={cat.key}
+                        type="button"
+                        onClick={() => setSelectedCategory(cat.key)}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
+                          isCatActive
+                            ? 'bg-slate-900 text-white shadow-xs scale-102'
+                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200/80 hover:text-slate-900'
+                        }`}
+                      >
+                        <span>{cat.icon}</span>
+                        <span>{cat.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="flex items-center justify-between text-xs text-slate-500 px-1 pt-0.5">
+                  <span>
+                    Đang hiển thị{' '}
+                    <strong className="text-slate-800 font-bold">{filteredAvatars.length}</strong>{' '}
+                    mẫu khuôn mặt:
+                  </span>
                   <button
                     type="button"
                     onClick={() => {
-                      const otherAvatars = AVATAR_CATALOG.filter((a) => a.id !== selectedId);
+                      const pool = filteredAvatars.length > 1 ? filteredAvatars : AVATAR_CATALOG;
+                      const otherAvatars = pool.filter((a) => a.id !== selectedId);
                       const rand = otherAvatars[Math.floor(Math.random() * otherAvatars.length)];
                       if (rand) setSelectedId(rand.id);
                     }}
@@ -214,34 +249,37 @@ const AvatarPickerContent: React.FC<Omit<AvatarPickerModalProps, 'isOpen'>> = ({
                   </button>
                 </div>
 
-                <div className="grid grid-cols-4 gap-3 sm:gap-4 p-1">
-                  {AVATAR_CATALOG.map((item) => {
-                    const isSelected = selectedId === item.id;
-                    return (
-                      <button
-                        key={item.id}
-                        type="button"
-                        onClick={() => setSelectedId(item.id)}
-                        className={`group relative aspect-square rounded-full transition-all cursor-pointer focus:outline-hidden ${
-                          isSelected
-                            ? 'ring-4 ring-aia-red ring-offset-2 scale-105 shadow-md'
-                            : 'border-2 border-slate-100 hover:border-slate-300 hover:shadow-md hover:scale-105'
-                        }`}
-                        title={item.name}
-                      >
-                        <div className="w-full h-full rounded-full overflow-hidden flex items-center justify-center shadow-xs">
-                          <item.SvgComponent className="w-full h-full transition-transform group-hover:scale-105" />
-                        </div>
-
-                        {/* Selected Checkmark Badge */}
-                        {isSelected && (
-                          <div className="absolute top-0 right-0 w-4 h-4 rounded-full bg-aia-red text-white flex items-center justify-center shadow-xs border border-white">
-                            <Check className="w-2.5 h-2.5 stroke-[3]" />
+                {/* Scrollable Responsive Grid of 50 Avatars */}
+                <div className="max-h-72 sm:max-h-80 overflow-y-auto pr-1 -mr-1 rounded-xl scrollbar-thin scrollbar-thumb-slate-200">
+                  <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-3 sm:gap-3.5 p-1">
+                    {filteredAvatars.map((item) => {
+                      const isSelected = selectedId === item.id;
+                      return (
+                        <button
+                          key={item.id}
+                          type="button"
+                          onClick={() => setSelectedId(item.id)}
+                          className={`group relative aspect-square rounded-full transition-all cursor-pointer focus:outline-hidden ${
+                            isSelected
+                              ? 'ring-4 ring-aia-red ring-offset-2 scale-105 shadow-md'
+                              : 'border-2 border-slate-100 hover:border-slate-300 hover:shadow-md hover:scale-105'
+                          }`}
+                          title={item.name}
+                        >
+                          <div className="w-full h-full rounded-full overflow-hidden flex items-center justify-center shadow-xs">
+                            <item.SvgComponent className="w-full h-full transition-transform group-hover:scale-105" />
                           </div>
-                        )}
-                      </button>
-                    );
-                  })}
+
+                          {/* Selected Checkmark Badge */}
+                          {isSelected && (
+                            <div className="absolute top-0 right-0 w-4 h-4 rounded-full bg-aia-red text-white flex items-center justify-center shadow-xs border border-white">
+                              <Check className="w-2.5 h-2.5 stroke-[3]" />
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             )}

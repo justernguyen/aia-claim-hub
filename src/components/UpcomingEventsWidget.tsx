@@ -34,30 +34,32 @@ export const UpcomingEventsWidget: React.FC<UpcomingEventsWidgetProps> = ({
   });
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs p-5 space-y-4">
-      {/* Header & Tabs */}
+    <div className="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-4">
+      {/* Header & Filter Tabs */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-            <Clock className="w-5 h-5" />
+          <div className="w-9 h-9 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0">
+            <Clock className="w-5 h-5 text-aia-red" />
           </div>
           <div>
             <h3 className="text-sm font-bold text-slate-900">
-              Trung Tâm Cảnh Báo & Sự Kiện Sắp Tới
+              Trung Tâm Cảnh Báo & Sự Kiện Cần Xử Lý
             </h3>
             <p className="text-xs text-slate-500">
-              Tự động quét sinh nhật, hạn đóng phí và lịch chăm sóc sau bồi thường
+              Tự động rà soát sinh nhật, kỳ gia hạn đóng phí và chăm sóc sau bồi thường
             </p>
           </div>
         </div>
 
-        {/* Filter Pills */}
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-semibold">
+        {/* Filter Pills - Unified Design System */}
+        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-semibold overflow-x-auto scrollbar-none border border-slate-200/70">
           <button
             type="button"
             onClick={() => setFilterType('all')}
-            className={`px-2.5 py-1 rounded-lg transition-colors ${
-              filterType === 'all' ? 'bg-white shadow-xs text-slate-900' : 'text-slate-500 hover:text-slate-900'
+            className={`px-2.5 py-1 rounded-lg transition-all select-none whitespace-nowrap cursor-pointer ${
+              filterType === 'all'
+                ? 'bg-white shadow-xs text-slate-900 font-bold'
+                : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             Tất cả ({alerts.length})
@@ -65,43 +67,49 @@ export const UpcomingEventsWidget: React.FC<UpcomingEventsWidgetProps> = ({
           <button
             type="button"
             onClick={() => setFilterType('birthday')}
-            className={`px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1 ${
-              filterType === 'birthday' ? 'bg-white shadow-xs text-rose-600' : 'text-slate-500 hover:text-slate-900'
+            className={`px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 select-none whitespace-nowrap cursor-pointer ${
+              filterType === 'birthday'
+                ? 'bg-white shadow-xs text-aia-red font-bold'
+                : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Cake className="w-3.5 h-3.5" />
+            <Cake className="w-3.5 h-3.5 text-aia-red" />
             <span>Sinh nhật ({birthdayAlerts.length})</span>
           </button>
           <button
             type="button"
             onClick={() => setFilterType('premium')}
-            className={`px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1 ${
-              filterType === 'premium' ? 'bg-white shadow-xs text-amber-600' : 'text-slate-500 hover:text-slate-900'
+            className={`px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 select-none whitespace-nowrap cursor-pointer ${
+              filterType === 'premium'
+                ? 'bg-white shadow-xs text-amber-700 font-bold'
+                : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Calendar className="w-3.5 h-3.5" />
+            <Calendar className="w-3.5 h-3.5 text-amber-600" />
             <span>Hạn nộp phí ({premiumAlerts.length})</span>
           </button>
           <button
             type="button"
             onClick={() => setFilterType('claim')}
-            className={`px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1 ${
-              filterType === 'claim' ? 'bg-white shadow-xs text-emerald-600' : 'text-slate-500 hover:text-slate-900'
+            className={`px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 select-none whitespace-nowrap cursor-pointer ${
+              filterType === 'claim'
+                ? 'bg-white shadow-xs text-emerald-700 font-bold'
+                : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <HeartHandshake className="w-3.5 h-3.5" />
+            <HeartHandshake className="w-3.5 h-3.5 text-emerald-600" />
             <span>Sau Claim ({postClaimAlerts.length})</span>
           </button>
         </div>
       </div>
 
-      {/* Alert List */}
+      {/* Alert List - Clean Executive Cards */}
       {displayAlerts.length === 0 ? (
-        <div className="text-center py-8 text-slate-400 text-xs">
-          Không có sự kiện hoặc cảnh báo nào trong thời gian này.
+        <div className="text-center py-10 text-slate-400 text-xs">
+          Không có sự kiện hoặc cảnh báo nào trong danh mục này.
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3.5 sm:gap-4">
           {displayAlerts.map((alert) => {
             const isBirthday = alert.type === 'birthday';
             const isGrace = alert.type === 'grace_period';
@@ -110,82 +118,81 @@ export const UpcomingEventsWidget: React.FC<UpcomingEventsWidgetProps> = ({
             return (
               <div
                 key={alert.id}
-                className={`p-4 rounded-xl border transition-all ${
-                  alert.severity === 'urgent'
-                    ? 'bg-rose-50/60 border-rose-200 shadow-xs'
-                    : isBirthday
-                    ? 'bg-rose-50/30 border-rose-100 hover:border-rose-300'
-                    : isGrace
-                    ? 'bg-amber-50/60 border-amber-200 hover:border-amber-300'
-                    : 'bg-slate-50 border-slate-200 hover:border-slate-300'
-                }`}
+                className="bg-white rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-md hover:border-slate-300 transition-all p-4 sm:p-4.5 flex flex-col justify-between"
               >
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    {isBirthday ? (
-                      <div className="p-1.5 rounded-lg bg-rose-100 text-rose-600">
-                        <Cake className="w-4 h-4" />
-                      </div>
-                    ) : isGrace ? (
-                      <div className="p-1.5 rounded-lg bg-amber-100 text-amber-700 animate-pulse">
-                        <AlertTriangle className="w-4 h-4" />
-                      </div>
-                    ) : isPremium ? (
-                      <div className="p-1.5 rounded-lg bg-blue-100 text-blue-600">
-                        <Calendar className="w-4 h-4" />
-                      </div>
-                    ) : (
-                      <div className="p-1.5 rounded-lg bg-emerald-100 text-emerald-600">
-                        <HeartHandshake className="w-4 h-4" />
-                      </div>
-                    )}
-
-                    <div>
-                      <h4
-                        onClick={() => onSelectCustomer?.(alert.customerId)}
-                        className="text-xs font-bold text-slate-900 hover:text-aia-red cursor-pointer transition-colors"
-                      >
-                        {alert.customerName}
-                      </h4>
-                      {alert.policyId && (
-                        <p className="text-[10px] text-slate-400 font-mono flex items-center gap-1">
-                          <ShieldCheck className="w-3 h-3 text-aia-red" />
-                          <span>{alert.policyId}</span>
-                        </p>
+                <div>
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                      {isBirthday ? (
+                        <div className="w-8 h-8 rounded-xl bg-rose-50 text-aia-red flex items-center justify-center shrink-0">
+                          <Cake className="w-4 h-4" />
+                        </div>
+                      ) : isGrace ? (
+                        <div className="w-8 h-8 rounded-xl bg-rose-50 text-aia-red flex items-center justify-center shrink-0">
+                          <AlertTriangle className="w-4 h-4" />
+                        </div>
+                      ) : isPremium ? (
+                        <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
+                          <Calendar className="w-4 h-4" />
+                        </div>
+                      ) : (
+                        <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
+                          <HeartHandshake className="w-4 h-4" />
+                        </div>
                       )}
+
+                      <div className="min-w-0 flex-1">
+                        <h4
+                          onClick={() => onSelectCustomer?.(alert.customerId)}
+                          className="text-xs sm:text-sm font-bold text-slate-900 hover:text-aia-red cursor-pointer transition-colors truncate"
+                          title={alert.customerName}
+                        >
+                          {alert.customerName}
+                        </h4>
+                        {alert.policyId && (
+                          <p className="text-[10.5px] text-slate-400 font-mono flex items-center gap-1 mt-0.5 truncate">
+                            <ShieldCheck className="w-3 h-3 text-aia-red shrink-0" />
+                            <span>{alert.policyId}</span>
+                          </p>
+                        )}
+                      </div>
                     </div>
+
+                    <span
+                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
+                        alert.severity === 'urgent'
+                          ? 'bg-aia-red text-white shadow-2xs'
+                          : alert.severity === 'warning'
+                          ? 'bg-amber-50 text-amber-800 border border-amber-300 font-extrabold'
+                          : 'bg-slate-100 text-slate-700'
+                      }`}
+                    >
+                      {alert.daysRemaining <= 0
+                        ? 'Hôm nay!'
+                        : `Còn ${alert.daysRemaining} ngày`}
+                    </span>
                   </div>
 
-                  <span
-                    className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                      alert.severity === 'urgent'
-                        ? 'bg-rose-600 text-white'
-                        : alert.severity === 'warning'
-                        ? 'bg-amber-500 text-white'
-                        : 'bg-slate-200 text-slate-700'
-                    }`}
-                  >
-                    {alert.daysRemaining <= 0
-                      ? 'Hôm nay!'
-                      : `Còn ${alert.daysRemaining} ngày`}
-                  </span>
+                  <p className="text-xs font-semibold text-slate-800 mt-2.5 leading-snug">
+                    {alert.title}
+                  </p>
+                  <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
+                    {alert.description}
+                  </p>
                 </div>
 
-                <p className="text-xs font-semibold text-slate-800 mt-2">{alert.title}</p>
-                <p className="text-xs text-slate-500 mt-1 line-clamp-2">{alert.description}</p>
-
                 {/* Quick actions for each alert */}
-                <div className="mt-3 pt-2.5 border-t border-slate-200/60 flex items-center justify-between text-xs">
+                <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
                   <span className="text-[11px] text-slate-400 font-mono">
                     Hạn: {alert.dueDate}
                   </span>
 
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 shrink-0">
                     {alert.customerPhone && (
                       <>
                         <a
                           href={`tel:${alert.customerPhone.replace(/\s+/g, '')}`}
-                          className="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:text-emerald-600 hover:border-emerald-300 transition-colors shadow-2xs"
+                          className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 hover:border-emerald-300 transition-colors shadow-2xs"
                           title={`Gọi điện ${alert.customerPhone}`}
                         >
                           <Phone className="w-3.5 h-3.5" />
@@ -194,8 +201,8 @@ export const UpcomingEventsWidget: React.FC<UpcomingEventsWidgetProps> = ({
                           href={`https://zalo.me/${alert.customerPhone.replace(/[^0-9]/g, '')}`}
                           target="_blank"
                           rel="noreferrer"
-                          className="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:text-cyan-600 hover:border-cyan-300 transition-colors shadow-2xs"
-                          title="Nhắn Zalo"
+                          className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-600 hover:text-blue-700 hover:bg-blue-50 hover:border-blue-300 transition-colors shadow-2xs"
+                          title="Nhắn tin Zalo"
                         >
                           <MessageSquare className="w-3.5 h-3.5" />
                         </a>

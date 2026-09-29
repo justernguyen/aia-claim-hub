@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   X,
   Phone,
@@ -101,6 +101,16 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
   const [quickCareChannel, setQuickCareChannel] = useState<CareActivity['channel']>('call');
   const [isAddingCare, setIsAddingCare] = useState(false);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen || !customer) return null;
 
   const customerPolicies = policies.filter((p) => p.customerId === customer.id);
@@ -138,17 +148,22 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-hidden"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity duration-300"
+        className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs transition-opacity duration-300"
         onClick={onClose}
+        aria-hidden="true"
       />
 
-      <div className="fixed inset-y-0 right-0 max-w-full flex pl-0 sm:pl-10">
-        <div className="w-screen max-w-full sm:max-w-2xl md:max-w-3xl lg:max-w-3xl xl:max-w-4xl bg-slate-50/70 shadow-2xl flex flex-col">
-          {/* Top Brand Accent Line */}
-          <div className="h-1 bg-gradient-to-r from-aia-red via-rose-600 to-rose-400 w-full shrink-0" />
+      <div className="relative w-full max-w-5xl h-full sm:h-auto max-h-[96vh] sm:max-h-[90vh] bg-slate-50/95 rounded-2xl shadow-2xl flex flex-col border border-slate-200 overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-200">
+        {/* Top Brand Accent Line */}
+        <div className="h-1 bg-gradient-to-r from-aia-red via-rose-600 to-rose-400 w-full shrink-0" />
 
           {/* Modern AIA Luxury Header */}
           <div className="bg-white border-b border-slate-200/80 px-5 sm:px-7 pt-5 pb-4">
@@ -859,7 +874,6 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
             )}
 
           </div>
-        </div>
       </div>
     </div>
   );

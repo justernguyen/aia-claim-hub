@@ -19,6 +19,7 @@ import {
 import { ConsultantProfile } from '../types/claim';
 import { AppTab } from '../types/navigation';
 import { AiaLogo } from './AiaLogo';
+
 interface HeaderProps {
   activeTab: AppTab;
   onTabChange: (tab: AppTab) => void;
@@ -51,6 +52,7 @@ export const Header: React.FC<HeaderProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
   const [avatarError, setAvatarError] = useState(false);
+
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -71,7 +73,14 @@ export const Header: React.FC<HeaderProps> = ({
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
-  const navTabs: { id: AppTab; label: string; icon: React.FC<{ className?: string }>; badge?: number; badgeColor?: string }[] = [
+  const navTabs: {
+    id: AppTab;
+    label: string;
+    shortLabel?: string;
+    icon: React.FC<{ className?: string }>;
+    badge?: number;
+    badgeColor?: string;
+  }[] = [
     {
       id: 'customers',
       label: 'Khách hàng & HĐ',
@@ -80,6 +89,7 @@ export const Header: React.FC<HeaderProps> = ({
     {
       id: 'claims',
       label: 'Hồ sơ Bồi thường',
+      shortLabel: 'Bồi thường',
       icon: ShieldAlert,
       badge: pendingClaimsCount > 0 ? pendingClaimsCount : undefined,
       badgeColor: 'bg-aia-red text-white',
@@ -87,6 +97,7 @@ export const Header: React.FC<HeaderProps> = ({
     {
       id: 'care',
       label: 'Lịch chăm sóc & Sự kiện',
+      shortLabel: 'Lịch chăm sóc',
       icon: CalendarCheck,
       badge: urgentAlertsCount > 0 ? urgentAlertsCount : undefined,
       badgeColor: 'bg-slate-800 text-white',
@@ -94,36 +105,30 @@ export const Header: React.FC<HeaderProps> = ({
     {
       id: 'analytics',
       label: 'Thống kê & Báo cáo',
+      shortLabel: 'Thống kê',
       icon: BarChart3,
     },
   ];
 
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top bar: Brand + Consultant Info + Quick Actions */}
-        <div className="flex items-center justify-between gap-2 h-15 sm:h-18 border-b border-slate-100">
+        <div className="flex items-center justify-between gap-2 sm:gap-4 h-14 sm:h-16 border-b border-slate-100">
           {/* Left: AIA Brand & System Title */}
-          <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
-            <AiaLogo variant="full" size="md" className="h-6 sm:h-10 shrink-0" />
-            <div className="border-l border-slate-200 pl-2 sm:pl-3.5 min-w-0">
-              <div className="flex items-center gap-2 min-w-0">
-                <h1 className="text-xs sm:text-lg font-bold text-slate-900 tracking-tight leading-tight truncate">
-                  <span className="sm:hidden">CRM & Claim</span>
-                  <span className="hidden sm:inline">AIA Agent CRM & Claim Hub</span>
-                </h1>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-aia-red border border-rose-200/80 uppercase tracking-wide hidden md:inline-block whitespace-nowrap shrink-0">
-                  MDRT Portal
-                </span>
-              </div>
-              <p className="text-xs text-slate-500 font-medium hidden sm:block mt-0.5 truncate max-w-[220px] xl:max-w-[280px] 2xl:max-w-none">
-                Quản lý Khách hàng, Hợp đồng, Bồi thường & Chăm sóc Khách hàng
-              </p>
+          <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0">
+            <AiaLogo variant="full" size="md" className="h-6 sm:h-8 shrink-0" />
+            <div className="h-5 sm:h-6 w-px bg-slate-200 shrink-0" />
+            <div className="flex items-center gap-2 shrink-0">
+              <h1 className="text-xs sm:text-base font-bold text-slate-900 tracking-tight leading-none whitespace-nowrap">
+                <span className="sm:hidden">Agent CRM</span>
+                <span className="hidden sm:inline">Agent CRM & Claim Hub</span>
+              </h1>
             </div>
           </div>
 
           {/* Center: Consultant Profile Card */}
-          <div className="hidden lg:flex items-center gap-2.5 bg-slate-50/90 border border-slate-200/80 rounded-xl px-2.5 py-1.2 shadow-2xs hover:bg-slate-50 transition-colors shrink-0 whitespace-nowrap">
+          <div className="hidden lg:flex items-center gap-2.5 bg-slate-50/90 border border-slate-200/80 rounded-xl px-3 py-1.5 shadow-2xs hover:bg-slate-50 transition-colors shrink-0 whitespace-nowrap">
             <div className="relative flex-shrink-0">
               {consultant.avatarUrl && !avatarError ? (
                 <img
@@ -142,7 +147,7 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="text-left whitespace-nowrap shrink-0">
               <div className="flex items-center gap-1.5 leading-none">
                 <span className="text-xs font-bold text-slate-900 whitespace-nowrap">{consultant.name}</span>
-                <span className="text-[9px] bg-amber-50 text-amber-800 border border-amber-300 font-extrabold px-1.5 py-0.2 rounded shadow-2xs whitespace-nowrap shrink-0">
+                <span className="text-[9px] bg-amber-50 text-amber-800 border border-amber-300 font-extrabold px-1.5 py-0.5 rounded shadow-2xs whitespace-nowrap shrink-0">
                   MDRT
                 </span>
               </div>
@@ -190,33 +195,33 @@ export const Header: React.FC<HeaderProps> = ({
             />
 
             {/* Quick backup tools */}
-            <div className="hidden md:flex items-center gap-1 border-r border-slate-200 pr-2 mr-1 shrink-0">
+            <div className="hidden md:flex items-center gap-0.5 border-r border-slate-200 pr-2 mr-1 shrink-0">
               <button
                 type="button"
                 onClick={onExportJSON}
                 title="Sao lưu toàn bộ dữ liệu ra file JSON"
-                className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg text-xs font-medium flex items-center gap-1 transition-colors whitespace-nowrap shrink-0"
+                className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors whitespace-nowrap shrink-0"
               >
                 <FileCode className="w-4 h-4 text-slate-500 shrink-0" />
-                <span className="hidden xl:inline whitespace-nowrap">Xuất JSON</span>
+                <span className="hidden 2xl:inline whitespace-nowrap">Xuất JSON</span>
               </button>
               <button
                 type="button"
                 onClick={onExportCSV}
                 title="Xuất danh bạ và hợp đồng ra file Excel CSV"
-                className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg text-xs font-medium flex items-center gap-1 transition-colors whitespace-nowrap shrink-0"
+                className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors whitespace-nowrap shrink-0"
               >
                 <FileSpreadsheet className="w-4 h-4 text-slate-500 shrink-0" />
-                <span className="hidden xl:inline whitespace-nowrap">Xuất Excel</span>
+                <span className="hidden 2xl:inline whitespace-nowrap">Xuất Excel</span>
               </button>
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 title="Khôi phục dữ liệu từ file backup JSON"
-                className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg text-xs font-medium flex items-center gap-1 transition-colors whitespace-nowrap shrink-0"
+                className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors whitespace-nowrap shrink-0"
               >
                 <Upload className="w-4 h-4 text-slate-500 shrink-0" />
-                <span className="hidden xl:inline whitespace-nowrap">Nhập file</span>
+                <span className="hidden 2xl:inline whitespace-nowrap">Nhập file</span>
               </button>
               <button
                 type="button"
@@ -226,7 +231,7 @@ export const Header: React.FC<HeaderProps> = ({
                   }
                 }}
                 title="Khôi phục dữ liệu mẫu ban đầu"
-                className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+                className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors shrink-0"
               >
                 <RefreshCw className="w-4 h-4" />
               </button>
@@ -317,7 +322,16 @@ export const Header: React.FC<HeaderProps> = ({
                 }`}
               >
                 <Icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 ${isActive ? 'text-white' : 'text-slate-500'}`} />
-                <span className="truncate">{tab.label}</span>
+                <span className="truncate">
+                  {tab.shortLabel ? (
+                    <>
+                      <span className="sm:hidden">{tab.shortLabel}</span>
+                      <span className="hidden sm:inline">{tab.label}</span>
+                    </>
+                  ) : (
+                    tab.label
+                  )}
+                </span>
                 {tab.badge !== undefined && (
                   <span
                     className={`ml-0.5 px-1.5 py-0.2 rounded-full text-[10px] font-bold shrink-0 ${

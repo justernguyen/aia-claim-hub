@@ -17,6 +17,7 @@ import { ClaimStatus, ClaimType } from './types/claim';
 import { SortOption, ViewMode } from './hooks/useClaims';
 import { ShieldCheck, Sparkles } from 'lucide-react';
 import { AiaLogo } from './components/AiaLogo';
+
 export default function App() {
   const store = useCRMStore();
 
@@ -24,7 +25,6 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<AppTab>('customers');
   // Customer selection state for cross-tab deep-linking
   const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
-
 
   // Modals state
   const [isNewClaimModalOpen, setIsNewClaimModalOpen] = useState(false);
@@ -121,7 +121,7 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 flex flex-col text-slate-800 antialiased font-sans">
       {/* Toast Notification */}
       {notification && (
-        <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl border border-slate-700 text-xs font-semibold flex items-center gap-2.5 animate-bounce">
+        <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl border border-slate-700 text-xs font-semibold flex items-center gap-2.5 animate-in fade-in slide-in-from-bottom-2 duration-200">
           <Sparkles className="w-4 h-4 text-amber-400" />
           <span>{notification}</span>
         </div>

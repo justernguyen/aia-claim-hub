@@ -127,14 +127,21 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
 
   return (
     <React.Fragment>
-      <div className="fixed inset-0 z-50 overflow-hidden">
       <div
-        onClick={onClose}
-        className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity duration-300"
-      />
+        className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-hidden"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) onClose();
+        }}
+      >
+        <div
+          onClick={onClose}
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs transition-opacity duration-300"
+          aria-hidden="true"
+        />
 
-      <div className="fixed inset-y-0 right-0 max-w-full flex pl-0 sm:pl-10">
-        <div className="w-screen max-w-2xl bg-white shadow-2xl flex flex-col border-l border-slate-200">
+        <div className="relative w-full max-w-5xl h-full sm:h-auto max-h-[96vh] sm:max-h-[90vh] bg-white rounded-2xl shadow-2xl flex flex-col border border-slate-200 overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-200">
+          {/* Top Brand Accent Line */}
+          <div className="h-1 bg-gradient-to-r from-aia-red via-rose-600 to-rose-400 w-full shrink-0" />
           {/* Header */}
           <div className="px-4 py-4 sm:px-6 sm:py-5 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-2">
             <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
@@ -171,68 +178,75 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
 
           {/* Drawer Body */}
           <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 sm:space-y-6">
-            {/* Box 1: Customer & Policy Information */}
-            <div className="bg-slate-50/70 border border-slate-200/90 rounded-2xl p-4">
-              <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2 mb-3">
-                <User className="w-4 h-4 text-aia-red" />
-                <span>Thông tin Khách hàng & Hợp đồng bảo hiểm</span>
-              </h3>
-              <div className="grid grid-cols-2 gap-y-3 gap-x-4 text-xs">
+            {/* Top Info Grid: Customer/Policy & Hospital Details */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+              {/* Box 1: Customer & Policy Information */}
+              <div className="bg-slate-50/70 border border-slate-200/90 rounded-2xl p-4 flex flex-col justify-between">
                 <div>
-                  <span className="text-slate-400 block text-[11px]">Bên mua bảo hiểm:</span>
-                  <span className="font-bold text-slate-900 text-sm">{claim.customerName}</span>
+                  <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2 mb-3">
+                    <User className="w-4 h-4 text-aia-red" />
+                    <span>Thông tin Khách hàng & Hợp đồng bảo hiểm</span>
+                  </h3>
+                  <div className="grid grid-cols-2 gap-y-3 gap-x-4 text-xs">
+                    <div>
+                      <span className="text-slate-400 block text-[11px]">Bên mua bảo hiểm:</span>
+                      <span className="font-bold text-slate-900 text-sm">{claim.customerName}</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block text-[11px]">Người được bảo hiểm:</span>
+                      <span className="font-semibold text-slate-900">
+                        {claim.insuredPersonName}{' '}
+                        <span className="text-[11px] text-slate-500 font-normal">({claim.relationship})</span>
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block text-[11px]">Số điện thoại:</span>
+                      <span className="font-numeric text-slate-800">{formatPhone(claim.customerPhone)}</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block text-[11px]">Số CCCD:</span>
+                      <span className="font-numeric text-slate-800">{formatCCCD(claim.customerCccd)}</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block text-[11px]">Số hợp đồng AIA:</span>
+                      <span className="font-numeric font-bold text-aia-red">{claim.policyNumber}</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block text-[11px]">Sản phẩm bảo hiểm:</span>
+                      <span className="font-semibold text-slate-900">{claim.productName}</span>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <span className="text-slate-400 block text-[11px]">Người được bảo hiểm:</span>
-                  <span className="font-semibold text-slate-900">
-                    {claim.insuredPersonName}{' '}
-                    <span className="text-[11px] text-slate-500 font-normal">({claim.relationship})</span>
-                  </span>
-                </div>
-                <div>
-                  <span className="text-slate-400 block text-[11px]">Số điện thoại:</span>
-                  <span className="font-numeric text-slate-800">{formatPhone(claim.customerPhone)}</span>
-                </div>
-                <div>
-                  <span className="text-slate-400 block text-[11px]">Số CCCD:</span>
-                  <span className="font-numeric text-slate-800">{formatCCCD(claim.customerCccd)}</span>
-                </div>
-                <div>
-                  <span className="text-slate-400 block text-[11px]">Số hợp đồng AIA:</span>
-                  <span className="font-numeric font-bold text-aia-red">{claim.policyNumber}</span>
-                </div>
-                <div>
-                  <span className="text-slate-400 block text-[11px]">Sản phẩm bảo hiểm:</span>
-                  <span className="font-semibold text-slate-900">{claim.productName}</span>
-                </div>
-                <div className="col-span-2 pt-2 border-t border-slate-200/60 flex items-center justify-between">
+                <div className="pt-2.5 mt-2.5 border-t border-slate-200/60 flex items-center justify-between text-xs">
                   <span className="text-slate-500 text-[11px]">Loại quyền lợi yêu cầu:</span>
                   <span className="font-bold text-slate-800 bg-white px-2 py-0.5 rounded-md border border-slate-200 text-xs">
                     {CLAIM_TYPE_LABELS[claim.claimType]}
                   </span>
                 </div>
               </div>
-            </div>
 
-            {/* Box 2: Hospital & Clinical Details */}
-            <div className="bg-slate-50/70 border border-slate-200/90 rounded-2xl p-4">
-              <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2 mb-3">
-                <Building2 className="w-4 h-4 text-aia-red" />
-                <span>Chi tiết y tế & Cơ sở điều trị</span>
-              </h3>
-              <div className="space-y-2.5 text-xs">
-                <div className="flex items-start justify-between">
-                  <span className="text-slate-500 text-[11px]">Cơ sở khám chữa bệnh:</span>
-                  <span className="font-bold text-slate-900 text-right">{claim.hospitalName}</span>
+              {/* Box 2: Hospital & Clinical Details */}
+              <div className="bg-slate-50/70 border border-slate-200/90 rounded-2xl p-4 flex flex-col justify-between">
+                <div>
+                  <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2 mb-3">
+                    <Building2 className="w-4 h-4 text-aia-red" />
+                    <span>Chi tiết y tế & Cơ sở điều trị</span>
+                  </h3>
+                  <div className="space-y-2.5 text-xs">
+                    <div className="flex items-start justify-between">
+                      <span className="text-slate-500 text-[11px]">Cơ sở khám chữa bệnh:</span>
+                      <span className="font-bold text-slate-900 text-right">{claim.hospitalName}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500 text-[11px]">Thời gian điều trị:</span>
+                      <span className="font-medium text-slate-800">
+                        {formatDate(claim.admissionDate)}
+                        {claim.dischargeDate ? ` ➔ ${formatDate(claim.dischargeDate)}` : ' (Ngoại trú/Trong ngày)'}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-500 text-[11px]">Thời gian điều trị:</span>
-                  <span className="font-medium text-slate-800">
-                    {formatDate(claim.admissionDate)}
-                    {claim.dischargeDate ? ` ➔ ${formatDate(claim.dischargeDate)}` : ' (Ngoại trú/Trong ngày)'}
-                  </span>
-                </div>
-                <div className="pt-2 border-t border-slate-200/60">
+                <div className="pt-2.5 mt-2.5 border-t border-slate-200/60 text-xs">
                   <span className="text-slate-500 text-[11px] block mb-1">Chẩn đoán y khoa & Mã ICD-10:</span>
                   <div className="p-2.5 bg-white rounded-xl border border-slate-200 text-slate-900 font-medium">
                     {claim.diagnosis}
@@ -245,7 +259,6 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
                 </div>
               </div>
             </div>
-
             {/* Box 3: Financials & Payout details */}
             <div className="bg-slate-50/70 border border-slate-200/90 rounded-2xl p-4">
               <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2 mb-3">
@@ -837,7 +850,6 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
           </div>
         </div>
       </div>
-    </div>
       {/* Zalo Quick Message Modal */}
       {zaloModalContent && (
         <div className="fixed inset-0 z-60 overflow-y-auto">
