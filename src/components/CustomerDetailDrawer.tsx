@@ -18,6 +18,9 @@ import {
   Copy,
   Check,
   Sparkles,
+  Mail,
+  Shield,
+  ExternalLink,
 } from 'lucide-react';
 import { Customer, Policy, CareActivity, POLICY_STATUS_CONFIG, BILLING_FREQ_LABELS, CARE_CHANNEL_CONFIG } from '../types/crm';
 import { ClaimItem, STATUS_CONFIG } from '../types/claim';
@@ -111,6 +114,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
   const customerActivities = careActivities.filter((a) => a.customerId === customer.id);
 
   const totalAnnualPremium = customerPolicies.reduce((sum, p) => sum + p.premiumAmount, 0);
+  const activePoliciesCount = customerPolicies.filter((p) => p.status === 'in_force').length;
 
   const handleSaveQuickCare = (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,8 +127,8 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
       policyId: customerPolicies[0]?.id,
       date: new Date().toISOString().split('T')[0],
       channel: quickCareChannel,
-      title: quickCareTitle,
-      content: quickCareContent,
+      title: quickCareTitle.trim(),
+      content: quickCareContent.trim(),
       status: 'completed',
     });
 
@@ -142,73 +146,131 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
       />
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-0 sm:pl-10">
-        <div className="w-screen max-w-full sm:max-w-2xl md:max-w-3xl lg:max-w-3xl xl:max-w-4xl bg-white shadow-2xl flex flex-col">
-          {/* Header */}
-          <div className="bg-slate-900 text-white p-4 sm:p-6 flex items-start justify-between gap-2 border-b border-slate-800">
-            <div className="flex items-start sm:items-center gap-3 sm:gap-4 min-w-0 flex-1">
-              <CustomerAvatar
-                avatarId={customer.avatar}
-                name={customer.name}
-                customerId={customer.id}
-                size="lg"
-                editable={Boolean(onChangeAvatar)}
-                showBadge
-                onClick={() => onChangeAvatar?.(customer)}
-              />
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                  <h2 className="text-base sm:text-xl font-bold tracking-tight">{customer.name}</h2>
-                  <span className="text-[11px] sm:text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 flex items-center gap-1 shadow-xs">
-                    <span>{customer.gender === 'Nam' ? '♂' : '♀'}</span>
-                    <span>{customer.gender}</span>
-                  </span>
-                  {customer.segment && (
-                    <span className="text-[11px] sm:text-xs font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1">
-                      <Sparkles className="w-3 h-3 text-amber-400" />
-                      <span>{customer.segment}</span>
-                    </span>
-                  )}
-                  <span className="text-xs font-numeric text-slate-400">({customer.id})</span>
+        <div className="w-screen max-w-full sm:max-w-2xl md:max-w-3xl lg:max-w-3xl xl:max-w-4xl bg-slate-50/70 shadow-2xl flex flex-col">
+          {/* Top Brand Accent Line */}
+          <div className="h-1 bg-gradient-to-r from-aia-red via-rose-600 to-rose-400 w-full shrink-0" />
+
+          {/* Modern AIA Luxury Header */}
+          <div className="bg-white border-b border-slate-200/80 px-5 sm:px-7 pt-5 pb-4">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start gap-4 min-w-0 flex-1">
+                {/* Avatar with subtle gradient ring */}
+                <div className="relative shrink-0">
+                  <div className="p-0.5 rounded-full bg-gradient-to-br from-rose-200 via-rose-100 to-slate-200 shadow-xs">
+                    <CustomerAvatar
+                      avatarId={customer.avatar}
+                      name={customer.name}
+                      customerId={customer.id}
+                      size="lg"
+                      editable={Boolean(onChangeAvatar)}
+                      showBadge
+                      onClick={() => onChangeAvatar?.(customer)}
+                    />
+                  </div>
                 </div>
-                <p className="text-xs text-slate-300 font-medium mt-0.5 line-clamp-2 sm:truncate">{customer.occupation}</p>
-                <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-slate-400 mt-1.5 font-numeric">
-                  <span className="whitespace-nowrap">{customerPolicies.length} Hợp đồng</span>
-                  <span>•</span>
-                  <span className="whitespace-nowrap">Tổng phí: <strong className="text-white">{formatCurrencyVND(totalAnnualPremium)}/năm</strong></span>
+
+                {/* Identity & Main Info */}
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h2 className="text-lg sm:text-2xl font-black text-slate-900 tracking-tight">
+                      {customer.name}
+                    </h2>
+                    <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 flex items-center gap-1 shadow-2xs">
+                      <span>{customer.gender === 'Nam' ? '♂' : '♀'}</span>
+                      <span>{customer.gender}</span>
+                    </span>
+                    {customer.segment && (
+                      <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200 flex items-center gap-1 shadow-2xs">
+                        <Sparkles className="w-3 h-3 text-amber-600" />
+                        <span>{customer.segment}</span>
+                      </span>
+                    )}
+                    <span className="text-xs font-mono font-medium text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200/60">
+                      {customer.id}
+                    </span>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-slate-600 font-medium mt-1 line-clamp-1">
+                    {customer.occupation || 'Khách hàng cá nhân AIA'}
+                  </p>
+
+                  {/* Summary Metric Ribbon */}
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-3 pt-2.5 border-t border-slate-100 text-xs">
+                    <div className="flex items-center gap-1.5 text-slate-600">
+                      <Shield className="w-3.5 h-3.5 text-aia-red" />
+                      <span>
+                        <strong className="font-bold text-slate-900">{customerPolicies.length}</strong> Hợp đồng
+                        {activePoliciesCount > 0 && (
+                          <span className="text-emerald-600 font-semibold ml-1">({activePoliciesCount} hiệu lực)</span>
+                        )}
+                      </span>
+                    </div>
+
+                    <span className="text-slate-300">•</span>
+
+                    <div className="flex items-center gap-1.5 text-slate-600">
+                      <span>Tổng phí năm:</span>
+                      <strong className="font-bold text-aia-red font-numeric text-sm">
+                        {formatCurrencyVND(totalAnnualPremium)}
+                      </strong>
+                    </div>
+
+                    <span className="text-slate-300">•</span>
+
+                    <div className="flex items-center gap-1.5 text-slate-600">
+                      <Receipt className="w-3.5 h-3.5 text-slate-400" />
+                      <span>
+                        <strong className="font-bold text-slate-900">{customerClaims.length}</strong> Yêu cầu bồi thường
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="flex items-center gap-2 shrink-0">
+
+              {/* Close Button */}
               <button
                 type="button"
                 onClick={onClose}
-                className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors"
+                className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors shrink-0"
+                title="Đóng (Esc)"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
           </div>
 
-          {/* Quick Contact Action Bar */}
-          <div className="bg-slate-800/80 px-4 sm:px-6 py-2.5 flex items-center justify-between gap-2 text-xs text-slate-300 border-b border-slate-700">
-            <div className="flex items-center gap-3 overflow-x-auto scrollbar-none">
+          {/* Quick Contact & Action Toolbar */}
+          <div className="bg-slate-50/90 border-b border-slate-200/80 px-5 sm:px-7 py-2.5 flex items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-2.5 overflow-x-auto scrollbar-none">
               <a
                 href={`tel:${customer.phone.replace(/\s+/g, '')}`}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-aia-red hover:bg-aia-red-dark text-white font-semibold transition-colors whitespace-nowrap shrink-0"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-aia-red hover:bg-aia-red-dark text-white font-bold transition-all shadow-xs hover:shadow-md shrink-0"
               >
                 <Phone className="w-3.5 h-3.5 shrink-0" />
                 <span>Gọi điện: {customer.phone}</span>
               </a>
+
               <a
                 href={`https://zalo.me/${customer.phone.replace(/[^0-9]/g, '')}`}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white font-semibold transition-colors whitespace-nowrap shrink-0"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 font-bold transition-all shrink-0"
               >
                 <MessageSquare className="w-3.5 h-3.5 shrink-0" />
                 <span>Nhắn Zalo</span>
               </a>
+
+              {customer.email && (
+                <a
+                  href={`mailto:${customer.email}`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 font-semibold transition-all shrink-0"
+                >
+                  <Mail className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                  <span>Gửi Email</span>
+                </a>
+              )}
             </div>
+
             {onDeleteCustomer && (
               <button
                 type="button"
@@ -218,171 +280,162 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                     onClose();
                   }
                 }}
-                className="text-slate-400 hover:text-rose-400 transition-colors p-1"
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors shrink-0"
                 title="Xóa hồ sơ khách hàng"
               >
-                <Trash2 className="w-4 h-4" />
+                <Trash2 className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline font-medium text-[11px]">Xóa</span>
               </button>
             )}
           </div>
 
           {/* Navigation Tabs */}
-          <div className="grid grid-cols-2 sm:flex border-b border-slate-200 bg-slate-50 px-2 sm:px-6 text-xs font-bold">
-            <button
-              type="button"
-              onClick={() => setActiveSubTab('profile')}
-              className={`py-2.5 sm:py-3 px-2.5 sm:px-4 border-b-2 flex items-center justify-center sm:justify-start gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 ${
-                activeSubTab === 'profile'
-                  ? 'border-aia-red text-aia-red bg-white font-bold'
-                  : 'border-transparent text-slate-500 hover:text-slate-900 font-semibold'
-              }`}
-            >
-              <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
-              <span>Hồ sơ Cá nhân</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveSubTab('policies')}
-              className={`py-2.5 sm:py-3 px-2.5 sm:px-4 border-b-2 flex items-center justify-center sm:justify-start gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 ${
-                activeSubTab === 'policies'
-                  ? 'border-aia-red text-aia-red bg-white font-bold'
-                  : 'border-transparent text-slate-500 hover:text-slate-900 font-semibold'
-              }`}
-            >
-              <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
-              <span>Hợp đồng & Quyền lợi</span>
-              <span className={`text-[10px] sm:text-[11px] px-1.5 py-0.2 rounded-full font-bold ${
-                activeSubTab === 'policies' ? 'bg-rose-100 text-aia-red' : 'bg-slate-200/80 text-slate-600'
-              }`}>
-                {customerPolicies.length}
-              </span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveSubTab('claims')}
-              className={`py-2.5 sm:py-3 px-2.5 sm:px-4 border-b-2 flex items-center justify-center sm:justify-start gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 ${
-                activeSubTab === 'claims'
-                  ? 'border-aia-red text-aia-red bg-white font-bold'
-                  : 'border-transparent text-slate-500 hover:text-slate-900 font-semibold'
-              }`}
-            >
-              <Receipt className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
-              <span>Lịch sử Bồi thường</span>
-              <span className={`text-[10px] sm:text-[11px] px-1.5 py-0.2 rounded-full font-bold ${
-                activeSubTab === 'claims' ? 'bg-rose-100 text-aia-red' : 'bg-slate-200/80 text-slate-600'
-              }`}>
-                {customerClaims.length}
-              </span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveSubTab('care')}
-              className={`py-2.5 sm:py-3 px-2.5 sm:px-4 border-b-2 flex items-center justify-center sm:justify-start gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 ${
-                activeSubTab === 'care'
-                  ? 'border-aia-red text-aia-red bg-white font-bold'
-                  : 'border-transparent text-slate-500 hover:text-slate-900 font-semibold'
-              }`}
-            >
-              <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
-              <span>Nhật ký Chăm sóc</span>
-              <span className={`text-[10px] sm:text-[11px] px-1.5 py-0.2 rounded-full font-bold ${
-                activeSubTab === 'care' ? 'bg-rose-100 text-aia-red' : 'bg-slate-200/80 text-slate-600'
-              }`}>
-                {customerActivities.length}
-              </span>
-            </button>
+          <div className="grid grid-cols-2 sm:flex border-b border-slate-200 bg-white px-3 sm:px-7 text-xs font-bold shrink-0">
+            {[
+              { id: 'profile', label: 'Hồ sơ Cá nhân', icon: User, count: undefined },
+              { id: 'policies', label: 'Hợp đồng & Quyền lợi', icon: ShieldCheck, count: customerPolicies.length },
+              { id: 'claims', label: 'Lịch sử Bồi thường', icon: Receipt, count: customerClaims.length },
+              { id: 'care', label: 'Nhật ký Chăm sóc', icon: Clock, count: customerActivities.length },
+            ].map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeSubTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveSubTab(tab.id as typeof activeSubTab)}
+                  className={`py-3 px-3 sm:px-5 border-b-2 flex items-center justify-center sm:justify-start gap-1.5 transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+                    isActive
+                      ? 'border-aia-red text-aia-red font-black bg-rose-50/30'
+                      : 'border-transparent text-slate-500 hover:text-slate-900 font-semibold hover:bg-slate-50'
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                  <span>{tab.label}</span>
+                  {tab.count !== undefined && (
+                    <span
+                      className={`text-[10px] sm:text-[11px] px-1.5 py-0.2 rounded-full font-bold ${
+                        isActive ? 'bg-rose-100 text-aia-red' : 'bg-slate-100 text-slate-600'
+                      }`}
+                    >
+                      {tab.count}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
 
           {/* Content Body */}
-          <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 sm:space-y-6">
+          <div className="flex-1 overflow-y-auto p-4 sm:p-7 space-y-5 sm:space-y-6">
             {/* SUB-TAB 1: HỒ SƠ CÁ NHÂN */}
             {activeSubTab === 'profile' && (
               <div className="space-y-5 text-xs">
                 {/* Card 1: Thông tin định danh & Pháp lý */}
-                <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-4">
+                <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs space-y-4">
                   <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                    <div className="flex items-center gap-2">
-                      <div className="p-1.5 rounded-lg bg-rose-50 text-aia-red">
+                    <div className="flex items-center gap-2.5">
+                      <div className="p-2 rounded-xl bg-rose-50 text-aia-red">
                         <CreditCard className="w-4 h-4" />
                       </div>
-                      <h4 className="font-bold text-slate-800 text-sm">Thông tin Định danh & Pháp lý</h4>
+                      <div>
+                        <h4 className="font-bold text-slate-900 text-sm">Thông tin Định danh & Pháp lý</h4>
+                        <p className="text-[11px] text-slate-400">Giấy tờ tùy thân và căn cước công dân đã xác minh</p>
+                      </div>
                     </div>
                     {customer.segment && (
-                      <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-1">
-                        <Sparkles className="w-3 h-3 text-amber-500" />
-                        <span>{customer.segment}</span>
+                      <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200 flex items-center gap-1">
+                        <Sparkles className="w-3 h-3 text-amber-600" />
+                        <span>Hạng {customer.segment}</span>
                       </span>
                     )}
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="bg-slate-50/80 p-3 rounded-xl border border-slate-100 flex items-center justify-between">
-                      <div>
-                        <span className="text-slate-400 block text-[11px]">Số CCCD / Định danh</span>
-                        <span className="font-bold text-slate-900 font-numeric text-sm tracking-wide">
-                          {formatCCCD(customer.cccd)}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                    {/* Field 1: CCCD */}
+                    <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-200/60 hover:border-slate-300 transition-colors">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                          Số CCCD / Định danh
                         </span>
+                        <button
+                          type="button"
+                          onClick={() => handleCopy(customer.cccd, 'cccd')}
+                          className="text-slate-400 hover:text-aia-red transition-colors p-0.5"
+                          title="Sao chép số CCCD"
+                        >
+                          {copiedField === 'cccd' ? (
+                            <span className="text-[10px] text-emerald-600 font-bold flex items-center gap-0.5">
+                              <Check className="w-3 h-3" /> Đã chép
+                            </span>
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </button>
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => handleCopy(customer.cccd, 'cccd')}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-aia-red hover:bg-white border border-transparent hover:border-slate-200 transition-all flex items-center gap-1 text-[11px]"
-                        title="Sao chép số CCCD"
-                      >
-                        {copiedField === 'cccd' ? (
-                          <>
-                            <Check className="w-3.5 h-3.5 text-emerald-600" />
-                            <span className="text-emerald-600 font-bold">Đã chép</span>
-                          </>
-                        ) : (
-                          <Copy className="w-3.5 h-3.5" />
-                        )}
-                      </button>
+                      <span className="font-bold text-slate-900 font-numeric text-sm tracking-wide block">
+                        {formatCCCD(customer.cccd)}
+                      </span>
                     </div>
 
-                    <div className="bg-slate-50/80 p-3 rounded-xl border border-slate-100">
-                      <span className="text-slate-400 block text-[11px]">Ngày sinh & Độ tuổi</span>
-                      <span className="font-bold text-slate-900 font-numeric text-sm">
+                    {/* Field 2: Ngày sinh */}
+                    <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-200/60 hover:border-slate-300 transition-colors">
+                      <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">
+                        Ngày sinh & Độ tuổi
+                      </span>
+                      <span className="font-bold text-slate-900 font-numeric text-sm block">
                         {customer.birthDate}
-                        <span className="text-slate-500 font-sans font-medium text-xs">
+                        <span className="text-slate-500 font-sans font-medium text-xs ml-1">
                           {getAge(customer.birthDate)}
                         </span>
                       </span>
                     </div>
 
-                    <div className="bg-slate-50/80 p-3 rounded-xl border border-slate-100">
-                      <span className="text-slate-400 block text-[11px]">Giới tính</span>
-                      <span className="font-semibold text-slate-800 text-xs flex items-center gap-1.5 mt-0.5">
+                    {/* Field 3: Giới tính */}
+                    <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-200/60 hover:border-slate-300 transition-colors">
+                      <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">
+                        Giới tính
+                      </span>
+                      <span className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
                         <span className="text-aia-red font-bold">{customer.gender === 'Nam' ? '♂' : '♀'}</span>
                         <span>{customer.gender}</span>
                       </span>
                     </div>
 
-                    <div className="bg-slate-50/80 p-3 rounded-xl border border-slate-100">
-                      <span className="text-slate-400 block text-[11px]">Mã định danh khách hàng</span>
-                      <span className="font-numeric font-bold text-slate-800 text-xs">
+                    {/* Field 4: Mã KH */}
+                    <div className="p-3 rounded-xl bg-slate-50/70 border border-slate-200/60 hover:border-slate-300 transition-colors">
+                      <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">
+                        Mã khách hàng
+                      </span>
+                      <span className="font-mono font-bold text-slate-900 text-sm block">
                         {customer.id}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                {/* Card 2: Thông tin Liên hệ Trực tiếp */}
-                <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-4">
-                  <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                    <div className="p-1.5 rounded-lg bg-slate-100 text-slate-700">
+                {/* Card 2: Thông tin Liên hệ & Địa chỉ */}
+                <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs space-y-4">
+                  <div className="flex items-center gap-2.5 border-b border-slate-100 pb-3">
+                    <div className="p-2 rounded-xl bg-rose-50 text-aia-red">
                       <Phone className="w-4 h-4" />
                     </div>
-                    <h4 className="font-bold text-slate-800 text-sm">Thông tin Liên hệ & Địa chỉ</h4>
+                    <div>
+                      <h4 className="font-bold text-slate-900 text-sm">Thông tin Liên hệ & Địa chỉ</h4>
+                      <p className="text-[11px] text-slate-400">Kênh kết nối trực tiếp và địa chỉ cư trú của khách hàng</p>
+                    </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="bg-slate-50/80 p-3 rounded-xl border border-slate-100 flex items-center justify-between">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    {/* SĐT */}
+                    <div className="p-3.5 rounded-xl bg-slate-50/70 border border-slate-200/60 flex items-center justify-between">
                       <div>
-                        <span className="text-slate-400 block text-[11px]">Số điện thoại di động</span>
+                        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-0.5">
+                          Số điện thoại di động
+                        </span>
                         <a
                           href={`tel:${customer.phone.replace(/\s+/g, '')}`}
-                          className="font-bold text-slate-900 font-numeric text-sm hover:text-aia-red transition-colors"
+                          className="font-bold text-slate-900 font-numeric text-base hover:text-aia-red transition-colors"
                         >
                           {formatPhone(customer.phone)}
                         </a>
@@ -395,34 +448,37 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                           title="Sao chép SĐT"
                         >
                           {copiedField === 'phone' ? (
-                            <Check className="w-3.5 h-3.5 text-aia-red" />
+                            <Check className="w-4 h-4 text-emerald-600" />
                           ) : (
-                            <Copy className="w-3.5 h-3.5" />
+                            <Copy className="w-4 h-4" />
                           )}
                         </button>
                         <a
                           href={`https://zalo.me/${customer.phone.replace(/[^0-9]/g, '')}`}
                           target="_blank"
                           rel="noreferrer"
-                          className="px-2 py-1 rounded-lg bg-slate-800 text-white font-bold text-[10px] hover:bg-slate-700 transition-colors"
+                          className="px-2.5 py-1 rounded-lg bg-blue-600 text-white font-bold text-[11px] hover:bg-blue-700 transition-colors shadow-2xs"
                         >
                           Zalo
                         </a>
                       </div>
                     </div>
 
-                    <div className="bg-slate-50/80 p-3 rounded-xl border border-slate-100 flex items-center justify-between">
+                    {/* Email */}
+                    <div className="p-3.5 rounded-xl bg-slate-50/70 border border-slate-200/60 flex items-center justify-between">
                       <div className="truncate pr-2">
-                        <span className="text-slate-400 block text-[11px]">Thư điện tử (Email)</span>
+                        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-0.5">
+                          Thư điện tử (Email)
+                        </span>
                         {customer.email ? (
                           <a
                             href={`mailto:${customer.email}`}
-                            className="font-semibold text-slate-900 hover:text-aia-red transition-colors truncate block"
+                            className="font-semibold text-slate-900 hover:text-aia-red transition-colors truncate block text-sm"
                           >
                             {customer.email}
                           </a>
                         ) : (
-                          <span className="text-slate-400 italic">Chưa cập nhật</span>
+                          <span className="text-slate-400 italic text-xs">Chưa cập nhật</span>
                         )}
                       </div>
                       {customer.email && (
@@ -433,20 +489,25 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                           title="Sao chép Email"
                         >
                           {copiedField === 'email' ? (
-                            <Check className="w-3.5 h-3.5 text-emerald-600" />
+                            <Check className="w-4 h-4 text-emerald-600" />
                           ) : (
-                            <Copy className="w-3.5 h-3.5" />
+                            <Copy className="w-4 h-4" />
                           )}
                         </button>
                       )}
                     </div>
 
-                    <div className="col-span-1 sm:col-span-2 bg-slate-50/80 p-3 rounded-xl border border-slate-100 flex items-start gap-2.5">
-                      <MapPin className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
+                    {/* Địa chỉ */}
+                    <div className="col-span-1 sm:col-span-2 p-3.5 rounded-xl bg-slate-50/70 border border-slate-200/60 flex items-start gap-3">
+                      <div className="p-1.5 rounded-lg bg-white border border-slate-200/60 text-aia-red shrink-0 mt-0.5">
+                        <MapPin className="w-4 h-4" />
+                      </div>
                       <div>
-                        <span className="text-slate-400 block text-[11px]">Địa chỉ liên hệ thường trú</span>
-                        <span className="font-semibold text-slate-800 text-xs leading-relaxed">
-                          {customer.address}
+                        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-0.5">
+                          Địa chỉ liên hệ thường trú
+                        </span>
+                        <span className="font-semibold text-slate-800 text-xs sm:text-sm leading-relaxed block">
+                          {customer.address || 'Chưa cập nhật địa chỉ'}
                         </span>
                       </div>
                     </div>
@@ -454,26 +515,31 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                 </div>
 
                 {/* Card 3: Nghề nghiệp & Ghi chú tư vấn */}
-                <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-4">
-                  <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                    <div className="p-1.5 rounded-lg bg-slate-100 text-slate-700">
+                <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs space-y-4">
+                  <div className="flex items-center gap-2.5 border-b border-slate-100 pb-3">
+                    <div className="p-2 rounded-xl bg-rose-50 text-aia-red">
                       <Briefcase className="w-4 h-4" />
                     </div>
-                    <h4 className="font-bold text-slate-800 text-sm">Nghề nghiệp & Ghi chú Tư vấn</h4>
+                    <div>
+                      <h4 className="font-bold text-slate-900 text-sm">Nghề nghiệp & Ghi chú Tư vấn</h4>
+                      <p className="text-[11px] text-slate-400">Thông tin chuyên môn và lịch sử tư vấn tài chính</p>
+                    </div>
                   </div>
 
-                  <div className="space-y-3">
-                    <div className="bg-slate-50/80 p-3 rounded-xl border border-slate-100">
-                      <span className="text-slate-400 block text-[11px]">Nghề nghiệp & Chức danh</span>
-                      <span className="font-bold text-slate-900 text-xs mt-0.5 block">
-                        {customer.occupation}
+                  <div className="space-y-3.5">
+                    <div className="p-3.5 rounded-xl bg-slate-50/70 border border-slate-200/60">
+                      <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">
+                        Nghề nghiệp & Chức danh
+                      </span>
+                      <span className="font-bold text-slate-900 text-sm block">
+                        {customer.occupation || 'Chưa cập nhật nghề nghiệp'}
                       </span>
                     </div>
 
                     {customer.notes && (
-                      <div className="p-3.5 rounded-xl bg-amber-50/60 border border-amber-200/80 border-l-4 border-l-aia-red">
-                        <div className="flex items-center gap-1.5 text-amber-800 font-bold text-[11px] mb-1">
-                          <MessageSquare className="w-3.5 h-3.5 text-aia-red" />
+                      <div className="p-4 rounded-xl bg-rose-50/40 border border-rose-100 border-l-4 border-l-aia-red">
+                        <div className="flex items-center gap-1.5 text-aia-red font-bold text-xs mb-1.5">
+                          <MessageSquare className="w-3.5 h-3.5" />
                           <span>Ghi chú tư vấn & Nguyện vọng tài chính:</span>
                         </div>
                         <p className="text-slate-700 italic text-xs leading-relaxed">
@@ -485,58 +551,59 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                 </div>
               </div>
             )}
+
             {/* SUB-TAB 2: HỢP ĐỒNG & HẠN MỨC QUYỀN LỢI */}
             {activeSubTab === 'policies' && (
               <div className="space-y-6">
                 {customerPolicies.length === 0 ? (
-                  <div className="text-center py-12 text-slate-400">
+                  <div className="text-center py-12 text-slate-400 bg-white rounded-2xl border border-slate-200 p-8">
                     <ShieldCheck className="w-12 h-12 mx-auto text-slate-300 mb-2" />
-                    <p className="font-semibold">Khách hàng chưa có hợp đồng nào.</p>
+                    <p className="font-semibold text-slate-600">Khách hàng chưa có hợp đồng bảo hiểm nào.</p>
                   </div>
                 ) : (
                   customerPolicies.map((policy) => (
                     <div
                       key={policy.id}
-                      className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-4"
+                      className="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-xs space-y-4"
                     >
                       {/* Policy Card Header */}
-                      <div className="flex items-start justify-between">
+                      <div className="flex items-start justify-between gap-4">
                         <div>
                           <div className="flex items-center gap-2">
                             <h4 className="text-base font-bold text-slate-900 font-numeric">
                               {policy.id}
                             </h4>
                             <span
-                              className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${
+                              className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${
                                 POLICY_STATUS_CONFIG[policy.status]?.badgeClass
                               }`}
                             >
                               {POLICY_STATUS_CONFIG[policy.status]?.label}
                             </span>
                           </div>
-                          <p className="text-xs font-semibold text-aia-red mt-0.5">
+                          <p className="text-xs sm:text-sm font-semibold text-aia-red mt-1">
                             {policy.productName}
                           </p>
                         </div>
-                        <div className="text-right">
-                          <p className="text-sm font-bold text-slate-900 font-numeric">
+                        <div className="text-right shrink-0">
+                          <p className="text-base font-black text-slate-900 font-numeric">
                             {formatCurrencyVND(policy.premiumAmount)}
                           </p>
-                          <p className="text-[11px] text-slate-400">
+                          <p className="text-[11px] font-semibold text-slate-400">
                             {BILLING_FREQ_LABELS[policy.billingFrequency]}
                           </p>
                         </div>
                       </div>
 
                       {/* Payment Dates & Grace Period Alert */}
-                      <div className="grid grid-cols-2 gap-3 text-xs bg-slate-50 p-3 rounded-xl">
+                      <div className="grid grid-cols-2 gap-3 text-xs bg-slate-50/80 p-3.5 rounded-xl border border-slate-200/60">
                         <div>
                           <span className="text-slate-400 block text-[11px]">Ngày phát hành HĐ</span>
-                          <span className="font-semibold text-slate-700 font-numeric">{policy.issueDate}</span>
+                          <span className="font-semibold text-slate-800 font-numeric text-xs sm:text-sm">{policy.issueDate}</span>
                         </div>
                         <div>
                           <span className="text-slate-400 block text-[11px]">Kỳ đóng phí tiếp theo</span>
-                          <span className="font-semibold text-slate-700 font-numeric">{policy.nextDueDate}</span>
+                          <span className="font-semibold text-slate-800 font-numeric text-xs sm:text-sm">{policy.nextDueDate}</span>
                         </div>
                       </div>
 
@@ -552,8 +619,8 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
 
                       {/* Detailed Benefit Quotas Table */}
                       <div>
-                        <h5 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
-                          <HeartPulse className="w-3.5 h-3.5 text-aia-red" />
+                        <h5 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                          <HeartPulse className="w-4 h-4 text-aia-red" />
                           <span>Chi tiết Hạn mức Quyền lợi Bảo hiểm</span>
                         </h5>
 
@@ -564,16 +631,16 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                             return (
                               <div
                                 key={idx}
-                                className="p-3 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition-colors"
+                                className="p-3.5 rounded-xl border border-slate-200/70 bg-slate-50/40 hover:bg-slate-50 transition-colors"
                               >
                                 <div className="flex items-center justify-between text-xs mb-1.5 gap-2">
-                                  <div className="flex items-center gap-1.5 min-w-0">
-                                    <span className="font-semibold text-slate-800 truncate">{b.name}</span>
-                                    <span className={`text-[10px] font-semibold px-1.5 py-0.2 rounded-md border shrink-0 ${badge.color}`}>
+                                  <div className="flex items-center gap-2 min-w-0">
+                                    <span className="font-bold text-slate-900 truncate">{b.name}</span>
+                                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-md border shrink-0 ${badge.color}`}>
                                       {badge.label}
                                     </span>
                                   </div>
-                                  <span className="font-numeric text-slate-500 font-bold whitespace-nowrap shrink-0">
+                                  <span className="font-numeric text-slate-600 font-bold whitespace-nowrap shrink-0 text-xs">
                                     {b.unit === 'days'
                                       ? `${b.usedAmount}/${b.maxLimit} ngày`
                                       : `${formatCurrencyVND(b.usedAmount)} / ${formatCurrencyVND(b.maxLimit)}`}
@@ -584,15 +651,15 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                                 <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden mb-1.5">
                                   <div
                                     className={`h-full rounded-full transition-all ${
-                                      pct > 80 ? 'bg-aia-red' : 'bg-slate-700'
+                                      pct > 80 ? 'bg-aia-red' : 'bg-slate-800'
                                     }`}
                                     style={{ width: `${pct}%` }}
                                   />
                                 </div>
 
                                 <div className="flex items-center justify-between text-[11px] text-slate-500 gap-2">
-                                  <span className="whitespace-nowrap">Tỷ lệ đã sử dụng: <strong className="font-numeric">{pct}%</strong></span>
-                                  <span className="text-slate-700 font-bold font-numeric whitespace-nowrap">
+                                  <span className="whitespace-nowrap">Tỷ lệ đã sử dụng: <strong className="font-numeric font-bold text-slate-700">{pct}%</strong></span>
+                                  <span className="text-slate-800 font-bold font-numeric whitespace-nowrap">
                                     Hạn mức còn lại: {b.unit === 'days' ? `${b.remainingLimit} ngày` : formatCurrencyVND(b.remainingLimit)}
                                   </span>
                                 </div>
@@ -611,32 +678,32 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
             {activeSubTab === 'claims' && (
               <div className="space-y-4">
                 {customerClaims.length === 0 ? (
-                  <div className="text-center py-12 text-slate-400">
+                  <div className="text-center py-12 text-slate-400 bg-white rounded-2xl border border-slate-200 p-8">
                     <Receipt className="w-12 h-12 mx-auto text-slate-300 mb-2" />
-                    <p className="font-semibold">Khách hàng chưa có hồ sơ bồi thường nào.</p>
+                    <p className="font-semibold text-slate-600">Khách hàng chưa có hồ sơ bồi thường nào.</p>
                   </div>
                 ) : (
                   customerClaims.map((claim) => (
                     <div
                       key={claim.id}
                       onClick={() => onSelectClaim?.(claim.id)}
-                      className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs hover:border-aia-red transition-all cursor-pointer group"
+                      className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-xs hover:border-aia-red hover:shadow-md transition-all cursor-pointer group"
                     >
-                      <div className="flex items-start justify-between">
+                      <div className="flex items-start justify-between gap-4">
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="font-bold text-slate-900 group-hover:text-aia-red font-numeric text-sm">
+                            <span className="font-bold text-slate-900 group-hover:text-aia-red font-numeric text-base transition-colors">
                               {claim.id}
                             </span>
                             <span
-                              className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
+                              className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full border ${
                                 STATUS_CONFIG[claim.status]?.badgeClass
                               }`}
                             >
                               {STATUS_CONFIG[claim.status]?.label}
                             </span>
                           </div>
-                          <p className="text-xs font-medium text-slate-600 mt-1 flex items-center gap-1.5">
+                          <p className="text-xs font-semibold text-slate-700 mt-1.5 flex items-center gap-1.5">
                             <Building2 className="w-3.5 h-3.5 text-slate-400" />
                             <span>{claim.hospitalName}</span>
                           </p>
@@ -645,7 +712,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                           </p>
                         </div>
 
-                        <div className="text-right">
+                        <div className="text-right shrink-0">
                           <p className="text-xs text-slate-400">Yêu cầu: {formatCurrencyVND(claim.claimedAmount)}</p>
                           <p className="text-sm font-bold text-emerald-600 font-numeric mt-0.5">
                             {claim.approvedAmount > 0
@@ -655,10 +722,10 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                         </div>
                       </div>
 
-                      <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
-                        <span>Ngày nộp: {claim.intakeDate}</span>
-                        <span className="text-aia-red font-semibold group-hover:underline">
-                          Xem chi tiết bồi thường →
+                      <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+                        <span>Ngày nộp: <strong className="text-slate-600 font-numeric">{claim.intakeDate}</strong></span>
+                        <span className="text-aia-red font-bold group-hover:underline flex items-center gap-1">
+                          Xem chi tiết bồi thường <ExternalLink className="w-3.5 h-3.5" />
                         </span>
                       </div>
                     </div>
@@ -677,7 +744,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                   <button
                     type="button"
                     onClick={() => setIsAddingCare(!isAddingCare)}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-900 text-white rounded-lg text-xs font-semibold hover:bg-slate-800 transition-colors"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-aia-red text-white rounded-xl text-xs font-bold hover:bg-aia-red-dark transition-all shadow-xs"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Thêm ghi chú</span>
@@ -685,14 +752,14 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                 </div>
 
                 {isAddingCare && (
-                  <form onSubmit={handleSaveQuickCare} className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-                    <div className="grid grid-cols-2 gap-2 text-xs">
+                  <form onSubmit={handleSaveQuickCare} className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs space-y-3.5">
+                    <div className="grid grid-cols-2 gap-3 text-xs">
                       <div>
-                        <label className="block text-slate-500 font-medium mb-1">Kênh tương tác</label>
+                        <label className="block text-slate-600 font-semibold mb-1">Kênh tương tác</label>
                         <select
                           value={quickCareChannel}
                           onChange={(e) => setQuickCareChannel(e.target.value as CareActivity['channel'])}
-                          className="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs font-medium focus:bg-white focus:border-aia-red transition-all"
                         >
                           <option value="call">Gọi điện thoại</option>
                           <option value="meeting">Gặp trực tiếp</option>
@@ -703,38 +770,38 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                         </select>
                       </div>
                       <div>
-                        <label className="block text-slate-500 font-medium mb-1">Tiêu đề</label>
+                        <label className="block text-slate-600 font-semibold mb-1">Tiêu đề</label>
                         <input
                           type="text"
                           required
                           value={quickCareTitle}
                           onChange={(e) => setQuickCareTitle(e.target.value)}
                           placeholder="Ví dụ: Tư vấn nâng cấp thẻ sức khỏe..."
-                          className="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs focus:bg-white focus:border-aia-red transition-all"
                         />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-xs text-slate-500 font-medium mb-1">Nội dung trao đổi</label>
+                      <label className="block text-xs text-slate-600 font-semibold mb-1">Nội dung trao đổi</label>
                       <textarea
                         rows={2}
                         value={quickCareContent}
                         onChange={(e) => setQuickCareContent(e.target.value)}
                         placeholder="Nội dung chi tiết cuộc gặp / trao đổi..."
-                        className="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2 text-xs focus:bg-white focus:border-aia-red transition-all"
                       />
                     </div>
-                    <div className="flex justify-end gap-2">
+                    <div className="flex justify-end gap-2 pt-1">
                       <button
                         type="button"
                         onClick={() => setIsAddingCare(false)}
-                        className="px-3 py-1.5 text-xs text-slate-600 hover:bg-slate-200 rounded-lg"
+                        className="px-3 py-1.5 text-xs text-slate-600 hover:bg-slate-100 rounded-xl font-medium"
                       >
                         Hủy
                       </button>
                       <button
                         type="submit"
-                        className="px-3 py-1.5 text-xs bg-aia-red text-white font-semibold rounded-lg hover:bg-aia-red-dark"
+                        className="px-4 py-1.5 text-xs bg-aia-red text-white font-bold rounded-xl hover:bg-aia-red-dark shadow-xs"
                       >
                         Lưu ghi chú
                       </button>
@@ -744,19 +811,19 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
 
                 <div className="space-y-3">
                   {customerActivities.length === 0 ? (
-                    <div className="text-center py-8 text-slate-400 text-xs">
+                    <div className="text-center py-8 text-slate-400 text-xs bg-white rounded-2xl border border-slate-200 p-8">
                       Chưa có ghi chú chăm sóc nào cho khách hàng này.
                     </div>
                   ) : (
                     customerActivities.map((act) => (
                       <div
                         key={act.id}
-                        className="p-4 rounded-xl border border-slate-200 bg-white shadow-xs space-y-2"
+                        className="p-4 rounded-2xl border border-slate-200/90 bg-white shadow-xs space-y-2"
                       >
                         <div className="flex items-center justify-between text-xs">
                           <div className="flex items-center gap-2">
                             <span
-                              className={`px-2 py-0.5 rounded-md font-semibold text-[10px] border ${
+                              className={`px-2.5 py-0.5 rounded-full font-semibold text-[10px] border ${
                                 CARE_CHANNEL_CONFIG[act.channel]?.badgeClass
                               }`}
                             >
@@ -766,16 +833,16 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                           </div>
                           <span className="text-[11px] text-slate-400 font-mono">{act.date}</span>
                         </div>
-                        <p className="text-xs text-slate-600">{act.content}</p>
+                        <p className="text-xs text-slate-600 leading-relaxed">{act.content}</p>
                         {act.result && (
-                          <div className="text-xs text-slate-500 bg-slate-50 p-2 rounded-lg">
-                            <strong className="text-slate-700">Kết quả:</strong> {act.result}
+                          <div className="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                            <strong className="text-slate-800">Kết quả:</strong> {act.result}
                           </div>
                         )}
                         {act.nextAction && (
-                          <div className="text-xs text-slate-800 bg-slate-100 p-2 rounded-lg flex items-center justify-between">
+                          <div className="text-xs text-slate-800 bg-rose-50/50 p-2.5 rounded-xl border border-rose-100/80 flex items-center justify-between">
                             <span>
-                              <strong>Việc tiếp theo:</strong> {act.nextAction}
+                              <strong className="text-aia-red">Việc tiếp theo:</strong> {act.nextAction}
                             </span>
                             {act.nextFollowUpDate && (
                               <span className="font-mono text-[11px] text-slate-600">
