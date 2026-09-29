@@ -15,7 +15,7 @@ interface MetricStripProps {
 
 export const MetricStrip: React.FC<MetricStripProps> = ({ stats }) => {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 my-6">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-5">
       {/* 1. Tổng số case */}
       <MetricCard
         value={stats.totalCases}
@@ -24,7 +24,7 @@ export const MetricStrip: React.FC<MetricStripProps> = ({ stats }) => {
         valueColorClass="text-slate-900"
       />
 
-      {/* 2. Tổng tiền yêu cầu (Highlighted red frame as in reference image) */}
+      {/* 2. Tổng tiền yêu cầu (Đóng khung viền đỏ nổi bật như ảnh mẫu) */}
       <MetricCard
         value={formatShortCurrency(stats.totalClaimed)}
         label="Tổng tiền yêu cầu"
@@ -39,18 +39,6 @@ export const MetricStrip: React.FC<MetricStripProps> = ({ stats }) => {
         label="Tổng tiền chi trả"
         subtext="Tiền đã về tài khoản khách"
         valueColorClass="text-emerald-600"
-      />
-
-      {/* 4. Tỷ lệ duyệt & Cảnh báo SLA */}
-      <MetricCard
-        value={`${stats.approvalRate}%`}
-        label="Tỷ lệ chấp thuận"
-        subtext={
-          stats.actionRequiredCount > 0
-            ? `${stats.actionRequiredCount} case cần bổ sung giấy tờ`
-            : 'Tiến độ xử lý đạt chuẩn SLA'
-        }
-        valueColorClass="text-indigo-600"
       />
     </div>
   );

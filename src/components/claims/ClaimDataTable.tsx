@@ -56,21 +56,21 @@ export const ClaimDataTable: React.FC<ClaimDataTableProps> = ({
                   }`}
                 >
                   {/* Mã Claim */}
-                  <td className="py-3 px-4 font-mono font-medium text-slate-900 whitespace-nowrap">
+                  <td className="py-3 px-4 font-number font-semibold text-slate-800 whitespace-nowrap">
                     {claim.id}
                   </td>
 
                   {/* Ngày khám */}
-                  <td className="py-3 px-4 text-slate-600 tabular-nums whitespace-nowrap">
+                  <td className="py-3 px-4 text-slate-600 font-number whitespace-nowrap">
                     {formatDate(claim.admissionDate)}
                   </td>
 
                   {/* Người ĐCBH & HĐ */}
                   <td className="py-3 px-4">
-                    <div className="font-semibold text-slate-900">
+                    <div className="font-bold text-slate-900">
                       {claim.insuredPersonName || claim.customerName}
                     </div>
-                    <div className="font-mono text-[11px] text-slate-400">
+                    <div className="font-number text-[11px] text-slate-400">
                       HĐ: {claim.policyNumber}
                     </div>
                   </td>
@@ -86,18 +86,18 @@ export const ClaimDataTable: React.FC<ClaimDataTableProps> = ({
                   </td>
 
                   {/* Tiền yêu cầu */}
-                  <td className="py-3 px-4 text-right font-semibold text-slate-900 tabular-nums whitespace-nowrap">
+                  <td className="py-3 px-4 text-right font-bold text-slate-900 font-number text-[13px] whitespace-nowrap">
                     {formatCurrencyVND(claim.claimedAmount)}
                   </td>
 
                   {/* Tiền chi trả */}
-                  <td className="py-3 px-4 text-right font-semibold tabular-nums whitespace-nowrap">
+                  <td className="py-3 px-4 text-right font-bold font-number text-[13px] whitespace-nowrap">
                     {claim.approvedAmount > 0 ? (
-                      <span className="text-emerald-700">{formatCurrencyVND(claim.approvedAmount)}</span>
-                    ) : (
-                      <span className="text-slate-300">--</span>
-                    )}
-                  </td>
+                       <span className="text-emerald-700">{formatCurrencyVND(claim.approvedAmount)}</span>
+                     ) : (
+                       <span className="text-slate-300">--</span>
+                     )}
+                   </td>
 
                   {/* Trạng thái */}
                   <td className="py-3 px-4 text-center whitespace-nowrap">

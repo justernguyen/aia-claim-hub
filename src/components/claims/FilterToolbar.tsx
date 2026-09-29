@@ -1,21 +1,16 @@
 import React from 'react';
-import { Search, Plus, LayoutGrid, Table, RotateCw } from 'lucide-react';
-import { ClaimStatus, ClaimType, STATUS_CONFIG, CLAIM_TYPE_LABELS } from '../../types/claim';
-import { SortOption, ViewMode } from '../../hooks/useClaims';
+import { Search, Plus, LayoutGrid, Table } from 'lucide-react';
+import { ClaimStatus, STATUS_CONFIG } from '../../types/claim';
+import { ViewMode } from '../../hooks/useClaims';
 
 interface FilterToolbarProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
   statusFilter: ClaimStatus | 'all';
   onStatusFilterChange: (status: ClaimStatus | 'all') => void;
-  typeFilter: ClaimType | 'all';
-  onTypeFilterChange: (type: ClaimType | 'all') => void;
-  sortBy: SortOption;
-  onSortChange: (sort: SortOption) => void;
   viewMode: ViewMode;
   onViewModeChange: (mode: ViewMode) => void;
   onOpenCreateModal: () => void;
-  onRefresh: () => void;
 }
 
 export const FilterToolbar: React.FC<FilterToolbarProps> = ({
@@ -23,20 +18,15 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
   onSearchChange,
   statusFilter,
   onStatusFilterChange,
-  typeFilter,
-  onTypeFilterChange,
-  sortBy,
-  onSortChange,
   viewMode,
   onViewModeChange,
   onOpenCreateModal,
-  onRefresh,
 }) => {
   return (
-    <div className="bg-white rounded-lg border border-slate-200 p-3 mb-6 shadow-2xs">
-      <div className="flex flex-col lg:flex-row gap-3 items-stretch lg:items-center justify-between">
-        {/* Left: Search input */}
-        <div className="relative flex-1 min-w-[280px]">
+    <div className="bg-white rounded-lg border border-slate-200 p-2.5 mb-5 shadow-2xs">
+      <div className="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center justify-between">
+        {/* Left: Input tìm kiếm sát ảnh mẫu */}
+        <div className="relative flex-1 min-w-[240px]">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
             <Search className="w-4 h-4" />
           </div>
@@ -45,17 +35,17 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Tìm số HĐ, người được bảo hiểm, loại quyền lợi..."
-            className="block w-full pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-md bg-slate-50/50 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-rose-500 focus:border-rose-500 transition-colors"
+            className="block w-full pl-9 pr-3 py-1.5 text-xs sm:text-sm border border-slate-200 rounded-md bg-slate-50/60 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-rose-500 focus:border-rose-500 transition-colors"
           />
         </div>
 
-        {/* Center: Filters & Sorting */}
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Status Filter */}
+        {/* Right: Bộ lọc trạng thái, Chuyển chế độ xem & Nút Thêm */}
+        <div className="flex items-center space-x-2 shrink-0">
+          {/* Lọc Trạng thái */}
           <select
             value={statusFilter}
             onChange={(e) => onStatusFilterChange(e.target.value as ClaimStatus | 'all')}
-            className="text-xs sm:text-sm py-2 px-2.5 border border-slate-200 rounded-md bg-white text-slate-700 focus:outline-none focus:ring-1 focus:ring-rose-500 cursor-pointer"
+            className="text-xs py-1.5 px-2.5 border border-slate-200 rounded-md bg-white text-slate-700 font-medium focus:outline-none focus:ring-1 focus:ring-rose-500 cursor-pointer"
           >
             <option value="all">Tất cả trạng thái</option>
             {Object.entries(STATUS_CONFIG).map(([key, config]) => (
@@ -65,33 +55,7 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
             ))}
           </select>
 
-          {/* Claim Type Filter */}
-          <select
-            value={typeFilter}
-            onChange={(e) => onTypeFilterChange(e.target.value as ClaimType | 'all')}
-            className="text-xs sm:text-sm py-2 px-2.5 border border-slate-200 rounded-md bg-white text-slate-700 focus:outline-none focus:ring-1 focus:ring-rose-500 cursor-pointer"
-          >
-            <option value="all">Tất cả quyền lợi</option>
-            {Object.entries(CLAIM_TYPE_LABELS).map(([key, label]) => (
-              <option key={key} value={key}>
-                {label}
-              </option>
-            ))}
-          </select>
-
-          {/* Sort By */}
-          <select
-            value={sortBy}
-            onChange={(e) => onSortChange(e.target.value as SortOption)}
-            className="text-xs sm:text-sm py-2 px-2.5 border border-slate-200 rounded-md bg-white text-slate-700 focus:outline-none focus:ring-1 focus:ring-rose-500 cursor-pointer"
-          >
-            <option value="date_desc">Mới nhất trước</option>
-            <option value="date_asc">Cũ nhất trước</option>
-            <option value="amount_desc">Tiền yêu cầu cao nhất</option>
-            <option value="amount_asc">Tiền yêu cầu thấp nhất</option>
-          </select>
-
-          {/* View Mode Toggle */}
+          {/* Chuyển Grid / Table View */}
           <div className="flex items-center border border-slate-200 rounded-md p-0.5 bg-slate-50">
             <button
               type="button"
@@ -100,10 +64,10 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
               className={`p-1.5 rounded transition-colors cursor-pointer ${
                 viewMode === 'grid'
                   ? 'bg-white shadow-2xs text-rose-700 font-medium'
-                  : 'text-slate-500 hover:text-slate-700'
+                  : 'text-slate-400 hover:text-slate-600'
               }`}
             >
-              <LayoutGrid className="w-4 h-4" />
+              <LayoutGrid className="w-3.5 h-3.5" />
             </button>
             <button
               type="button"
@@ -112,32 +76,20 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
               className={`p-1.5 rounded transition-colors cursor-pointer ${
                 viewMode === 'table'
                   ? 'bg-white shadow-2xs text-rose-700 font-medium'
-                  : 'text-slate-500 hover:text-slate-700'
+                  : 'text-slate-400 hover:text-slate-600'
               }`}
             >
-              <Table className="w-4 h-4" />
+              <Table className="w-3.5 h-3.5" />
             </button>
           </div>
 
-          {/* Refresh button */}
-          <button
-            type="button"
-            onClick={onRefresh}
-            title="Làm mới danh sách"
-            className="p-2 border border-slate-200 rounded-md text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors cursor-pointer"
-          >
-            <RotateCw className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* Right: + Thêm button (Crimson style as in reference image) */}
-        <div>
+          {/* Nút + Thêm đỏ mận chuẩn theo ảnh mẫu */}
           <button
             type="button"
             onClick={onOpenCreateModal}
-            className="w-full lg:w-auto inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md text-white bg-rose-700 hover:bg-rose-800 transition-colors shadow-2xs cursor-pointer"
+            className="inline-flex items-center justify-center px-3.5 py-1.5 text-xs font-semibold rounded-md text-white bg-rose-700 hover:bg-rose-800 transition-colors shadow-2xs cursor-pointer shrink-0"
           >
-            <Plus className="w-4 h-4 mr-1.5" />
+            <Plus className="w-3.5 h-3.5 mr-1" />
             <span>Thêm</span>
           </button>
         </div>
