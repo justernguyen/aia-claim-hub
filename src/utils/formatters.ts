@@ -26,6 +26,42 @@ export function formatShortCurrency(amount: number): string {
 }
 
 /**
+ * Định dạng tiền tệ dạng ngắn gọn trực quan (26 tr, 224 tr, 250 tr, 0 đ)
+ */
+export function formatCompactVND(amount: number): string {
+  if (isNaN(amount) || amount === 0) return '0\u00A0đ';
+  if (amount >= 1_000_000_000) {
+    const b = (amount / 1_000_000_000).toFixed(1).replace('.0', '');
+    return `${b}\u00A0tỷ`;
+  }
+  if (amount >= 1_000_000) {
+    const m = (amount / 1_000_000).toFixed(1).replace('.0', '');
+    return `${m}\u00A0tr`;
+  }
+  if (amount >= 1_000) {
+    const k = (amount / 1_000).toFixed(0);
+    return `${k}\u00A0k`;
+  }
+  return `${amount}\u00A0đ`;
+}
+
+/**
+ * Định dạng số Căn cước công dân (CCCD) thành từng cụm 3 số dễ đọc:
+ * Ví dụ: "079198002341" -> "079 198 002 341"
+ */
+export function formatCCCD(cccd?: string | null): string {
+  if (!cccd) return '--';
+  const clean = cccd.replace(/\s+/g, '');
+  if (clean.length === 12) {
+    return `${clean.slice(0, 3)} ${clean.slice(3, 6)} ${clean.slice(6, 9)} ${clean.slice(9, 12)}`;
+  }
+  if (clean.length === 9) {
+    return `${clean.slice(0, 3)} ${clean.slice(3, 6)} ${clean.slice(6, 9)}`;
+  }
+  return cccd;
+}
+
+/**
  * Định dạng ngày tháng hiển thị DD/MM/YYYY
  */
 export function formatDate(dateString: string): string {

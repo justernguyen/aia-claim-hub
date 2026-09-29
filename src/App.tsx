@@ -169,8 +169,11 @@ export default function App() {
               }
               showNotification(`Đã thêm khách hàng ${newCust.name} thành công!`);
             }}
+            onUpdateCustomer={(id, updates) => {
+              store.updateCustomer(id, updates);
+              showNotification('Đã cập nhật avatar khách hàng thành công!');
+            }}
             onDeleteCustomer={(id) => {
-              store.deleteCustomer(id);
               showNotification('Đã xóa hồ sơ khách hàng.');
             }}
             onAddCareActivity={(act) => {

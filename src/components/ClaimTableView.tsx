@@ -6,6 +6,7 @@ import {
   CheckCircle2,
   AlertCircle,
   Eye,
+  Clock,
 } from 'lucide-react';
 import {
   ClaimItem,
@@ -43,16 +44,16 @@ export const ClaimTableView: React.FC<ClaimTableViewProps> = ({
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[1120px] text-left text-xs border-collapse">
+        <table className="w-full min-w-[1240px] text-left text-xs border-collapse">
           <thead>
             <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-600 font-semibold uppercase tracking-wider text-[11px]">
-              <th className="py-3.5 px-4 min-w-[145px] whitespace-nowrap">Mã Claim / Ngày nộp</th>
-              <th className="py-3.5 px-4 min-w-[165px] whitespace-nowrap">Khách hàng & HĐBH</th>
-              <th className="py-3.5 px-4 min-w-[180px] whitespace-nowrap">Sản phẩm & Quyền lợi</th>
-              <th className="py-3.5 px-4 min-w-[220px]">Bệnh viện & Chẩn đoán</th>
-              <th className="py-3.5 px-4 min-w-[155px] text-right whitespace-nowrap">Số tiền yêu cầu / Duyệt</th>
-              <th className="py-3.5 px-4 min-w-[115px] text-center whitespace-nowrap">Chứng từ</th>
-              <th className="py-3.5 px-4 min-w-[150px] text-center whitespace-nowrap">Trạng thái</th>
+              <th className="py-3.5 px-4 min-w-[150px] whitespace-nowrap">Mã Claim / Ngày nộp</th>
+              <th className="py-3.5 px-4 min-w-[210px] whitespace-nowrap">Khách hàng & HĐBH</th>
+              <th className="py-3.5 px-4 min-w-[200px] whitespace-nowrap">Sản phẩm & Quyền lợi</th>
+              <th className="py-3.5 px-4 min-w-[250px]">Bệnh viện & Chẩn đoán</th>
+              <th className="py-3.5 px-4 min-w-[165px] text-right whitespace-nowrap">Số tiền yêu cầu / Duyệt</th>
+              <th className="py-3.5 px-4 min-w-[135px] text-center whitespace-nowrap">Chứng từ</th>
+              <th className="py-3.5 px-4 min-w-[160px] text-center whitespace-nowrap">Trạng thái</th>
               <th className="py-3.5 px-4 min-w-[130px] text-center whitespace-nowrap">Thao tác</th>
             </tr>
           </thead>
@@ -83,13 +84,13 @@ export const ClaimTableView: React.FC<ClaimTableViewProps> = ({
                   {/* Khách hàng & Số HĐ */}
                   <td className="py-3.5 px-4 whitespace-nowrap">
                     <div className="font-bold text-slate-900 whitespace-nowrap">{claim.customerName}</div>
-                    <div className="text-[11px] text-slate-500 font-mono flex items-center gap-1 mt-0.5 whitespace-nowrap">
-                      <span className="text-aia-red font-semibold whitespace-nowrap">{claim.policyNumber}</span>
-                      <span>•</span>
-                      <span className="whitespace-nowrap">{claim.relationship}</span>
+                    <div className="text-[11px] text-slate-500 font-mono flex items-center gap-1.5 mt-0.5 whitespace-nowrap">
+                      <span className="text-aia-red font-semibold whitespace-nowrap font-mono tracking-tight">{claim.policyNumber}</span>
+                      <span className="text-slate-300">•</span>
+                      <span className="inline-block px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded text-[10px] font-sans font-medium whitespace-nowrap">{claim.relationship}</span>
                     </div>
                     {claim.insuredPersonName !== claim.customerName && (
-                      <div className="text-[10px] text-slate-400 italic whitespace-nowrap">
+                      <div className="text-[10px] text-slate-400 italic whitespace-nowrap mt-0.5">
                         NĐBH: {claim.insuredPersonName}
                       </div>
                     )}
@@ -137,28 +138,27 @@ export const ClaimTableView: React.FC<ClaimTableViewProps> = ({
 
                   {/* Trạng thái chứng từ */}
                   <td className="py-3.5 px-4 text-center whitespace-nowrap">
-                    <div
-                      className={`inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${
-                        hasMissing
-                          ? 'bg-amber-50 text-amber-800 border-amber-200'
-                          : 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                      }`}
-                    >
-                      {hasMissing ? (
-                        <AlertCircle className="w-3 h-3 text-amber-600 shrink-0" />
-                      ) : (
-                        <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
-                      )}
-                      <span className="whitespace-nowrap">
-                        {verifiedDocs}/{totalDocs} hợp lệ
-                      </span>
-                    </div>
+                    {verifiedDocs === totalDocs && totalDocs > 0 ? (
+                      <div className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full border whitespace-nowrap bg-emerald-50 text-emerald-800 border-emerald-200 shadow-2xs">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                        <span className="whitespace-nowrap">{verifiedDocs}/{totalDocs} hợp lệ</span>
+                      </div>
+                    ) : hasMissing ? (
+                      <div className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full border whitespace-nowrap bg-amber-50 text-amber-800 border-amber-200 shadow-2xs">
+                        <AlertCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                        <span className="whitespace-nowrap">{verifiedDocs}/{totalDocs} hợp lệ</span>
+                      </div>
+                    ) : (
+                      <div className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full border whitespace-nowrap bg-blue-50 text-blue-800 border-blue-200 shadow-2xs">
+                        <Clock className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                        <span className="whitespace-nowrap">{verifiedDocs}/{totalDocs} đã nộp</span>
+                      </div>
+                    )}
                   </td>
-
                   {/* Trạng thái xử lý */}
                   <td className="py-3.5 px-4 text-center whitespace-nowrap">
                     <span
-                      className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border whitespace-nowrap ${statusCfg.badgeClass}`}
+                      className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full border whitespace-nowrap shadow-2xs shrink-0 ${statusCfg.badgeClass}`}
                     >
                       <span
                         className="w-1.5 h-1.5 rounded-full shrink-0"

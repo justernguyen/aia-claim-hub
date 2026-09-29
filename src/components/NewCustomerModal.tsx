@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 import {
   X,
   UserPlus,
-  ShieldCheck,
   CreditCard,
   Phone,
   MapPin,
-  Calendar,
-  Briefcase,
-  AlertCircle,
+  Sparkles,
 } from 'lucide-react';
 import { Customer, Policy, BillingFrequency } from '../types/crm';
 import { formatNumberInput, parseNumberInput, formatWordsVND } from '../utils/formatters';
-
+import { CustomerAvatar } from './CustomerAvatar';
+import { AvatarPickerModal } from './AvatarPickerModal';
 interface NewCustomerModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -45,7 +43,8 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
   const [occupation, setOccupation] = useState('');
   const [email, setEmail] = useState('');
   const [notes, setNotes] = useState('');
-
+  const [selectedAvatarId, setSelectedAvatarId] = useState<string>('cool-glasses');
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
   // Policy toggle & fields
   const [createPolicyNow, setCreatePolicyNow] = useState(true);
   const [policyId, setPolicyId] = useState(`AIA-${Math.floor(1000000 + Math.random() * 9000000)}`);
@@ -89,6 +88,7 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
       occupation: occupation.trim() || 'Khách hàng cá nhân',
       email: email.trim() || undefined,
       notes: notes.trim() || undefined,
+      avatar: selectedAvatarId,
     };
 
     let policyData: Policy | undefined = undefined;
@@ -163,6 +163,37 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
               <span className="w-2 h-2 rounded-full bg-aia-red" />
               <span>1. Thông tin Cá nhân Khách hàng</span>
             </h4>
+
+            {/* Avatar Selection Card */}
+            <div className="flex items-center gap-4 p-3 bg-slate-50 rounded-2xl border border-slate-200/80">
+              <CustomerAvatar
+                avatarId={selectedAvatarId}
+                name={name || 'Khách hàng'}
+                size="lg"
+                editable
+                showBadge
+                onClick={() => setIsPickerOpen(true)}
+              />
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-slate-800">Avatar khách hàng</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-rose-50 text-aia-red font-semibold border border-rose-200">
+                    50 mẫu vui nhộn
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-500 mt-0.5">
+                  Chọn biểu cảm 3D, nghề nghiệp hoặc linh vật may mắn cho khách hàng.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setIsPickerOpen(true)}
+                  className="mt-1 text-xs font-bold text-aia-red hover:underline inline-flex items-center gap-1 cursor-pointer"
+                >
+                  <Sparkles className="w-3 h-3" />
+                  <span>Chọn mẫu avatar (~50 mẫu) &rarr;</span>
+                </button>
+              </div>
+            </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div>
@@ -433,6 +464,15 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
           </div>
         </form>
       </div>
+
+      {/* Avatar Picker Modal */}
+      <AvatarPickerModal
+        isOpen={isPickerOpen}
+        onClose={() => setIsPickerOpen(false)}
+        currentAvatarId={selectedAvatarId}
+        customer={name ? ({ id: 'NEW', name, gender } as Customer) : null}
+        onSelectAvatar={(id) => setSelectedAvatarId(id)}
+      />
     </div>
   );
 };

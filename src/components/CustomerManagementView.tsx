@@ -18,6 +18,7 @@ import { CustomerTableView } from './CustomerTableView';
 import { CustomerDetailDrawer } from './CustomerDetailDrawer';
 import { NewCustomerModal } from './NewCustomerModal';
 import { formatCurrencyVND } from '../utils/formatters';
+import { AvatarPickerModal } from './AvatarPickerModal';
 
 interface CustomerManagementViewProps {
   customers: Customer[];
@@ -25,6 +26,7 @@ interface CustomerManagementViewProps {
   claims: ClaimItem[];
   careActivities: CareActivity[];
   onAddCustomer: (customer: Omit<Customer, 'id' | 'createdAt'>, initialPolicy?: Policy) => void;
+  onUpdateCustomer?: (id: string, updates: Partial<Customer>) => void;
   onDeleteCustomer: (id: string) => void;
   onAddCareActivity: (activity: Omit<CareActivity, 'id' | 'createdAt'>) => void;
   onSelectClaim?: (claimId: string) => void;
@@ -39,6 +41,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
   claims,
   careActivities,
   onAddCustomer,
+  onUpdateCustomer,
   onDeleteCustomer,
   onAddCareActivity,
   onSelectClaim,
@@ -53,8 +56,8 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
 
   // Selected customer for detail drawer
   const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
-
-  // Derived filtered customers
+  // Customer currently being edited for avatar
+  const [editingAvatarCustomer, setEditingAvatarCustomer] = useState<Customer | null>(null);
   const filteredCustomers = useMemo(() => {
     return customers.filter((cust) => {
       // 1. Text search
@@ -117,10 +120,10 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
         <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between">
           <div>
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">HĐ Đang Hiệu Lực</p>
-            <p className="text-2xl font-extrabold text-emerald-600 mt-1 font-mono">{inForceCount}</p>
+            <p className="text-2xl font-extrabold text-slate-900 mt-1 font-mono">{inForceCount}</p>
             <p className="text-[11px] text-slate-400 mt-0.5">Trên tổng số {policies.length} HĐ</p>
           </div>
-          <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <div className="w-11 h-11 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center">
             <ShieldCheck className="w-5 h-5" />
           </div>
         </div>
@@ -129,10 +132,10 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
         <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between">
           <div>
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Chờ nộp phí (Gia hạn)</p>
-            <p className="text-2xl font-extrabold text-amber-600 mt-1 font-mono">{pendingCount}</p>
-            <p className="text-[11px] text-amber-600/90 font-medium mt-0.5">Cần nhắc phí tránh mất hiệu lực</p>
+            <p className="text-2xl font-extrabold text-slate-900 mt-1 font-mono">{pendingCount}</p>
+            <p className="text-[11px] text-aia-red font-medium mt-0.5">Cần nhắc phí tránh mất hiệu lực</p>
           </div>
-          <div className="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+          <div className="w-11 h-11 rounded-xl bg-rose-50 text-aia-red flex items-center justify-center">
             <TrendingUp className="w-5 h-5" />
           </div>
         </div>
@@ -146,7 +149,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
             </p>
             <p className="text-[11px] text-slate-400 mt-0.5">Phí bảo hiểm thường niên</p>
           </div>
-          <div className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+          <div className="w-11 h-11 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center">
             <Coins className="w-5 h-5" />
           </div>
         </div>
@@ -184,7 +187,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
             onClick={() => setStatusFilter('in_force')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
               statusFilter === 'in_force'
-                ? 'bg-emerald-600 text-white'
+                ? 'bg-slate-900 text-white'
                 : 'text-slate-600 hover:bg-slate-100'
             }`}
           >
@@ -195,7 +198,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
             onClick={() => setStatusFilter('pending_payment')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
               statusFilter === 'pending_payment'
-                ? 'bg-amber-600 text-white'
+                ? 'bg-aia-red text-white'
                 : 'text-slate-600 hover:bg-slate-100'
             }`}
           >
@@ -231,7 +234,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
           <button
             type="button"
             onClick={() => setIsImportModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-xs transition-colors shrink-0"
+            className="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold shadow-xs transition-colors shrink-0"
             title="Nhập hàng loạt khách hàng từ Excel hoặc file CSV"
           >
             <FileSpreadsheet className="w-3.5 h-3.5" />
@@ -267,6 +270,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
               policies={policies}
               claims={claims}
               onSelect={(c) => setSelectedCustomerId(c.id)}
+              onChangeAvatar={(c) => setEditingAvatarCustomer(c)}
             />
           ))}
         </div>
@@ -276,6 +280,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
           policies={policies}
           claims={claims}
           onSelect={(c) => setSelectedCustomerId(c.id)}
+          onChangeAvatar={(c) => setEditingAvatarCustomer(c)}
         />
       )}
 
@@ -290,8 +295,8 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
         onSelectClaim={onSelectClaim}
         onAddCareActivity={onAddCareActivity}
         onDeleteCustomer={onDeleteCustomer}
+        onChangeAvatar={(c) => setEditingAvatarCustomer(c)}
       />
-
       {/* New Customer Modal */}
       <NewCustomerModal
         isOpen={isCreateModalOpen}
@@ -304,6 +309,22 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
         isOpen={isImportModalOpen}
         onClose={() => setIsImportModalOpen(false)}
         onImport={(importedCusts, importedPols) => onBulkImport?.(importedCusts, importedPols)}
+      />
+
+      {/* Avatar Picker Modal */}
+      <AvatarPickerModal
+        isOpen={Boolean(editingAvatarCustomer)}
+        onClose={() => setEditingAvatarCustomer(null)}
+        customer={editingAvatarCustomer}
+        currentAvatarId={editingAvatarCustomer?.avatar}
+        onSelectAvatar={(avatarId) => {
+          if (editingAvatarCustomer && onUpdateCustomer) {
+            onUpdateCustomer(editingAvatarCustomer.id, { avatar: avatarId });
+            setEditingAvatarCustomer((prev) =>
+              prev ? { ...prev, avatar: avatarId } : null
+            );
+          }
+        }}
       />
     </div>
   );

@@ -165,11 +165,11 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
                 <div className="flex items-center gap-1.5 mt-0.5">
                   <img
                     src="/avatar-consultant.png"
-                    alt="Dương Như Ý"
+                    alt="Dương Thị Như Ý"
                     className="w-4 h-4 rounded-full object-cover border border-slate-200"
                   />
                   <p className="text-xs text-slate-500 font-medium">
-                    Tư vấn viên: <strong className="text-slate-700">Dương Như Ý</strong> (AIA-VN-8869)
+                    Tư vấn viên: <strong className="text-slate-700">Dương Thị Như Ý</strong> (000850386)
                   </p>
                 </div>
               </div>

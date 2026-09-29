@@ -11,13 +11,15 @@ import {
 } from 'lucide-react';
 import { Customer, Policy, POLICY_STATUS_CONFIG } from '../types/crm';
 import { ClaimItem } from '../types/claim';
-import { formatCurrencyVND } from '../utils/formatters';
+import { formatCurrencyVND, formatCCCD, formatCompactVND } from '../utils/formatters';
+import { CustomerAvatar } from './CustomerAvatar';
 
 interface CustomerCardProps {
   customer: Customer;
   policies: Policy[];
   claims: ClaimItem[];
   onSelect: (customer: Customer) => void;
+  onChangeAvatar?: (customer: Customer) => void;
 }
 
 export const CustomerCard: React.FC<CustomerCardProps> = ({
@@ -25,10 +27,16 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
   policies,
   claims,
   onSelect,
+  onChangeAvatar,
 }) => {
   const customerPolicies = policies.filter((p) => p.customerId === customer.id);
-  const customerClaims = claims.filter((c) => c.customerId === customer.id || c.customerName === customer.name);
-
+  const customerClaims = claims.filter(
+    (c) =>
+      (c.customerId === customer.id && (!c.customerName || c.customerName === customer.name)) ||
+      c.customerName === customer.name ||
+      (c.customerCccd && c.customerCccd === customer.cccd) ||
+      (c.policyNumber && customerPolicies.some((p) => p.id === c.policyNumber))
+  );
   // Main policy & primary medical benefit
   const primaryPolicy = customerPolicies[0];
   const medicalBenefit = primaryPolicy?.benefits.find((b) => b.type === 'medical_expense') || primaryPolicy?.benefits[0];
@@ -50,9 +58,21 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
         {/* Top Header: Avatar + Name + Status */}
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-slate-800 to-slate-700 text-white font-bold flex items-center justify-center text-sm shadow-xs group-hover:scale-105 transition-transform">
-              {customer.name.split(' ').slice(-1)[0][0]}
-            </div>
+            <CustomerAvatar
+              avatarId={customer.avatar}
+              name={customer.name}
+              customerId={customer.id}
+              size="md"
+              editable={Boolean(onChangeAvatar)}
+              onClick={
+                onChangeAvatar
+                  ? (e) => {
+                      e.stopPropagation();
+                      onChangeAvatar(customer);
+                    }
+                  : undefined
+              }
+            />
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-base font-bold text-slate-900 group-hover:text-aia-red transition-colors">
@@ -92,7 +112,7 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
           </div>
           <div className="flex items-center gap-1.5 truncate">
             <CreditCard className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-            <span className="font-mono truncate">{customer.cccd}</span>
+            <span className="font-mono tracking-tight font-medium truncate">{formatCCCD(customer.cccd)}</span>
           </div>
           <div className="flex items-center gap-1.5 col-span-2 truncate">
             <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
@@ -109,22 +129,29 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
               <span className="text-[11px] text-slate-400">({primaryPolicy.id})</span>
             )}
           </div>
-          <div className="font-bold text-slate-900 font-mono">
-            {formatCurrencyVND(totalPremium)}/năm
+          <div className="font-mono">
+            <span className="font-bold text-slate-900 text-[13px]">{formatCurrencyVND(totalPremium)}</span>
+            <span className="text-[11px] text-slate-500 font-normal">/năm</span>
           </div>
         </div>
 
         {/* Medical Card Benefit Quota Progress */}
         {medicalBenefit && (
-          <div className="mt-4 pt-3.5 border-t border-slate-100">
+          <div className="mt-4 pt-3 border-t border-slate-100">
             <div className="flex items-center justify-between text-xs mb-1.5">
-              <span className="flex items-center gap-1 text-slate-600 font-medium">
-                <HeartPulse className="w-3.5 h-3.5 text-rose-500" />
-                <span className="truncate max-w-[170px]" title={medicalBenefit.name}>
+              <span className="flex items-center gap-1.5 text-slate-700 font-medium truncate max-w-[190px]">
+                <HeartPulse className="w-3.5 h-3.5 text-aia-red shrink-0" />
+                <span className="truncate" title={medicalBenefit.name}>
                   {medicalBenefit.name}
                 </span>
               </span>
-              <span className="font-bold font-mono text-[11px] text-slate-700">
+              <span className={`font-bold font-mono text-[10px] px-1.5 py-0.5 rounded shrink-0 ${
+                usedPercentage > 80
+                  ? 'bg-rose-50 text-aia-red border border-rose-200'
+                  : usedPercentage > 0
+                  ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                  : 'bg-slate-100 text-slate-600'
+              }`}>
                 {usedPercentage}% đã dùng
               </span>
             </div>
@@ -133,29 +160,35 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
             <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
-                  usedPercentage > 80
-                    ? 'bg-rose-500'
-                    : usedPercentage > 40
-                    ? 'bg-amber-500'
-                    : 'bg-emerald-500'
+                  usedPercentage > 80 ? 'bg-aia-red' : usedPercentage > 40 ? 'bg-amber-500' : 'bg-emerald-600'
                 }`}
                 style={{ width: `${usedPercentage}%` }}
               />
             </div>
 
-            <div className="flex items-center justify-between text-[11px] text-slate-400 mt-1 font-mono">
-              <span>Đã bồi thường: {formatCurrencyVND(usedAmount)}</span>
-              <span className="font-semibold text-slate-700">
-                Còn: {formatCurrencyVND(remainingLimit)}
-              </span>
+            {/* Benefit numbers breakdown: Đã dùng, Còn lại & Hạn mức */}
+            <div className="mt-2 grid grid-cols-2 gap-2 text-[11px] bg-slate-50/80 p-2.5 rounded-xl border border-slate-100">
+              <div>
+                <span className="text-slate-400 block text-[10px] font-medium leading-none mb-1">Đã bồi thường</span>
+                <span className="font-bold font-mono text-slate-800 text-xs">
+                  {formatCurrencyVND(usedAmount)}
+                </span>
+              </div>
+              <div className="text-right">
+                <span className="text-slate-400 block text-[10px] font-medium leading-none mb-1">
+                  Còn lại <span className="text-slate-500 font-normal">/ {formatCompactVND(maxLimit)}</span>
+                </span>
+                <span className="font-bold font-mono text-emerald-700 text-xs">
+                  {formatCurrencyVND(remainingLimit)}
+                </span>
+              </div>
             </div>
           </div>
         )}
-
         {/* Warning if pending payment or grace period */}
         {primaryPolicy?.status === 'pending_payment' && primaryPolicy.gracePeriodEnd && (
-          <div className="mt-3 px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-200/80 text-[11px] text-amber-800 flex items-center gap-1.5 font-medium">
-            <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+          <div className="mt-3 px-3 py-1.5 rounded-lg bg-rose-50 border border-rose-200/80 text-[11px] text-aia-red flex items-center gap-1.5 font-medium">
+            <AlertTriangle className="w-3.5 h-3.5 text-aia-red shrink-0" />
             <span className="truncate">
               Gia hạn nộp phí đến {primaryPolicy.gracePeriodEnd}
             </span>
@@ -165,9 +198,11 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
 
       {/* Footer: Claim count + Action link */}
       <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-        <div className="flex items-center gap-1.5 text-slate-500">
+        <div className="flex items-center gap-1.5">
           <Receipt className="w-3.5 h-3.5 text-slate-400" />
-          <span>{customerClaims.length} hồ sơ claim</span>
+          <span className={customerClaims.length > 0 ? 'text-slate-700 font-medium' : 'text-slate-400'}>
+            {customerClaims.length} hồ sơ claim
+          </span>
         </div>
         <div className="flex items-center gap-1 text-aia-red font-semibold group-hover:translate-x-0.5 transition-transform">
           <span>Xem chi tiết</span>

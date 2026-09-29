@@ -20,6 +20,7 @@ import {
   INITIAL_CARE_ACTIVITIES,
 } from '../data/mockCRM';
 import { INITIAL_CLAIMS, CURRENT_CONSULTANT } from '../data/mockClaims';
+import { LEGACY_AVATAR_MAP } from '../data/avatarCatalog';
 
 const STORAGE_KEY = 'aia_agent_crm_store_v2';
 
@@ -35,10 +36,13 @@ interface StoredCRMData {
 const prepareInitialClaims = (): ClaimItem[] => {
   return INITIAL_CLAIMS.map((c) => {
     const matchedPolicy = INITIAL_POLICIES.find((p) => p.id === c.policyNumber);
+    const matchedCust = matchedPolicy
+      ? INITIAL_CUSTOMERS.find((cust) => cust.id === matchedPolicy.customerId)
+      : INITIAL_CUSTOMERS.find((cust) => cust.name === c.customerName || cust.cccd === c.customerCccd);
     return {
       ...c,
-      customerId: matchedPolicy ? matchedPolicy.customerId : 'CUST-001',
-      policyId: c.policyNumber,
+      customerId: matchedCust ? matchedCust.id : undefined,
+      policyId: matchedPolicy ? matchedPolicy.id : c.policyNumber,
     };
   });
 };
@@ -51,15 +55,45 @@ export const useCRMStore = () => {
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed.customers && parsed.policies && parsed.claims && parsed.careActivities) {
+          const customers = parsed.customers.map((c: Customer) => {
+            let avatar = c.avatar ? (LEGACY_AVATAR_MAP[c.avatar] || c.avatar) : undefined;
+            if (!avatar) {
+              const initialMatch = INITIAL_CUSTOMERS.find((init) => init.id === c.id);
+              if (initialMatch?.avatar) {
+                avatar = initialMatch.avatar;
+              }
+            }
+            return { ...c, avatar };
+          });
+          // Sanitize claims: clean up any legacy claims mistakenly defaulted to CUST-001
+          const policies = parsed.policies as Policy[];
+          const claims = (parsed.claims as ClaimItem[]).map((c) => {
+            if (c.customerId === 'CUST-001') {
+              const belongsToMaiAnh =
+                c.customerName === 'Nguyễn Thị Mai Anh' ||
+                c.customerCccd === '079198002341' ||
+                policies.some((p) => p.customerId === 'CUST-001' && p.id === c.policyNumber);
+              if (!belongsToMaiAnh) {
+                const actualPolicy = policies.find((p) => p.id === c.policyNumber);
+                const actualCust = actualPolicy
+                  ? customers.find((cust: Customer) => cust.id === actualPolicy.customerId)
+                  : customers.find((cust: Customer) => cust.name === c.customerName || cust.cccd === c.customerCccd);
+              }
+            }
+            return c;
+          });
           const consultant = {
             ...CURRENT_CONSULTANT,
             ...(parsed.consultant || {}),
+            name: CURRENT_CONSULTANT.name,
+            code: CURRENT_CONSULTANT.code,
+            agency: CURRENT_CONSULTANT.agency,
             avatarUrl:
               parsed.consultant?.avatarUrl && !parsed.consultant.avatarUrl.includes('unsplash.com')
                 ? parsed.consultant.avatarUrl
                 : CURRENT_CONSULTANT.avatarUrl,
           };
-          return { ...parsed, consultant };
+          return { ...parsed, customers, policies, claims, consultant };
         }
       }
     } catch (e) {
@@ -563,7 +597,14 @@ export const useCRMStore = () => {
       claims: prev.claims.map((claim) => {
         if (claim.id !== claimId) return claim;
         const updatedDocs = claim.documents.map((d) =>
-          d.id === docId ? { ...d, status: docStatus, updatedAt: new Date().toISOString().split('T')[0] } : d
+          d.id === docId
+            ? {
+                ...d,
+                status: docStatus,
+                note: note !== undefined ? (note.trim() ? note.trim() : undefined) : d.note,
+                updatedAt: new Date().toISOString().split('T')[0],
+              }
+            : d
         );
         const docName = claim.documents.find((d) => d.id === docId)?.name || 'chứng từ';
         const newEvent = {

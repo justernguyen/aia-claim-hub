@@ -13,6 +13,7 @@ export const INITIAL_CUSTOMERS: Customer[] = [
     email: 'maianh.nguyen@gmail.com',
     notes: 'Khách hàng VIP, tham gia 2 hợp đồng cho cả gia đình. Quan tâm thẻ chăm sóc sức khỏe toàn cầu.',
     createdAt: '2025-03-15',
+    avatar: 'exec-woman-blazer',
   },
   {
     id: 'CUST-002',
@@ -26,6 +27,7 @@ export const INITIAL_CUSTOMERS: Customer[] = [
     email: 'nam.tran@techcorp.vn',
     notes: 'Quan tâm tích lũy hưu trí và bảo vệ bệnh hiểm nghèo nhiều giai đoạn.',
     createdAt: '2025-06-20',
+    avatar: 'corporate-director',
   },
   {
     id: 'CUST-003',
@@ -39,6 +41,7 @@ export const INITIAL_CUSTOMERS: Customer[] = [
     email: 'hung.le@hungphatbuild.com',
     notes: 'Doanh nhân, hợp đồng mệnh giá cao 2 tỷ. Đang trong kỳ gia hạn đóng phí 60 ngày.',
     createdAt: '2024-08-10',
+    avatar: 'business-owner',
   },
   {
     id: 'CUST-004',
@@ -52,6 +55,7 @@ export const INITIAL_CUSTOMERS: Customer[] = [
     email: 'bichngoc.design@gmail.com',
     notes: 'Khách hàng vừa được AIA chi trả viện phí 14.2 triệu tại BV FV. Cần gọi chăm sóc sau claim.',
     createdAt: '2025-11-05',
+    avatar: 'medical-specialist',
   },
   {
     id: 'CUST-005',
@@ -65,6 +69,7 @@ export const INITIAL_CUSTOMERS: Customer[] = [
     email: 'trong.vudinh@finadvisory.vn',
     notes: 'Tham gia gói AIA Khỏe Toàn Diện cho bản thân và con trai 5 tuổi.',
     createdAt: '2026-01-18',
+    avatar: 'finance-analyst',
   },
   {
     id: 'CUST-006',
@@ -78,6 +83,7 @@ export const INITIAL_CUSTOMERS: Customer[] = [
     email: 'huong.dang@boutique.vn',
     notes: 'Đã hoàn tất bồi thường tai nạn rạn cổ tay 8.5 triệu. Muốn tìm hiểu thêm gói hưu trí cho bố mẹ.',
     createdAt: '2026-04-12',
+    avatar: 'academic-scholar',
   },
   {
     id: 'CUST-007',
@@ -91,6 +97,7 @@ export const INITIAL_CUSTOMERS: Customer[] = [
     email: 'minhtuan.dr@gmail.com',
     notes: 'Hồ sơ bồi thường điều trị viêm phế quản bị từ chối do nằm ngoài danh mục. Cần giải thích cặn kẽ quy tắc điều khoản.',
     createdAt: '2026-05-25',
+    avatar: 'doctor-surgeon',
   },
   {
     id: 'CUST-008',
@@ -104,6 +111,7 @@ export const INITIAL_CUSTOMERS: Customer[] = [
     email: 'thaolinh.creative@gmail.com',
     notes: 'Khách hàng trẻ tiềm năng. Hợp đồng vừa phát hành, quan tâm bảo lãnh viện phí ngoại trú.',
     createdAt: '2026-09-02',
+    avatar: 'exec-woman-glasses',
   },
   {
     id: 'CUST-009',
@@ -117,6 +125,7 @@ export const INITIAL_CUSTOMERS: Customer[] = [
     email: 'bao.do@translog.com.vn',
     notes: 'Hợp đồng mới ký trong tháng 9/2026. Phí năm đầu 48 triệu.',
     createdAt: '2026-09-18',
+    avatar: 'trade-executive',
   },
   {
     id: 'CUST-010',
@@ -130,6 +139,7 @@ export const INITIAL_CUSTOMERS: Customer[] = [
     email: 'thuha.hr@corp.vn',
     notes: 'Đang cân nhắc nộp phí tái tục năm 2. Hẹn cafe tư vấn quyền lợi bổ sung.',
     createdAt: '2025-08-30',
+    avatar: 'legal-counsel',
   },
 ];
 

@@ -8,22 +8,22 @@ export const POLICY_STATUS_CONFIG: Record<
 > = {
   in_force: {
     label: 'Đang hiệu lực',
-    badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    dotColor: 'bg-emerald-500',
+    badgeClass: 'bg-slate-100 text-slate-800 border-slate-200',
+    dotColor: 'bg-slate-700',
   },
   pending_payment: {
     label: 'Chờ nộp phí',
-    badgeClass: 'bg-amber-50 text-amber-700 border-amber-200',
-    dotColor: 'bg-amber-500',
+    badgeClass: 'bg-rose-50 text-aia-red border-rose-200 font-semibold',
+    dotColor: 'bg-aia-red',
   },
   lapsed: {
     label: 'Mất hiệu lực',
-    badgeClass: 'bg-rose-50 text-rose-700 border-rose-200',
-    dotColor: 'bg-rose-500',
+    badgeClass: 'bg-slate-100 text-slate-500 border-slate-200',
+    dotColor: 'bg-slate-400',
   },
   surrendered: {
     label: 'Đã hủy/Đáo hạn',
-    badgeClass: 'bg-slate-100 text-slate-700 border-slate-200',
+    badgeClass: 'bg-slate-100 text-slate-500 border-slate-200',
     dotColor: 'bg-slate-400',
   },
 };
@@ -57,6 +57,9 @@ export interface Policy {
   premiumAmount: number; // Phí định kỳ (VND)
   nextDueDate: string; // Ngày đến hạn nộp phí tiếp theo
   gracePeriodEnd?: string; // Ngày hết hạn gia hạn 60 ngày
+  insuredPersonName?: string; // Người được bảo hiểm
+  segment?: string; // Phân khúc khách hàng: Fansipan, Everest...
+  notes?: string;
   benefits: BenefitQuota[];
 }
 
@@ -70,8 +73,10 @@ export interface Customer {
   address: string;
   occupation: string;
   email?: string;
+  segment?: string; // Phân khúc khách hàng AIA: Fansipan, Everest...
   notes?: string;
   createdAt: string;
+  avatar?: string; // Avatar ID or custom identifier
 }
 
 export type CareChannel =

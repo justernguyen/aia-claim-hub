@@ -7,13 +7,15 @@ import {
 } from 'lucide-react';
 import { Customer, Policy, POLICY_STATUS_CONFIG } from '../types/crm';
 import { ClaimItem } from '../types/claim';
-import { formatCurrencyVND } from '../utils/formatters';
+import { formatCurrencyVND, formatCCCD } from '../utils/formatters';
+import { CustomerAvatar } from './CustomerAvatar';
 
 interface CustomerTableViewProps {
   customers: Customer[];
   policies: Policy[];
   claims: ClaimItem[];
   onSelect: (customer: Customer) => void;
+  onChangeAvatar?: (customer: Customer) => void;
 }
 
 export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
@@ -21,6 +23,7 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
   policies,
   claims,
   onSelect,
+  onChangeAvatar,
 }) => {
   return (
     <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
@@ -41,7 +44,13 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
           <tbody className="divide-y divide-slate-100">
             {customers.map((cust) => {
               const custPolicies = policies.filter((p) => p.customerId === cust.id);
-              const custClaims = claims.filter((c) => c.customerId === cust.id || c.customerName === cust.name);
+              const custClaims = claims.filter(
+                (c) =>
+                  (c.customerId === cust.id && (!c.customerName || c.customerName === cust.name)) ||
+                  c.customerName === cust.name ||
+                  (c.customerCccd && c.customerCccd === cust.cccd) ||
+                  (c.policyNumber && custPolicies.some((p) => p.id === c.policyNumber))
+              );
               const primaryPol = custPolicies[0];
               const medicalBenefit = primaryPol?.benefits.find((b) => b.type === 'medical_expense') || primaryPol?.benefits[0];
               const totalPremium = custPolicies.reduce((sum, p) => sum + p.premiumAmount, 0);
@@ -60,16 +69,28 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
                   {/* Khách hàng */}
                   <td className="py-3.5 px-4 whitespace-nowrap">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-lg bg-slate-800 text-white font-bold flex items-center justify-center text-xs shrink-0">
-                        {cust.name.split(' ').slice(-1)[0][0]}
-                      </div>
+                      <CustomerAvatar
+                        avatarId={cust.avatar}
+                        name={cust.name}
+                        customerId={cust.id}
+                        size="sm"
+                        editable={Boolean(onChangeAvatar)}
+                        onClick={
+                          onChangeAvatar
+                            ? (e) => {
+                                e.stopPropagation();
+                                onChangeAvatar(cust);
+                              }
+                            : undefined
+                        }
+                      />
                       <div>
                         <div className="font-bold text-slate-900 group-hover:text-aia-red transition-colors flex items-center gap-1.5 whitespace-nowrap">
                           <span>{cust.name}</span>
                           <span className="text-[10px] text-slate-400 font-normal">({cust.gender})</span>
                         </div>
                         <div className="text-[11px] text-slate-400 font-mono whitespace-nowrap">
-                          CCCD: {cust.cccd}
+                          CCCD: {formatCCCD(cust.cccd)}
                         </div>
                       </div>
                     </div>
@@ -137,7 +158,7 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
                       <div>
                         <div className="flex items-center justify-between text-[11px] mb-1 gap-2 whitespace-nowrap">
                           <span className="text-slate-500 font-medium flex items-center gap-1 shrink-0">
-                            <HeartPulse className="w-3 h-3 text-rose-500 shrink-0" />
+                            <HeartPulse className="w-3 h-3 text-aia-red shrink-0" />
                             <span>{pct}% đã dùng</span>
                           </span>
                           <span className="font-mono text-slate-700 font-bold shrink-0">
@@ -147,7 +168,7 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
                         <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
                           <div
                             className={`h-full rounded-full ${
-                              pct > 80 ? 'bg-rose-500' : pct > 40 ? 'bg-amber-500' : 'bg-emerald-500'
+                              pct > 80 ? 'bg-aia-red' : 'bg-slate-700'
                             }`}
                             style={{ width: `${pct}%` }}
                           />

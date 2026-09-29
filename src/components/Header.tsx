@@ -82,14 +82,14 @@ export const Header: React.FC<HeaderProps> = ({
       label: 'Hồ sơ Bồi thường',
       icon: ShieldAlert,
       badge: pendingClaimsCount > 0 ? pendingClaimsCount : undefined,
-      badgeColor: 'bg-rose-500 text-white',
+      badgeColor: 'bg-aia-red text-white',
     },
     {
       id: 'care',
       label: 'Lịch chăm sóc & Sự kiện',
       icon: CalendarCheck,
       badge: urgentAlertsCount > 0 ? urgentAlertsCount : undefined,
-      badgeColor: 'bg-amber-500 text-white',
+      badgeColor: 'bg-slate-800 text-white',
     },
     {
       id: 'analytics',
@@ -104,61 +104,63 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Top bar: Brand + Consultant Info + Quick Actions */}
         <div className="flex items-center justify-between h-18 border-b border-slate-100">
           {/* Left: AIA Brand & System Title */}
-          <div className="flex items-center gap-3 sm:gap-4">
-            <AiaLogo variant="full" size="md" className="h-9 sm:h-10" />
+          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+            <AiaLogo variant="full" size="md" className="h-9 sm:h-10 shrink-0" />
             <div className="border-l border-slate-200 pl-3 sm:pl-3.5">
               <div className="flex items-center gap-2">
-                <h1 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-tight">
+                <h1 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-tight whitespace-nowrap">
                   AIA Agent CRM & Claim Hub
                 </h1>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-aia-red border border-rose-200/80 uppercase tracking-wide hidden xs:inline-block">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-aia-red border border-rose-200/80 uppercase tracking-wide hidden xs:inline-block whitespace-nowrap">
                   MDRT Portal
                 </span>
               </div>
-              <p className="text-xs text-slate-500 font-medium hidden sm:block mt-0.5">
+              <p className="text-xs text-slate-500 font-medium hidden sm:block mt-0.5 truncate max-w-[220px] xl:max-w-[280px] 2xl:max-w-none">
                 Quản lý Khách hàng, Hợp đồng, Bồi thường & Chăm sóc Khách hàng
               </p>
             </div>
           </div>
 
           {/* Center: Consultant Profile Card */}
-          <div className="hidden lg:flex items-center gap-3 bg-slate-50/90 border border-slate-200/80 rounded-xl px-3 py-1.5 shadow-2xs hover:bg-slate-50 transition-colors">
+          <div className="hidden lg:flex items-center gap-2.5 bg-slate-50/90 border border-slate-200/80 rounded-xl px-2.5 py-1.2 shadow-2xs hover:bg-slate-50 transition-colors shrink-0 whitespace-nowrap">
             <div className="relative flex-shrink-0">
               {consultant.avatarUrl && !avatarError ? (
                 <img
                   src={consultant.avatarUrl}
                   alt={consultant.name}
                   onError={() => setAvatarError(true)}
-                  className="w-10 h-10 rounded-full object-cover shadow-xs border-2 border-white ring-1 ring-slate-200"
+                  className="w-9 h-9 rounded-full object-cover shadow-xs border-2 border-white ring-1 ring-slate-200 shrink-0"
                 />
               ) : (
-                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-aia-red to-rose-400 text-white font-bold flex items-center justify-center text-sm shadow-xs border-2 border-white">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-aia-red to-rose-400 text-white font-bold flex items-center justify-center text-xs shadow-xs border-2 border-white shrink-0">
                   Ý
                 </div>
               )}
-              <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full" title="Đang trực tuyến" />
+              <span className="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 border-2 border-white rounded-full" title="Đang trực tuyến" />
             </div>
-            <div className="text-left text-xs">
-              <div className="flex items-center gap-1.5 font-bold text-slate-900">
-                <span>{consultant.name}</span>
-                <span className="text-[9px] bg-amber-100 text-amber-900 font-semibold px-1.5 py-0.2 rounded">MDRT</span>
-              </div>
-              <div className="flex items-center gap-2 text-slate-500 text-[11px] mt-0.5">
-                <span className="flex items-center gap-0.5">
-                  <ShieldCheck className="w-3 h-3 text-aia-red" />
-                  {consultant.code}
+            <div className="text-left whitespace-nowrap shrink-0">
+              <div className="flex items-center gap-1.5 leading-none">
+                <span className="text-xs font-bold text-slate-900 whitespace-nowrap">{consultant.name}</span>
+                <span className="text-[9px] bg-amber-50 text-amber-800 border border-amber-300 font-extrabold px-1.5 py-0.2 rounded shadow-2xs whitespace-nowrap shrink-0">
+                  MDRT
                 </span>
-                <span>•</span>
-                <span className="flex items-center gap-0.5" title={consultant.office}>
-                  <Building className="w-3 h-3 text-slate-400" />
-                  {consultant.agency}
+              </div>
+              <div className="flex items-center gap-1.5 text-slate-500 text-[10.5px] mt-1 whitespace-nowrap shrink-0 leading-none">
+                <span className="flex items-center gap-0.5 font-mono text-slate-600 whitespace-nowrap shrink-0">
+                  <ShieldCheck className="w-3 h-3 text-aia-red shrink-0" />
+                  <span className="whitespace-nowrap">{consultant.code.replace(/-/g, '\u2011')}</span>
+                </span>
+                <span className="text-slate-300">•</span>
+                <span className="flex items-center gap-0.5 whitespace-nowrap shrink-0" title={consultant.office || consultant.agency}>
+                  <Building className="w-3 h-3 text-slate-400 shrink-0" />
+                  <span className="whitespace-nowrap">{consultant.agency}</span>
                 </span>
               </div>
             </div>
           </div>
 
           {/* Right: Data Tools + Primary Action Dropdown */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             {/* Mobile Consultant Avatar */}
             <div
               className="relative flex lg:hidden items-center flex-shrink-0 mr-1"
@@ -187,33 +189,33 @@ export const Header: React.FC<HeaderProps> = ({
             />
 
             {/* Quick backup tools */}
-            <div className="hidden md:flex items-center gap-1 border-r border-slate-200 pr-2 mr-1">
+            <div className="hidden md:flex items-center gap-1 border-r border-slate-200 pr-2 mr-1 shrink-0">
               <button
                 type="button"
                 onClick={onExportJSON}
                 title="Sao lưu toàn bộ dữ liệu ra file JSON"
-                className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg text-xs font-medium flex items-center gap-1 transition-colors"
+                className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg text-xs font-medium flex items-center gap-1 transition-colors whitespace-nowrap shrink-0"
               >
-                <FileCode className="w-4 h-4 text-slate-500" />
-                <span className="hidden xl:inline">Xuất JSON</span>
+                <FileCode className="w-4 h-4 text-slate-500 shrink-0" />
+                <span className="hidden xl:inline whitespace-nowrap">Xuất JSON</span>
               </button>
               <button
                 type="button"
                 onClick={onExportCSV}
                 title="Xuất danh bạ và hợp đồng ra file Excel CSV"
-                className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg text-xs font-medium flex items-center gap-1 transition-colors"
+                className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg text-xs font-medium flex items-center gap-1 transition-colors whitespace-nowrap shrink-0"
               >
-                <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
-                <span className="hidden xl:inline">Xuất Excel</span>
+                <FileSpreadsheet className="w-4 h-4 text-slate-500 shrink-0" />
+                <span className="hidden xl:inline whitespace-nowrap">Xuất Excel</span>
               </button>
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 title="Khôi phục dữ liệu từ file backup JSON"
-                className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg text-xs font-medium flex items-center gap-1 transition-colors"
+                className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg text-xs font-medium flex items-center gap-1 transition-colors whitespace-nowrap shrink-0"
               >
-                <Upload className="w-4 h-4 text-blue-600" />
-                <span className="hidden xl:inline">Nhập file</span>
+                <Upload className="w-4 h-4 text-slate-500 shrink-0" />
+                <span className="hidden xl:inline whitespace-nowrap">Nhập file</span>
               </button>
               <button
                 type="button"
@@ -230,15 +232,15 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
 
             {/* Quick Add Dropdown */}
-            <div className="relative">
+            <div className="relative shrink-0">
               <button
                 type="button"
                 onClick={() => setIsAddMenuOpen((prev) => !prev)}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-aia-red hover:bg-aia-red-dark text-white text-xs sm:text-sm font-semibold rounded-xl shadow-xs hover:shadow-md transition-all active:scale-[0.98]"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-aia-red hover:bg-aia-red-dark text-white text-xs sm:text-sm font-semibold rounded-xl shadow-xs hover:shadow-md transition-all active:scale-[0.98] whitespace-nowrap shrink-0 cursor-pointer select-none"
               >
-                <Plus className="w-4 h-4 stroke-[2.5]" />
-                <span>Thêm mới</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isAddMenuOpen ? 'rotate-180' : ''}`} />
+                <Plus className="w-4 h-4 stroke-[2.5] shrink-0" />
+                <span className="whitespace-nowrap">Thêm mới</span>
+                <ChevronDown className={`w-3.5 h-3.5 shrink-0 transition-transform ${isAddMenuOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {isAddMenuOpen && (
