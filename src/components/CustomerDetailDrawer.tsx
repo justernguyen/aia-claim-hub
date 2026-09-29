@@ -37,6 +37,31 @@ interface CustomerDetailDrawerProps {
   onChangeAvatar?: (customer: Customer) => void;
 }
 
+const getBenefitBadge = (type: string) => {
+  switch (type) {
+    case 'medical_expense':
+    case 'inpatient':
+    case 'outpatient':
+      return { label: 'CSSK & Y tế', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' };
+    case 'critical_illness':
+      return { label: 'Bệnh hiểm nghèo', color: 'bg-purple-50 text-purple-700 border-purple-200' };
+    case 'accident':
+    case 'accident_injury':
+      return { label: 'Tai nạn', color: 'bg-amber-50 text-amber-700 border-amber-200' };
+    case 'hospital_cash':
+      return { label: 'Trợ cấp viện phí', color: 'bg-blue-50 text-blue-700 border-blue-200' };
+    case 'dental':
+      return { label: 'Nha khoa', color: 'bg-teal-50 text-teal-700 border-teal-200' };
+    case 'maternity':
+      return { label: 'Thai sản', color: 'bg-rose-50 text-rose-700 border-rose-200' };
+    case 'death':
+    case 'total_permanent_disability':
+      return { label: 'Sinh mạng / TTTBVV', color: 'bg-slate-100 text-slate-700 border-slate-200' };
+    default:
+      return { label: 'Quyền lợi bổ trợ', color: 'bg-slate-100 text-slate-600 border-slate-200' };
+  }
+};
+
 export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
   customer,
   policies,
@@ -535,13 +560,19 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                         <div className="space-y-3">
                           {policy.benefits.map((b, idx) => {
                             const pct = b.maxLimit > 0 ? Math.min(100, Math.round((b.usedAmount / b.maxLimit) * 100)) : 0;
+                            const badge = getBenefitBadge(b.type);
                             return (
                               <div
                                 key={idx}
                                 className="p-3 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition-colors"
                               >
                                 <div className="flex items-center justify-between text-xs mb-1.5 gap-2">
-                                  <span className="font-semibold text-slate-800">{b.name}</span>
+                                  <div className="flex items-center gap-1.5 min-w-0">
+                                    <span className="font-semibold text-slate-800 truncate">{b.name}</span>
+                                    <span className={`text-[10px] font-semibold px-1.5 py-0.2 rounded-md border shrink-0 ${badge.color}`}>
+                                      {badge.label}
+                                    </span>
+                                  </div>
                                   <span className="font-numeric text-slate-500 font-bold whitespace-nowrap shrink-0">
                                     {b.unit === 'days'
                                       ? `${b.usedAmount}/${b.maxLimit} ngày`

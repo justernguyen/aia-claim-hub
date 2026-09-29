@@ -25,37 +25,37 @@ const SIZE_MAP: Record<
   }
 > = {
   xs: {
-    boxClass: 'w-6 h-6 rounded-md',
+    boxClass: 'w-6 h-6 rounded-full',
     textClass: 'text-[10px]',
     badgeClass: 'w-3 h-3 -bottom-0.5 -right-0.5',
     badgeIconClass: 'w-2 h-2',
   },
   sm: {
-    boxClass: 'w-8 h-8 rounded-lg',
+    boxClass: 'w-8 h-8 rounded-full',
     textClass: 'text-xs',
     badgeClass: 'w-3.5 h-3.5 -bottom-0.5 -right-0.5',
     badgeIconClass: 'w-2 h-2',
   },
   md: {
-    boxClass: 'w-11 h-11 rounded-xl',
+    boxClass: 'w-11 h-11 rounded-full',
     textClass: 'text-sm',
     badgeClass: 'w-4 h-4 -bottom-1 -right-1',
     badgeIconClass: 'w-2.5 h-2.5',
   },
   lg: {
-    boxClass: 'w-14 h-14 rounded-2xl',
+    boxClass: 'w-14 h-14 rounded-full',
     textClass: 'text-lg',
     badgeClass: 'w-5 h-5 -bottom-1 -right-1',
     badgeIconClass: 'w-3 h-3',
   },
   xl: {
-    boxClass: 'w-18 h-18 rounded-2xl',
+    boxClass: 'w-16 h-16 rounded-full',
     textClass: 'text-xl',
     badgeClass: 'w-6 h-6 -bottom-1.5 -right-1.5',
     badgeIconClass: 'w-3.5 h-3.5',
   },
   '2xl': {
-    boxClass: 'w-24 h-24 rounded-3xl',
+    boxClass: 'w-24 h-24 rounded-full',
     textClass: 'text-2xl',
     badgeClass: 'w-7 h-7 -bottom-1.5 -right-1.5',
     badgeIconClass: 'w-4 h-4',
@@ -104,15 +104,15 @@ export const CustomerAvatar: React.FC<CustomerAvatarProps> = ({
       } ${className}`}
     >
       {isUploadedImage ? (
-        <div className="w-full h-full rounded-[inherit] overflow-hidden shadow-xs border border-slate-200/80 bg-slate-50 flex items-center justify-center">
-          <img src={avatarId} alt={name} className="w-full h-full object-cover rounded-[inherit]" />
+        <div className="w-full h-full rounded-full overflow-hidden shadow-xs border border-slate-200/80 bg-slate-50 flex items-center justify-center">
+          <img src={avatarId} alt={name} className="w-full h-full object-cover rounded-full" />
         </div>
       ) : avatarItem && avatarId !== 'letter' ? (
-        <div className="w-full h-full rounded-[inherit] overflow-hidden shadow-xs flex items-center justify-center border border-slate-200/60">
+        <div className="w-full h-full rounded-full overflow-hidden shadow-xs flex items-center justify-center border border-slate-200/80 ring-1 ring-black/5">
           <avatarItem.SvgComponent className="w-full h-full" initials={initials} />
         </div>
       ) : (
-        <div className="w-full h-full rounded-[inherit] bg-gradient-to-tr from-sky-100 to-indigo-100 text-sky-900 font-extrabold flex items-center justify-center shadow-xs border border-sky-200">
+        <div className="w-full h-full rounded-full bg-gradient-to-tr from-sky-100 to-indigo-100 text-sky-900 font-extrabold flex items-center justify-center shadow-xs border border-sky-200">
           <span className={sizeConfig.textClass}>{initials}</span>
         </div>
       )}

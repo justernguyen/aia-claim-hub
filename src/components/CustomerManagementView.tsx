@@ -16,7 +16,6 @@ import { ClaimItem } from '../types/claim';
 import { CustomerCard } from './CustomerCard';
 import { CustomerTableView } from './CustomerTableView';
 import { CustomerDetailDrawer } from './CustomerDetailDrawer';
-import { NewCustomerModal } from './NewCustomerModal';
 import { formatCurrencyVND } from '../utils/formatters';
 import { AvatarPickerModal } from './AvatarPickerModal';
 
@@ -305,12 +304,6 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
         onAddCareActivity={onAddCareActivity}
         onDeleteCustomer={onDeleteCustomer}
         onChangeAvatar={(c) => setEditingAvatarCustomer(c)}
-      />
-      {/* New Customer Modal */}
-      <NewCustomerModal
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-        onSubmit={onAddCustomer}
       />
 
       {/* Customer Import Modal */}

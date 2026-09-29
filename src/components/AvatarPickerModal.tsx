@@ -214,7 +214,7 @@ const AvatarPickerContent: React.FC<Omit<AvatarPickerModalProps, 'isOpen'>> = ({
                   </button>
                 </div>
 
-                <div className="grid grid-cols-4 gap-2.5 sm:gap-3.5">
+                <div className="grid grid-cols-4 gap-3 sm:gap-4 p-1">
                   {AVATAR_CATALOG.map((item) => {
                     const isSelected = selectedId === item.id;
                     return (
@@ -222,20 +222,20 @@ const AvatarPickerContent: React.FC<Omit<AvatarPickerModalProps, 'isOpen'>> = ({
                         key={item.id}
                         type="button"
                         onClick={() => setSelectedId(item.id)}
-                        className={`group relative aspect-square rounded-2xl overflow-hidden p-1 transition-all cursor-pointer focus:outline-hidden ${
+                        className={`group relative aspect-square rounded-full transition-all cursor-pointer focus:outline-hidden ${
                           isSelected
-                            ? 'ring-3 ring-aia-red ring-offset-2 scale-105 shadow-md'
-                            : 'border border-slate-200 hover:border-slate-300 hover:shadow-xs hover:scale-102'
+                            ? 'ring-4 ring-aia-red ring-offset-2 scale-105 shadow-md'
+                            : 'border-2 border-slate-100 hover:border-slate-300 hover:shadow-md hover:scale-105'
                         }`}
                         title={item.name}
                       >
-                        <div className="w-full h-full rounded-xl overflow-hidden flex items-center justify-center bg-slate-50">
+                        <div className="w-full h-full rounded-full overflow-hidden flex items-center justify-center shadow-xs">
                           <item.SvgComponent className="w-full h-full transition-transform group-hover:scale-105" />
                         </div>
 
                         {/* Selected Checkmark Badge */}
                         {isSelected && (
-                          <div className="absolute top-1 right-1 w-4 h-4 rounded-full bg-aia-red text-white flex items-center justify-center shadow-xs">
+                          <div className="absolute top-0 right-0 w-4 h-4 rounded-full bg-aia-red text-white flex items-center justify-center shadow-xs border border-white">
                             <Check className="w-2.5 h-2.5 stroke-[3]" />
                           </div>
                         )}

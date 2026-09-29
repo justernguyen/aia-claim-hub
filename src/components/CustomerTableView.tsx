@@ -120,8 +120,15 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
                             </span>
                           )}
                         </div>
-                        <div className="text-[11px] text-slate-500 truncate max-w-[180px]" title={primaryPol.productName}>
-                          {primaryPol.productName}
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="text-[11px] text-slate-500 truncate max-w-[150px]" title={primaryPol.productName}>
+                            {primaryPol.productName}
+                          </span>
+                          {primaryPol.benefits && primaryPol.benefits.length > 1 && (
+                            <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-rose-50 text-aia-red border border-rose-200 shrink-0">
+                              +{primaryPol.benefits.length - 1} bổ trợ
+                            </span>
+                          )}
                         </div>
                       </div>
                     ) : (

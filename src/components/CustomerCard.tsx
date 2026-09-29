@@ -145,15 +145,22 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
                   {medicalBenefit.name}
                 </span>
               </span>
-              <span className={`font-bold font-numeric text-[10px] px-1.5 py-0.5 rounded shrink-0 ${
-                usedPercentage > 80
-                  ? 'bg-rose-50 text-aia-red border border-rose-200'
-                  : usedPercentage > 0
-                  ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                  : 'bg-slate-100 text-slate-600'
-              }`}>
-                {usedPercentage}% đã dùng
-              </span>
+              <div className="flex items-center gap-1 shrink-0">
+                {primaryPolicy && primaryPolicy.benefits && primaryPolicy.benefits.length > 1 && (
+                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-rose-50 text-aia-red border border-rose-200">
+                    +{primaryPolicy.benefits.length - 1} bổ trợ
+                  </span>
+                )}
+                <span className={`font-bold font-numeric text-[10px] px-1.5 py-0.5 rounded shrink-0 ${
+                  usedPercentage > 80
+                    ? 'bg-rose-50 text-aia-red border border-rose-200'
+                    : usedPercentage > 0
+                    ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                    : 'bg-slate-100 text-slate-600'
+                }`}>
+                  {usedPercentage}% đã dùng
+                </span>
+              </div>
             </div>
 
             {/* Progress bar */}

@@ -580,6 +580,9 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
                       {AIA_11_BENEFITS.map((b) => {
                         const isSelected = claimType === b.id;
+                        const hasInPolicy = selectedPolicy?.benefits?.some(
+                          (pb) => pb.type === b.id || (pb.type === 'medical_expense' && (b.id === 'inpatient' || b.id === 'outpatient'))
+                        );
                         return (
                           <div
                             key={b.id}
@@ -587,6 +590,8 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
                             className={`p-3 rounded-xl border text-left cursor-pointer transition-all flex items-start justify-between relative group ${
                               isSelected
                                 ? 'border-aia-red bg-rose-50/50 shadow-xs ring-1 ring-aia-red'
+                                : hasInPolicy
+                                ? 'border-emerald-200 bg-emerald-50/20 hover:border-emerald-300'
                                 : 'border-slate-200 hover:border-slate-300 bg-white'
                             }`}
                           >
@@ -601,9 +606,16 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
                                 {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
                               </div>
                               <div>
-                                <p className={`text-xs font-bold ${isSelected ? 'text-aia-red' : 'text-slate-800'}`}>
-                                  {b.title}
-                                </p>
+                                <div className="flex items-center gap-1.5 flex-wrap">
+                                  <p className={`text-xs font-bold ${isSelected ? 'text-aia-red' : 'text-slate-800'}`}>
+                                    {b.title}
+                                  </p>
+                                  {hasInPolicy && (
+                                    <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800">
+                                      Có trong HĐ
+                                    </span>
+                                  )}
+                                </div>
                                 <p className="text-[10px] text-slate-500 line-clamp-1 mt-0.5">
                                   {b.description}
                                 </p>
