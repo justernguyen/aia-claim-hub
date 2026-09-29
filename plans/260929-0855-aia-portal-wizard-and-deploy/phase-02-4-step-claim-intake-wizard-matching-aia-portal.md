@@ -29,11 +29,11 @@ Hiện thực hóa chi tiết 4 bước nhập liệu trong Wizard tiếp nhận
 
 ## Todo List
 
-- [ ] Cài đặt Bước 1: Bộ chọn 11 quyền lợi AIA và danh mục đính kèm ảnh chứng từ
-- [ ] Cài đặt Bước 2: Form thông tin sự kiện bảo hiểm, bệnh viện, mã ICD-10 và tổng tiền viện phí
-- [ ] Cài đặt Bước 3: Phương thức nhận tiền bảo hiểm (Ngân hàng hoặc Tiền mặt)
-- [ ] Cài đặt Bước 4: Tóm tắt thông tin và tiếp nhận hồ sơ vào hệ thống
-- [ ] Tích hợp tính năng chọn nhanh khách hàng từ danh bạ sẵn có
+- [x] Cài đặt Bước 1: Bộ chọn 11 quyền lợi AIA và danh mục đính kèm ảnh chứng từ
+- [x] Cài đặt Bước 2: Form thông tin sự kiện bảo hiểm, bệnh viện, mã ICD-10 và tổng tiền viện phí
+- [x] Cài đặt Bước 3: Phương thức nhận tiền bảo hiểm (Ngân hàng hoặc Tiền mặt)
+- [x] Cài đặt Bước 4: Tóm tắt thông tin và tiếp nhận hồ sơ vào hệ thống
+- [x] Tích hợp tính năng chọn nhanh khách hàng từ danh bạ sẵn có
 
 ---
 

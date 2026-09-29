@@ -29,10 +29,10 @@ Hệ thống cho phép:
 
 ## Todo List
 
-- [ ] Hoàn thiện `DocumentImageViewer.tsx` với các phím tắt và nút zoom/xoay ảnh
-- [ ] Thêm Album ảnh chứng từ y tế (Photo Gallery) trực quan tại đầu Drawer hồ sơ claim
-- [ ] Cho phép tải thêm hoặc đổi ảnh chứng từ bất kỳ lúc nào chỉ với 1 click
-- [ ] Bổ sung tính năng thêm nhanh loại giấy tờ y tế tùy chỉnh
+- [x] Hoàn thiện `DocumentImageViewer.tsx` với các phím tắt và nút zoom/xoay ảnh
+- [x] Thêm Album ảnh chứng từ y tế (Photo Gallery) trực quan tại đầu Drawer hồ sơ claim
+- [x] Cho phép tải thêm hoặc đổi ảnh chứng từ bất kỳ lúc nào chỉ với 1 click
+- [x] Bổ sung tính năng thêm nhanh loại giấy tờ y tế tùy chỉnh
 
 ---
 

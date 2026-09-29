@@ -26,10 +26,10 @@ Chuẩn bị sẵn sàng hạ tầng triển khai online lên Vercel:
 
 ## Todo List
 
-- [ ] Cấu hình file `vercel.json` xử lý SPA route
-- [ ] Chạy lệnh `npm run build` xác nhận build thành công
-- [ ] Tạo commit Git sạch sẽ, chuẩn bị sẵn remote `justernguyen`
-- [ ] Soạn hướng dẫn 3 bước kết nối GitHub & Vercel cho người dùng
+- [x] Cấu hình file `vercel.json` xử lý SPA route
+- [x] Chạy lệnh `npm run build` xác nhận build thành công
+- [x] Tạo commit Git sạch sẽ, chuẩn bị sẵn remote `justernguyen`
+- [x] Soạn hướng dẫn 3 bước kết nối GitHub & Vercel cho người dùng
 
 ---
 

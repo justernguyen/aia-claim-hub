@@ -24,10 +24,10 @@ Xây dựng tính năng **Nhập danh bạ Khách hàng Hàng loạt từ Excel 
 
 ## Todo List
 
-- [ ] Cung cấp nút tải file mẫu CSV chuẩn cột
-- [ ] Hỗ trợ cả 2 cách nhập: Dán (Ctrl+V) trực tiếp từ bảng tính Excel hoặc Tải file .csv
-- [ ] Tự động phân tách họ tên, SĐT, CCCD, số hợp đồng, phí định kỳ và sản phẩm AIA
-- [ ] Bảng xem trước (Preview) kiểm tra số lượng và thông tin trước khi nạp vào hệ thống
+- [x] Cung cấp nút tải file mẫu CSV chuẩn cột
+- [x] Hỗ trợ cả 2 cách nhập: Dán (Ctrl+V) trực tiếp từ bảng tính Excel hoặc Tải file .csv
+- [x] Tự động phân tách họ tên, SĐT, CCCD, số hợp đồng, phí định kỳ và sản phẩm AIA
+- [x] Bảng xem trước (Preview) kiểm tra số lượng và thông tin trước khi nạp vào hệ thống
 
 ---
 

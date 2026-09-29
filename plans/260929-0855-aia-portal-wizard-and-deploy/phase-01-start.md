@@ -38,10 +38,10 @@ Xây dựng thanh tiến trình Stepper trực quan (1: Quyền lợi & Chứng 
 
 ## Todo List
 
-- [ ] Thiết kế thanh tiến trình Stepper 4 bước chuẩn AIA
-- [ ] Phân rã cấu trúc state quản lý từng bước (`currentStep`: 1 | 2 | 3 | 4)
-- [ ] Cài đặt các nút điều hướng "Quay lại" và "Tiếp tục" với logic validate từng bước
-- [ ] Đảm bảo tính thân thiện trên màn hình di động (chụp ảnh trực tiếp từ camera điện thoại)
+- [x] Thiết kế thanh tiến trình Stepper 4 bước chuẩn AIA
+- [x] Phân rã cấu trúc state quản lý từng bước (`currentStep`: 1 | 2 | 3 | 4)
+- [x] Cài đặt các nút điều hướng "Quay lại" và "Tiếp tục" với logic validate từng bước
+- [x] Đảm bảo tính thân thiện trên màn hình di động (chụp ảnh trực tiếp từ camera điện thoại)
 
 ---
 
