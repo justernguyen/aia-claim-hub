@@ -23,12 +23,12 @@ export const MetricCard: React.FC<MetricCardProps> = ({
           : 'border border-slate-200'
       }`}
     >
-      <div className={`text-3xl sm:text-4xl font-extrabold font-number tracking-tight ${valueColorClass}`}>
+      <div className={`text-3xl sm:text-4xl font-bold tracking-tight tabular-nums ${valueColorClass}`}>
         {value}
       </div>
-      <div className="text-xs sm:text-sm font-semibold text-slate-500 mt-1.5">{label}</div>
+      <div className="text-xs sm:text-sm font-medium text-slate-500 mt-1.5">{label}</div>
       {subtext && (
-        <div className="text-[11px] text-slate-400 mt-0.5 tracking-tight font-medium font-number">
+        <div className="text-[11px] text-slate-400 mt-0.5 tracking-tight font-normal">
           {subtext}
         </div>
       )}
