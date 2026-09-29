@@ -101,7 +101,7 @@ export const AnalyticsDashboardView: React.FC<AnalyticsDashboardViewProps> = ({
           <PieChart className={`w-4 h-4 ${activeSubTab === 'portfolio' ? 'text-amber-400' : 'text-slate-400'}`} />
           <span>{SUB_TAB_CONFIG.portfolio.label}</span>
           {kpis.pendingCount > 0 && (
-            <span className="px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-rose-500 text-white font-numeric">
+            <span className="px-2 py-0.5 rounded-md text-xs font-bold bg-rose-500 text-white font-numeric">
               {kpis.pendingCount}
             </span>
           )}
@@ -120,7 +120,7 @@ export const AnalyticsDashboardView: React.FC<AnalyticsDashboardViewProps> = ({
           <Receipt className={`w-4 h-4 ${activeSubTab === 'claims' ? 'text-emerald-400' : 'text-slate-400'}`} />
           <span>{SUB_TAB_CONFIG.claims.label}</span>
           {pendingClaimsCount > 0 && (
-            <span className="px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-amber-500 text-white font-numeric">
+            <span className="px-2 py-0.5 rounded-md text-xs font-bold bg-amber-500 text-white font-numeric">
               {pendingClaimsCount}
             </span>
           )}
@@ -139,7 +139,7 @@ export const AnalyticsDashboardView: React.FC<AnalyticsDashboardViewProps> = ({
           <HeartPulse className={`w-4 h-4 ${activeSubTab === 'quotas' ? 'text-purple-400' : 'text-slate-400'}`} />
           <span>{SUB_TAB_CONFIG.quotas.label}</span>
           {kpis.criticalQuotaCount > 0 && (
-            <span className="px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-rose-500 text-white font-numeric animate-pulse">
+            <span className="px-2 py-0.5 rounded-md text-xs font-bold bg-rose-500 text-white font-numeric animate-pulse">
               {kpis.criticalQuotaCount}
             </span>
           )}

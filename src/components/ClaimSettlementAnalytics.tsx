@@ -72,33 +72,33 @@ export const ClaimSettlementAnalytics: React.FC<ClaimSettlementAnalyticsProps> =
       {/* Comparison Strip: Yêu cầu vs Duyệt chi trả */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
         <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-          <span className="text-slate-400 text-[11px] block">Tổng tiền khách yêu cầu bồi thường:</span>
+          <span className="text-slate-600 text-xs block font-semibold">Tổng tiền khách yêu cầu bồi thường:</span>
           <span className="text-lg font-extrabold text-slate-900 font-numeric mt-0.5 block">
             {formatCurrencyVND(totalClaimed)}
           </span>
-          <span className="text-[10px] text-slate-400">Trên {totalClaims} ca yêu cầu</span>
+          <span className="text-xs text-slate-500 font-numeric font-medium">Trên {totalClaims} ca yêu cầu</span>
         </div>
 
         <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200">
-          <span className="text-emerald-700 text-[11px] block font-semibold">
+          <span className="text-emerald-800 text-xs block font-bold">
             Tổng tiền AIA thực duyệt chi trả:
           </span>
-          <span className="text-lg font-extrabold text-emerald-700 font-numeric mt-0.5 block">
+          <span className="text-lg font-extrabold text-emerald-800 font-numeric mt-0.5 block">
             {formatCurrencyVND(totalApproved)}
           </span>
-          <span className="text-[10px] text-emerald-600 font-medium">
+          <span className="text-xs text-emerald-700 font-bold font-numeric">
             Đạt {payoutRatio}% giá trị yêu cầu
           </span>
         </div>
 
         <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200">
-          <span className="text-amber-800 text-[11px] block font-semibold">
+          <span className="text-amber-900 text-xs block font-bold">
             Tổng tiền giảm trừ hợp lý:
           </span>
-          <span className="text-lg font-extrabold text-amber-700 font-numeric mt-0.5 block">
+          <span className="text-lg font-extrabold text-amber-800 font-numeric mt-0.5 block">
             {formatCurrencyVND(totalDeducted)}
           </span>
-          <span className="text-[10px] text-amber-700 font-medium">Nâng hạng phòng / ngoài danh mục</span>
+          <span className="text-xs text-amber-800 font-medium">Nâng hạng phòng / ngoài danh mục</span>
         </div>
       </div>
 
@@ -117,8 +117,8 @@ export const ClaimSettlementAnalytics: React.FC<ClaimSettlementAnalyticsProps> =
               <div key={type} className="p-3 bg-slate-50/70 rounded-xl border border-slate-100 text-xs">
                 <div className="flex items-center justify-between mb-1.5">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-slate-800">{CLAIM_TYPE_LABELS[type]}</span>
-                    <span className="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.2 rounded font-numeric">
+                    <span className="font-bold text-slate-900">{CLAIM_TYPE_LABELS[type]}</span>
+                    <span className="text-xs bg-slate-200 text-slate-800 px-2 py-0.5 rounded font-numeric font-bold">
                       {item.count} ca
                     </span>
                   </div>
@@ -134,7 +134,7 @@ export const ClaimSettlementAnalytics: React.FC<ClaimSettlementAnalyticsProps> =
                   />
                 </div>
 
-                <div className="text-right text-[10px] text-slate-400 mt-1 font-mono">
+                <div className="text-right text-xs text-slate-500 mt-1 font-numeric">
                   Chiếm {sharePct}% tổng ngân sách bồi thường
                 </div>
               </div>

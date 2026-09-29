@@ -61,8 +61,8 @@ export const PolicyStatusDistribution: React.FC<PolicyStatusDistributionProps> =
       {/* 1. Policy Status Segmented Bar */}
       <div>
         <div className="flex items-center justify-between text-xs font-bold mb-2">
-          <span className="text-slate-700">Tỷ trọng Hợp đồng theo Trạng thái</span>
-          <span className="text-slate-400 font-normal">Tổng {totalPolicies} hợp đồng</span>
+          <span className="text-slate-800">Tỷ trọng Hợp đồng theo Trạng thái</span>
+          <span className="text-slate-500 font-medium">Tổng {totalPolicies} hợp đồng</span>
         </div>
 
         {/* Stacked Progress Bar */}

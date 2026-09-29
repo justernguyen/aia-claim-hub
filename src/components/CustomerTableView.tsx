@@ -30,7 +30,7 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
       <div className="overflow-x-auto">
         <table className="w-full min-w-[1100px] text-left text-xs border-collapse">
           <thead>
-            <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
+            <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-xs">
               <th className="py-3.5 px-4 min-w-[170px] whitespace-nowrap">Khách hàng</th>
               <th className="py-3.5 px-4 min-w-[160px] whitespace-nowrap">Số điện thoại / Địa chỉ</th>
               <th className="py-3.5 px-4 min-w-[180px] whitespace-nowrap">Hợp đồng & Sản phẩm</th>
@@ -85,11 +85,11 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
                         }
                       />
                       <div>
-                        <div className="font-bold text-slate-900 group-hover:text-aia-red transition-colors flex items-center gap-1.5 whitespace-nowrap">
+                        <div className="font-bold text-slate-900 text-sm group-hover:text-aia-red transition-colors flex items-center gap-1.5 whitespace-nowrap">
                           <span>{cust.name}</span>
-                          <span className="text-[10px] text-slate-400 font-normal">({cust.gender})</span>
+                          <span className="text-xs text-slate-500 font-medium">({cust.gender})</span>
                         </div>
-                        <div className="text-[11px] text-slate-400 font-numeric whitespace-nowrap">
+                        <div className="text-xs text-slate-600 font-numeric font-semibold whitespace-nowrap mt-0.5">
                           CCCD: {formatCCCD(cust.cccd)}
                         </div>
                       </div>
@@ -98,11 +98,11 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
 
                   {/* SĐT / Địa chỉ */}
                   <td className="py-3.5 px-4">
-                    <div className="flex items-center gap-1 text-slate-700 font-numeric font-medium whitespace-nowrap">
-                      <Phone className="w-3 h-3 text-slate-400 shrink-0" />
+                    <div className="flex items-center gap-1 text-slate-800 font-numeric font-bold text-xs sm:text-[13px] whitespace-nowrap">
+                      <Phone className="w-3.5 h-3.5 text-slate-500 shrink-0" />
                       <span>{formatPhone(cust.phone)}</span>
                     </div>
-                    <div className="text-[11px] text-slate-400 truncate max-w-[180px]" title={cust.address}>
+                    <div className="text-xs text-slate-500 truncate max-w-[190px] mt-0.5" title={cust.address}>
                       {cust.address}
                     </div>
                   </td>
@@ -111,21 +111,21 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
                   <td className="py-3.5 px-4">
                     {primaryPol ? (
                       <div>
-                        <div className="font-semibold text-slate-800 flex items-center gap-1 whitespace-nowrap">
+                        <div className="font-bold text-slate-900 flex items-center gap-1.5 whitespace-nowrap">
                           <ShieldCheck className="w-3.5 h-3.5 text-aia-red shrink-0" />
-                          <span className="font-numeric font-medium whitespace-nowrap">{primaryPol.id}</span>
+                          <span className="font-numeric font-bold text-slate-900 text-xs whitespace-nowrap">{primaryPol.id}</span>
                           {custPolicies.length > 1 && (
-                            <span className="text-[10px] bg-slate-100 text-slate-600 px-1 rounded font-bold shrink-0">
+                            <span className="text-xs bg-slate-100 text-slate-700 px-1.5 py-0.2 rounded font-bold shrink-0">
                               +{custPolicies.length - 1}
                             </span>
                           )}
                         </div>
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className="text-[11px] text-slate-500 truncate max-w-[150px]" title={primaryPol.productName}>
+                        <div className="flex items-center gap-1.5 flex-wrap mt-0.5">
+                          <span className="text-xs text-slate-600 truncate max-w-[160px]" title={primaryPol.productName}>
                             {primaryPol.productName}
                           </span>
                           {primaryPol.benefits && primaryPol.benefits.length > 1 && (
-                            <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-rose-50 text-aia-red border border-rose-200 shrink-0">
+                            <span className="text-[10.5px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-aia-red border border-rose-200 shrink-0">
                               +{primaryPol.benefits.length - 1} bổ trợ
                             </span>
                           )}
@@ -140,8 +140,8 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
                   <td className="py-3.5 px-4 whitespace-nowrap">
                     {primaryPol && (
                       <span
-                        className={`inline-flex items-center gap-1.5 px-2.5 py-0.8 rounded-full text-[11px] font-semibold border whitespace-nowrap ${
-                          POLICY_STATUS_CONFIG[primaryPol.status]?.badgeClass || 'bg-slate-100'
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border whitespace-nowrap ${
+                          POLICY_STATUS_CONFIG[primaryPol.status]?.badgeClass || 'bg-slate-100 text-slate-700'
                         }`}
                       >
                         <span
@@ -155,7 +155,7 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
                   </td>
 
                   {/* Phí định kỳ */}
-                  <td className="py-3.5 px-4 text-right font-numeric font-bold text-slate-900 whitespace-nowrap">
+                  <td className="py-3.5 px-4 text-right font-numeric font-extrabold text-slate-900 text-sm whitespace-nowrap">
                     {formatCurrencyVND(totalPremium)}
                   </td>
 
@@ -163,12 +163,12 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
                   <td className="py-3.5 px-4 min-w-[180px]">
                     {medicalBenefit ? (
                       <div>
-                        <div className="flex items-center justify-between text-[11px] mb-1 gap-2 whitespace-nowrap">
-                          <span className="text-slate-500 font-medium flex items-center gap-1 shrink-0">
-                            <HeartPulse className="w-3 h-3 text-aia-red shrink-0" />
+                        <div className="flex items-center justify-between text-xs mb-1.5 gap-2 whitespace-nowrap">
+                          <span className="text-slate-600 font-medium flex items-center gap-1 shrink-0">
+                            <HeartPulse className="w-3.5 h-3.5 text-aia-red shrink-0" />
                             <span>{pct}% đã dùng</span>
                           </span>
-                          <span className="font-numeric text-slate-700 font-bold shrink-0">
+                          <span className="font-numeric text-slate-900 font-bold shrink-0">
                             Còn {formatCurrencyVND(remaining)}
                           </span>
                         </div>
@@ -182,21 +182,20 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
                         </div>
                       </div>
                     ) : (
-                      <span className="text-slate-400 text-[11px] italic whitespace-nowrap">Không có thẻ SK</span>
+                      <span className="text-slate-500 text-xs italic whitespace-nowrap">Không có thẻ SK</span>
                     )}
                   </td>
 
                   {/* Claim count */}
                   <td className="py-3.5 px-4 text-center whitespace-nowrap">
                     <span
-                      className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[11px] font-bold font-numeric whitespace-nowrap ${
-                        custClaims.length > 0 ? 'bg-rose-50 text-aia-red border border-rose-200' : 'bg-slate-100 text-slate-500'
+                      className={`inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-xs font-bold font-numeric whitespace-nowrap ${
+                        custClaims.length > 0 ? 'bg-rose-50 text-aia-red border border-rose-200' : 'bg-slate-100 text-slate-600'
                       }`}
                     >
                       {custClaims.length} ca
                     </span>
                   </td>
-
                   {/* Thao tác */}
                   <td className="py-3.5 px-4 text-right whitespace-nowrap">
                     <button

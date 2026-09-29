@@ -69,8 +69,8 @@ export const MonthlyGrowthChart: React.FC<MonthlyGrowthChartProps> = ({ customer
               <div key={m.key} className="flex-1 flex flex-col items-center gap-1.5 group relative min-w-0">
                 {/* Count Badge on top of bar */}
                 <span
-                  className={`text-[10px] sm:text-[11px] font-bold font-numeric transition-transform group-hover:scale-110 ${
-                    m.count > 0 ? (isCurrentMonth ? 'text-aia-red' : 'text-slate-700') : 'text-slate-300'
+                  className={`text-xs font-bold font-numeric transition-transform group-hover:scale-110 ${
+                    m.count > 0 ? (isCurrentMonth ? 'text-aia-red' : 'text-slate-800') : 'text-slate-400'
                   }`}
                 >
                   {m.count > 0 ? m.count : '-'}
@@ -92,8 +92,8 @@ export const MonthlyGrowthChart: React.FC<MonthlyGrowthChartProps> = ({ customer
 
                 {/* Month Label: compact on laptop/tablet, full on wide desktop */}
                 <span
-                  className={`text-[9.5px] sm:text-[10px] font-medium truncate ${
-                    isCurrentMonth ? 'text-aia-red font-bold' : 'text-slate-400'
+                  className={`text-xs font-semibold truncate ${
+                    isCurrentMonth ? 'text-aia-red font-bold' : 'text-slate-600'
                   }`}
                   title={m.label}
                 >
@@ -110,7 +110,7 @@ export const MonthlyGrowthChart: React.FC<MonthlyGrowthChartProps> = ({ customer
         <span>Tổng: <strong className="text-slate-900 font-numeric font-bold">{customers.length} khách</strong></span>
         <span className="flex items-center gap-1 text-slate-600">
           <span className="w-2 h-2 rounded-full bg-aia-red inline-block" />
-          <span className="text-[11px]">T09/2026</span>
+          <span className="text-xs font-bold">T09/2026</span>
         </span>
       </div>
     </div>

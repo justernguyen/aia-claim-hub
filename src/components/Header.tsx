@@ -146,19 +146,19 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
             <div className="text-left whitespace-nowrap shrink-0">
               <div className="flex items-center gap-1.5 leading-none">
-                <span className="text-xs font-bold text-slate-900 whitespace-nowrap">{consultant.name}</span>
-                <span className="text-[9px] bg-amber-50 text-amber-800 border border-amber-300 font-extrabold px-1.5 py-0.5 rounded shadow-2xs whitespace-nowrap shrink-0">
+                <span className="text-xs sm:text-sm font-bold text-slate-900 whitespace-nowrap">{consultant.name}</span>
+                <span className="text-[10.5px] bg-amber-50 text-amber-900 border border-amber-300 font-black px-2 py-0.5 rounded shadow-2xs whitespace-nowrap shrink-0">
                   MDRT
                 </span>
               </div>
-              <div className="flex items-center gap-1.5 text-slate-500 text-[10.5px] mt-1 whitespace-nowrap shrink-0 leading-none">
-                <span className="flex items-center gap-0.5 font-mono text-slate-600 whitespace-nowrap shrink-0">
-                  <ShieldCheck className="w-3 h-3 text-aia-red shrink-0" />
+              <div className="flex items-center gap-1.5 text-slate-600 text-xs mt-1 whitespace-nowrap shrink-0 leading-none">
+                <span className="flex items-center gap-0.5 font-numeric font-semibold text-slate-700 whitespace-nowrap shrink-0">
+                  <ShieldCheck className="w-3.5 h-3.5 text-aia-red shrink-0" />
                   <span className="whitespace-nowrap">{consultant.code.replace(/-/g, '\u2011')}</span>
                 </span>
                 <span className="text-slate-300">•</span>
                 <span className="flex items-center gap-0.5 whitespace-nowrap shrink-0" title={consultant.office || consultant.agency}>
-                  <Building className="w-3 h-3 text-slate-400 shrink-0" />
+                  <Building className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                   <span className="whitespace-nowrap">{consultant.agency}</span>
                 </span>
               </div>
@@ -266,8 +266,8 @@ export const Header: React.FC<HeaderProps> = ({
                     >
                       <UserPlus className="w-4 h-4 text-aia-red" />
                       <div>
-                        <p className="font-semibold">Khách hàng & HĐ mới</p>
-                        <p className="text-[10px] text-slate-400">Thêm hồ sơ cá nhân và gói bảo hiểm</p>
+                        <p className="font-semibold text-slate-800 text-sm">Khách hàng & HĐ mới</p>
+                        <p className="text-xs text-slate-500">Thêm hồ sơ cá nhân và gói bảo hiểm</p>
                       </div>
                     </button>
                     <button
@@ -280,8 +280,8 @@ export const Header: React.FC<HeaderProps> = ({
                     >
                       <FilePlus className="w-4 h-4 text-rose-600" />
                       <div>
-                        <p className="font-semibold">Hồ sơ Bồi thường (Claim)</p>
-                        <p className="text-[10px] text-slate-400">Tiếp nhận viện phí / phẫu thuật mới</p>
+                        <p className="font-semibold text-slate-800 text-sm">Hồ sơ Bồi thường (Claim)</p>
+                        <p className="text-xs text-slate-500">Tiếp nhận viện phí / phẫu thuật mới</p>
                       </div>
                     </button>
                     <button
@@ -294,8 +294,8 @@ export const Header: React.FC<HeaderProps> = ({
                     >
                       <CalendarPlus className="w-4 h-4 text-amber-600" />
                       <div>
-                        <p className="font-semibold">Ghi chú Chăm sóc / Lịch hẹn</p>
-                        <p className="text-[10px] text-slate-400">Gặp cafe, gọi điện, nhắc kỳ phí</p>
+                        <p className="font-semibold text-slate-800 text-sm">Ghi chú Chăm sóc / Lịch hẹn</p>
+                        <p className="text-xs text-slate-500">Gặp cafe, gọi điện, nhắc kỳ phí</p>
                       </div>
                     </button>
                   </div>
@@ -315,7 +315,7 @@ export const Header: React.FC<HeaderProps> = ({
                 key={tab.id}
                 type="button"
                 onClick={() => onTabChange(tab.id)}
-                className={`flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-2 rounded-xl text-[11px] sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer select-none ${
+                className={`flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer select-none ${
                   isActive
                     ? 'bg-aia-red text-white shadow-xs'
                     : 'bg-slate-50 sm:bg-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100'
@@ -334,7 +334,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </span>
                 {tab.badge !== undefined && (
                   <span
-                    className={`ml-0.5 px-1.5 py-0.2 rounded-full text-[10px] font-bold shrink-0 ${
+                    className={`ml-0.5 px-2 py-0.5 rounded-full text-xs font-bold font-numeric shrink-0 ${
                       isActive ? 'bg-white text-aia-red' : tab.badgeColor || 'bg-slate-200 text-slate-700'
                     }`}
                   >

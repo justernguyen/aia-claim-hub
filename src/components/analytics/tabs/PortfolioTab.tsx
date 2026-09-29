@@ -50,7 +50,7 @@ export const PortfolioTab: React.FC<PortfolioTabProps> = ({
             </div>
 
             <div className="text-right">
-              <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider block">
+              <span className="text-xs text-slate-500 font-bold uppercase tracking-wider block">
                 Tỷ lệ duy trì K1
               </span>
               <span className="text-sm font-black text-slate-900 font-numeric">
@@ -64,14 +64,14 @@ export const PortfolioTab: React.FC<PortfolioTabProps> = ({
             {/* FYP */}
             <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 flex flex-col justify-between">
               <div>
-                <span className="text-slate-500 text-[11px] block font-semibold">
+                <span className="text-slate-600 text-xs block font-bold">
                   Phí Năm Đầu (FYP)
                 </span>
                 <span className="text-base font-extrabold text-blue-700 font-numeric mt-1 block">
                   {formatCurrencyVND(kpis.fypAmount)}
                 </span>
               </div>
-              <span className="text-[10px] text-slate-400 mt-2 block">
+              <span className="text-xs text-slate-500 mt-2 block">
                 Hợp đồng mới phát hành năm 1
               </span>
             </div>
@@ -79,14 +79,14 @@ export const PortfolioTab: React.FC<PortfolioTabProps> = ({
             {/* RYP */}
             <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 flex flex-col justify-between">
               <div>
-                <span className="text-slate-500 text-[11px] block font-semibold">
+                <span className="text-slate-600 text-xs block font-bold">
                   Phí Tái Tục (RYP)
                 </span>
                 <span className="text-base font-extrabold text-slate-900 font-numeric mt-1 block">
                   {formatCurrencyVND(kpis.rypAmount)}
                 </span>
               </div>
-              <span className="text-[10px] text-slate-400 mt-2 block">
+              <span className="text-xs text-slate-500 mt-2 block">
                 HĐ năm 2+ đóng phí định kỳ
               </span>
             </div>
@@ -94,14 +94,14 @@ export const PortfolioTab: React.FC<PortfolioTabProps> = ({
             {/* Pending Premium */}
             <div className="bg-rose-50/70 p-3.5 rounded-xl border border-rose-200 flex flex-col justify-between">
               <div>
-                <span className="text-aia-red text-[11px] block font-semibold">
+                <span className="text-aia-red text-xs block font-bold">
                   Phí Chờ Thu (Ân hạn)
                 </span>
                 <span className="text-base font-extrabold text-aia-red font-numeric mt-1 block">
                   {formatCurrencyVND(kpis.pendingAmount)}
                 </span>
               </div>
-              <span className="text-[10px] text-aia-red/80 font-medium mt-2 block">
+              <span className="text-xs text-aia-red font-medium mt-2 block">
                 Cần thu trong 60 ngày ân hạn
               </span>
             </div>
@@ -113,7 +113,7 @@ export const PortfolioTab: React.FC<PortfolioTabProps> = ({
               <span className="font-bold text-white block">
                 Tổng phí thường niên quản lý (APE):
               </span>
-              <span className="text-[11px] text-slate-300">
+              <span className="text-xs text-slate-300">
                 Bao gồm {kpis.inForceCount} hợp đồng đang có hiệu lực bảo vệ
               </span>
             </div>
@@ -150,7 +150,7 @@ export const PortfolioTab: React.FC<PortfolioTabProps> = ({
         <div className="overflow-x-auto border border-slate-200 rounded-xl">
           <table className="w-full min-w-[760px] text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
+              <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-xs">
                 <th className="py-3 px-3.5">Hợp đồng & Khách hàng</th>
                 <th className="py-3 px-3.5">Sản phẩm bảo hiểm</th>
                 <th className="py-3 px-3.5 text-right">Phí định kỳ</th>
@@ -179,7 +179,7 @@ export const PortfolioTab: React.FC<PortfolioTabProps> = ({
                         >
                           {pol.customerName}
                         </div>
-                        <div className="text-[10px] text-slate-400 font-numeric">{pol.id}</div>
+                        <div className="text-xs text-slate-500 font-numeric font-medium">{pol.id}</div>
                       </td>
 
                       {/* Product */}
@@ -203,13 +203,13 @@ export const PortfolioTab: React.FC<PortfolioTabProps> = ({
                       {/* Status */}
                       <td className="py-3 px-3.5">
                         {isPending ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-aia-red border border-rose-200">
-                            <AlertTriangle className="w-3 h-3 text-aia-red" />
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-rose-50 text-aia-red border border-rose-200">
+                            <AlertTriangle className="w-3.5 h-3.5 text-aia-red" />
                             <span>Trong 60 ngày ân hạn</span>
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
-                            <Clock className="w-3 h-3 text-amber-600" />
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                            <Clock className="w-3.5 h-3.5 text-amber-600" />
                             <span>Sắp đến hạn</span>
                           </span>
                         )}

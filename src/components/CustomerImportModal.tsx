@@ -464,12 +464,12 @@ export const CustomerImportModal: React.FC<CustomerImportModalProps> = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-base font-bold">Nhập Danh Sách Khách Hàng Từ Excel Chuẩn AIA</h3>
-                <span className="text-[10px] bg-aia-red text-white font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                <h3 className="text-base font-bold text-white">Nhập Danh Sách Khách Hàng Từ Excel Chuẩn AIA</h3>
+                <span className="text-xs bg-aia-red text-white font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                   AIA POS (.xlsx)
                 </span>
               </div>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-300">
                 Tương thích mẫu "DSHĐ đang được phục vụ bởi ĐL" từ cổng AIA Services & bảng tính Excel
               </p>
             </div>
@@ -492,8 +492,8 @@ export const CustomerImportModal: React.FC<CustomerImportModalProps> = ({
                 <ShieldCheck className="w-4 h-4 text-aia-red" />
                 <span>Mẫu Excel thương hiệu AIA chuẩn hóa:</span>
               </p>
-              <p className="text-[11px] text-slate-500">
-                Tải file mẫu có sẵn màu nhận diện AIA, độ rộng cột chuẩn và dữ liệu mẫu thực tế. Bạn có thể kéo thả trực tiếp file <strong className="text-slate-700">.xlsx / .xls</strong> vào khung bên dưới.
+              <p className="text-xs text-slate-600">
+                Tải file mẫu có sẵn màu nhận diện AIA, độ rộng cột chuẩn và dữ liệu mẫu thực tế. Bạn có thể kéo thả trực tiếp file <strong className="text-slate-800">.xlsx / .xls</strong> vào khung bên dưới.
               </p>
             </div>
             <button
@@ -505,8 +505,8 @@ export const CustomerImportModal: React.FC<CustomerImportModalProps> = ({
                 <Download className="w-3.5 h-3.5" />
               </div>
               <div className="text-left leading-tight">
-                <span className="block text-[11px]">Tải file mẫu AIA</span>
-                <span className="text-[10px] text-emerald-600 font-mono font-normal">.xlsx (Chuẩn màu)</span>
+                <span className="block text-xs font-bold">Tải file mẫu AIA</span>
+                <span className="text-xs text-emerald-600 font-numeric font-medium">.xlsx (Chuẩn màu)</span>
               </div>
             </button>
           </div>
@@ -572,21 +572,21 @@ export const CustomerImportModal: React.FC<CustomerImportModalProps> = ({
                   <p className="text-xs font-bold text-slate-800">
                     Kéo thả file Excel <span className="text-aia-red">(.xlsx, .xls)</span> hoặc <span className="text-slate-600">.csv</span> vào đây
                   </p>
-                  <p className="text-[11px] text-slate-500 mt-0.5">
+                  <p className="text-xs text-slate-600 mt-0.5">
                     hoặc nhấp chuột để chọn file từ máy tính của bạn
                   </p>
                 </div>
                 <div className="flex items-center gap-1.5 pt-1">
-                  <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded font-mono text-[10px] font-bold">
+                  <span className="px-2.5 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded font-numeric text-xs font-bold">
                     XLSX
                   </span>
-                  <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded font-mono text-[10px] font-bold">
+                  <span className="px-2.5 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded font-numeric text-xs font-bold">
                     XLS
                   </span>
-                  <span className="px-2 py-0.5 bg-slate-100 text-slate-600 border border-slate-200 rounded font-mono text-[10px] font-bold">
+                  <span className="px-2.5 py-0.5 bg-slate-100 text-slate-700 border border-slate-200 rounded font-numeric text-xs font-bold">
                     CSV
                   </span>
-                  <span className="px-2 py-0.5 bg-slate-100 text-slate-600 border border-slate-200 rounded font-mono text-[10px] font-bold">
+                  <span className="px-2.5 py-0.5 bg-slate-100 text-slate-700 border border-slate-200 rounded font-numeric text-xs font-bold">
                     TSV
                   </span>
                 </div>
@@ -599,7 +599,7 @@ export const CustomerImportModal: React.FC<CustomerImportModalProps> = ({
             <button
               type="button"
               onClick={() => setShowPasteBox(!showPasteBox)}
-              className="text-slate-500 hover:text-slate-800 text-[11px] font-medium flex items-center gap-1.5 cursor-pointer transition-colors"
+              className="text-slate-600 hover:text-slate-900 text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition-colors"
             >
               <FileText className="w-3.5 h-3.5" />
               <span>{showPasteBox ? 'Ẩn ô dán phím tắt Ctrl+V' : 'Hoặc dán nhanh qua phím tắt (Ctrl+V từ bảng Excel)'}</span>
@@ -615,7 +615,7 @@ export const CustomerImportModal: React.FC<CustomerImportModalProps> = ({
                     handleParseText(e.target.value);
                   }}
                   placeholder={`Dán nguyên bảng từ Excel AIA vào đây, ví dụ:\nU926687581\tTạm hoãn\tBảo Hiểm Liên Kết Chung AIA - Khỏe Bình An\tLê Thị Ngọc Sương\tLê Thị Ngọc Sương\t12.522.000,0\tNăm\tN/A\nU926599543\tHiệu lực\tBảo hiểm Liên Kết Chung AIA - Khỏe Trọn Vẹn\tĐỗ Văn Dân\tĐỗ Văn Dân\t26.631.000,0\tNăm\tFansipan`}
-                  className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-mono text-[11px] focus:outline-none focus:ring-2 focus:ring-aia-red/20 focus:bg-white transition-all"
+                  className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl font-numeric text-xs focus:outline-none focus:ring-2 focus:ring-aia-red/20 focus:bg-white transition-all"
                 />
               </div>
             )}
@@ -623,7 +623,7 @@ export const CustomerImportModal: React.FC<CustomerImportModalProps> = ({
 
           {/* Detected Report Info Banner */}
           {detectedReportInfo && (
-            <div className="p-2.5 bg-slate-100 border border-slate-200 rounded-xl text-slate-800 text-[11px] font-medium flex items-center gap-2">
+            <div className="p-3 bg-slate-100 border border-slate-200 rounded-xl text-slate-800 text-xs font-semibold flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-aia-red shrink-0" />
               <span className="truncate">{detectedReportInfo}</span>
             </div>
@@ -645,11 +645,11 @@ export const CustomerImportModal: React.FC<CustomerImportModalProps> = ({
                   <Check className="w-4 h-4 text-emerald-600" />
                   <span>Xem trước ({parsedRows.length} hợp đồng & khách hàng được nhận diện)</span>
                 </span>
-                <span className="text-[11px] text-slate-400">Kiểm tra thông tin trước khi nạp vào hệ thống</span>
+                <span className="text-xs text-slate-500">Kiểm tra thông tin trước khi nạp vào hệ thống</span>
               </div>
 
               <div className="max-h-56 overflow-y-auto border border-slate-200 rounded-xl shadow-2xs">
-                <table className="w-full text-left text-[11px] border-collapse">
+                <table className="w-full text-left text-xs border-collapse">
                   <thead className="bg-slate-100 sticky top-0 border-b border-slate-200 text-slate-700 font-bold uppercase text-xs">
                     <tr>
                       <th className="p-2.5">Số HĐ</th>
@@ -664,7 +664,7 @@ export const CustomerImportModal: React.FC<CustomerImportModalProps> = ({
                   <tbody className="divide-y divide-slate-100">
                     {parsedRows.map((r, i) => (
                       <tr key={i} className="hover:bg-slate-50 font-medium text-xs">
-                        <td className="p-2.5 font-mono font-bold text-aia-red">{r.policyId}</td>
+                        <td className="p-2.5 font-numeric font-bold text-aia-red">{r.policyId}</td>
                         <td className="p-2.5">
                           <span
                             className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold border ${
@@ -702,7 +702,7 @@ export const CustomerImportModal: React.FC<CustomerImportModalProps> = ({
                             <span className="text-slate-400">N/A</span>
                           )}
                         </td>
-                        <td className="p-2.5 text-right font-mono font-black text-slate-900">
+                        <td className="p-2.5 text-right font-numeric font-black text-slate-900">
                           {formatCurrencyVND(r.premiumAmount)}
                           <span className="text-xs text-slate-600 block font-semibold font-sans">
                             {r.freqRaw || 'Năm'}
@@ -718,7 +718,7 @@ export const CustomerImportModal: React.FC<CustomerImportModalProps> = ({
 
           {/* Action buttons */}
           <div className="pt-3 border-t border-slate-200 flex items-center justify-between">
-            <span className="text-[11px] text-slate-400">
+            <span className="text-xs text-slate-600 font-medium">
               {parsedRows.length > 0
                 ? `Đã nhận diện ${parsedRows.length} hợp đồng hợp lệ`
                 : 'Chưa có hợp đồng nào được chọn'}

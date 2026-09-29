@@ -190,17 +190,17 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                     <h2 className="text-lg sm:text-2xl font-black text-slate-900 tracking-tight">
                       {customer.name}
                     </h2>
-                    <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 flex items-center gap-1 shadow-2xs">
+                    <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 flex items-center gap-1 shadow-2xs">
                       <span>{customer.gender === 'Nam' ? '♂' : '♀'}</span>
                       <span>{customer.gender}</span>
                     </span>
                     {customer.segment && (
-                      <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200 flex items-center gap-1 shadow-2xs">
-                        <Sparkles className="w-3 h-3 text-amber-600" />
+                      <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200 flex items-center gap-1 shadow-2xs">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-600" />
                         <span>{customer.segment}</span>
                       </span>
                     )}
-                    <span className="text-xs font-mono font-medium text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200/60">
+                    <span className="text-xs font-numeric font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200/80">
                       {customer.id}
                     </span>
                   </div>
@@ -359,8 +359,8 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                       </div>
                     </div>
                     {customer.segment && (
-                      <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200 flex items-center gap-1">
-                        <Sparkles className="w-3 h-3 text-amber-600" />
+                      <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200 flex items-center gap-1">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-600" />
                         <span>Hạng {customer.segment}</span>
                       </span>
                     )}
@@ -380,7 +380,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                           title="Sao chép số CCCD"
                         >
                           {copiedField === 'cccd' ? (
-                            <span className="text-[10px] text-emerald-600 font-bold flex items-center gap-0.5">
+                            <span className="text-xs text-emerald-600 font-bold flex items-center gap-0.5">
                               <Check className="w-3 h-3" /> Đã chép
                             </span>
                           ) : (
@@ -444,7 +444,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                     {/* SĐT */}
                     <div className="p-3.5 rounded-xl bg-slate-50/70 border border-slate-200/60 flex items-center justify-between">
                       <div>
-                        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-0.5">
+                        <span className="text-xs font-bold text-slate-600 uppercase tracking-wider block mb-1">
                           Số điện thoại di động
                         </span>
                         <a
@@ -471,7 +471,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                           href={`https://zalo.me/${customer.phone.replace(/[^0-9]/g, '')}`}
                           target="_blank"
                           rel="noreferrer"
-                          className="px-2.5 py-1 rounded-lg bg-blue-600 text-white font-bold text-[11px] hover:bg-blue-700 transition-colors shadow-2xs"
+                          className="px-3 py-1 rounded-lg bg-blue-600 text-white font-bold text-xs hover:bg-blue-700 transition-colors shadow-2xs"
                         >
                           Zalo
                         </a>
@@ -481,7 +481,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                     {/* Email */}
                     <div className="p-3.5 rounded-xl bg-slate-50/70 border border-slate-200/60 flex items-center justify-between">
                       <div className="truncate pr-2">
-                        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-0.5">
+                        <span className="text-xs font-bold text-slate-600 uppercase tracking-wider block mb-1">
                           Thư điện tử (Email)
                         </span>
                         {customer.email ? (
@@ -517,7 +517,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                         <MapPin className="w-4 h-4" />
                       </div>
                       <div>
-                        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-0.5">
+                        <span className="text-xs font-bold text-slate-600 uppercase tracking-wider block mb-1">
                           Địa chỉ liên hệ thường trú
                         </span>
                         <span className="font-semibold text-slate-800 text-xs sm:text-sm leading-relaxed block">
@@ -536,13 +536,12 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                     </div>
                     <div>
                       <h4 className="font-bold text-slate-900 text-sm">Nghề nghiệp & Ghi chú Tư vấn</h4>
-                      <p className="text-[11px] text-slate-400">Thông tin chuyên môn và lịch sử tư vấn tài chính</p>
+                      <p className="text-xs text-slate-500">Thông tin chuyên môn và lịch sử tư vấn tài chính</p>
                     </div>
                   </div>
-
                   <div className="space-y-3.5">
                     <div className="p-3.5 rounded-xl bg-slate-50/70 border border-slate-200/60">
-                      <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block mb-1">
+                      <span className="text-xs font-bold text-slate-600 uppercase tracking-wider block mb-1">
                         Nghề nghiệp & Chức danh
                       </span>
                       <span className="font-bold text-slate-900 text-sm block">
@@ -588,7 +587,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                               {policy.id}
                             </h4>
                             <span
-                              className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${
+                              className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${
                                 POLICY_STATUS_CONFIG[policy.status]?.badgeClass
                               }`}
                             >
@@ -648,8 +647,8 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                               >
                                 <div className="flex items-center justify-between text-xs mb-1.5 gap-2">
                                   <div className="flex items-center gap-2 min-w-0">
-                                    <span className="font-bold text-slate-900 truncate">{b.name}</span>
-                                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-md border shrink-0 ${badge.color}`}>
+                                    <span className="font-bold text-slate-900 truncate text-xs sm:text-sm">{b.name}</span>
+                                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-md border shrink-0 ${badge.color}`}>
                                       {badge.label}
                                     </span>
                                   </div>
@@ -836,7 +835,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                         <div className="flex items-center justify-between text-xs">
                           <div className="flex items-center gap-2">
                             <span
-                              className={`px-2.5 py-0.5 rounded-full font-semibold text-[10px] border ${
+                              className={`px-2.5 py-1 rounded-full font-semibold text-xs border ${
                                 CARE_CHANNEL_CONFIG[act.channel]?.badgeClass
                               }`}
                             >
@@ -844,7 +843,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                             </span>
                             <span className="font-bold text-slate-900">{act.title}</span>
                           </div>
-                          <span className="text-[11px] text-slate-400 font-mono">{act.date}</span>
+                          <span className="text-xs text-slate-500 font-numeric font-medium">{act.date}</span>
                         </div>
                         <p className="text-xs text-slate-600 leading-relaxed">{act.content}</p>
                         {act.result && (
@@ -858,7 +857,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                               <strong className="text-aia-red">Việc tiếp theo:</strong> {act.nextAction}
                             </span>
                             {act.nextFollowUpDate && (
-                              <span className="font-mono text-[11px] text-slate-600">
+                              <span className="font-numeric text-xs font-semibold text-slate-700">
                                 Hẹn: {act.nextFollowUpDate}
                               </span>
                             )}

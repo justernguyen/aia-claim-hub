@@ -115,11 +115,11 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
                 <div key={prod.productName} className="p-3 rounded-xl bg-slate-50/70 border border-slate-100">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-xs mb-2">
                     <div className="flex items-center gap-2 min-w-0">
-                      <span className="w-5 h-5 rounded-md bg-slate-200 text-slate-700 font-numeric font-bold text-[10px] flex items-center justify-center shrink-0">
+                      <span className="w-5 h-5 rounded-md bg-slate-200 text-slate-800 font-numeric font-bold text-xs flex items-center justify-center shrink-0">
                         #{idx + 1}
                       </span>
                       <span className="font-bold text-slate-900 truncate">{prod.productName}</span>
-                      <span className="text-[10px] bg-white border border-slate-200 text-slate-600 px-2 py-0.5 rounded-full font-numeric shrink-0">
+                      <span className="text-xs bg-white border border-slate-200 text-slate-700 px-2 py-0.5 rounded-full font-numeric font-bold shrink-0">
                         {prod.count} HĐ
                       </span>
                     </div>
@@ -128,7 +128,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
                       <span className="font-extrabold text-slate-900">
                         {formatCurrencyVND(prod.totalPremium)}
                       </span>
-                      <span className="text-slate-400 text-[11px]">({prod.sharePct}%)</span>
+                      <span className="text-slate-600 font-bold text-xs">({prod.sharePct}%)</span>
                     </div>
                   </div>
 
@@ -144,9 +144,9 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
             )}
           </div>
 
-          <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+          <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
             <span>Định vị dòng sản phẩm cốt lõi</span>
-            <span className="font-numeric font-semibold text-slate-700">
+            <span className="font-numeric font-bold text-slate-800">
               Chiếm {topProducts.reduce((sum, p) => sum + p.sharePct, 0)}% tổng doanh số APE
             </span>
           </div>
@@ -169,43 +169,43 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
           <div className="space-y-3">
             {/* Metric 1: Avg Case Size */}
             <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-              <div className="flex items-center justify-between text-xs text-slate-500">
-                <span className="font-semibold uppercase tracking-wider text-[10px]">Quy mô HĐ bình quân (Case Size):</span>
+              <div className="flex items-center justify-between text-xs text-slate-600">
+                <span className="font-bold uppercase tracking-wider text-xs">Quy mô HĐ bình quân (Case Size):</span>
                 <ArrowUpRight className="w-3.5 h-3.5 text-emerald-600" />
               </div>
               <p className="text-lg font-black font-numeric text-slate-900 mt-1">
                 {formatShortCurrency(avgCaseSize)} <span className="text-xs font-normal text-slate-500">/HĐ</span>
               </p>
-              <p className="text-[11px] text-slate-500 mt-0.5">Phí thường niên trung bình trên 1 hợp đồng</p>
+              <p className="text-xs text-slate-600 mt-0.5">Phí thường niên trung bình trên 1 hợp đồng</p>
             </div>
 
             {/* Metric 2: Riders attach rate */}
             <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-              <div className="flex items-center justify-between text-xs text-slate-500">
-                <span className="font-semibold uppercase tracking-wider text-[10px]">Độ sâu bảo vệ (Riders/HĐ):</span>
+              <div className="flex items-center justify-between text-xs text-slate-600">
+                <span className="font-bold uppercase tracking-wider text-xs">Độ sâu bảo vệ (Riders/HĐ):</span>
                 <Shield className="w-3.5 h-3.5 text-blue-600" />
               </div>
               <p className="text-lg font-black font-numeric text-slate-900 mt-1">
                 {avgRidersPerPolicy} <span className="text-xs font-normal text-slate-500">quyền lợi kèm theo</span>
               </p>
-              <p className="text-[11px] text-slate-500 mt-0.5">Tổng {ridersCount} gói quyền lợi bổ trợ được gắn</p>
+              <p className="text-xs text-slate-600 mt-0.5">Tổng {ridersCount} gói quyền lợi bổ trợ được gắn</p>
             </div>
 
             {/* Metric 3: Client base */}
             <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-              <div className="flex items-center justify-between text-xs text-slate-500">
-                <span className="font-semibold uppercase tracking-wider text-[10px]">Tỷ lệ hợp đồng / khách hàng:</span>
+              <div className="flex items-center justify-between text-xs text-slate-600">
+                <span className="font-bold uppercase tracking-wider text-xs">Tỷ lệ hợp đồng / khách hàng:</span>
                 <Users className="w-3.5 h-3.5 text-aia-red" />
               </div>
               <p className="text-lg font-black font-numeric text-slate-900 mt-1">
                 {customers.length > 0 ? (policies.length / customers.length).toFixed(1) : '1.0'}{' '}
                 <span className="text-xs font-normal text-slate-500">HĐ / Khách</span>
               </p>
-              <p className="text-[11px] text-slate-500 mt-0.5">Bảo vệ đa thế hệ cho các gia đình</p>
+              <p className="text-xs text-slate-600 mt-0.5">Bảo vệ đa thế hệ cho các gia đình</p>
             </div>
           </div>
 
-          <div className="pt-3 border-t border-slate-100 text-[11px] text-slate-400">
+          <div className="pt-3 border-t border-slate-100 text-xs text-slate-500">
             Dữ liệu tổng hợp đồng bộ cùng CRM Đại lý
           </div>
         </div>

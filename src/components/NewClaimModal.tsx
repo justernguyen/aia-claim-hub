@@ -441,14 +441,14 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
                   <h2 className="text-sm font-bold tracking-tight text-white uppercase">
                     Cổng Tiếp Nhận AIA iClaim
                   </h2>
-                  <span className="hidden sm:inline-block px-2 py-0.5 bg-white/10 text-emerald-400 text-[10px] font-semibold rounded-full border border-emerald-500/30">
+                  <span className="hidden sm:inline-block px-2.5 py-0.5 bg-white/10 text-emerald-400 text-xs font-bold rounded-full border border-emerald-500/30">
                     Online Portal
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5 text-[11px] text-slate-300">
+                <div className="flex items-center gap-1.5 text-xs text-slate-300">
                   <span>Đại lý:</span>
                   <strong className="text-white font-semibold">Dương Thị Như Ý</strong>
-                  <span className="font-mono text-slate-400">({agentCode})</span>
+                  <span className="font-numeric font-medium text-slate-400">({agentCode})</span>
                 </div>
               </div>
             </div>
@@ -488,11 +488,11 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
               {/* Quick Fill Samples Dropdown / Buttons */}
               <div className="flex items-center gap-1 bg-white border border-rose-200 rounded-lg px-2 py-1 shadow-xs">
                 <Sparkles className="w-3.5 h-3.5 text-aia-red shrink-0" />
-                <span className="text-[11px] font-bold text-slate-700 hidden sm:inline">Mẫu:</span>
+                <span className="text-xs font-bold text-slate-700 hidden sm:inline">Mẫu:</span>
                 <button
                   type="button"
                   onClick={() => handleFillSample('outpatient')}
-                  className="px-1.5 py-0.5 rounded bg-rose-50 hover:bg-rose-100 text-aia-red text-[10px] font-semibold transition-colors"
+                  className="px-2 py-0.5 rounded bg-rose-50 hover:bg-rose-100 text-aia-red text-xs font-bold transition-colors"
                   title="Điền mẫu Ngoại trú: Viêm dạ dày BV Vinmec (601k) + Hóa đơn + Đơn thuốc"
                 >
                   Ngoại trú
@@ -500,7 +500,7 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
                 <button
                   type="button"
                   onClick={() => handleFillSample('inpatient')}
-                  className="px-1.5 py-0.5 rounded bg-blue-50 hover:bg-blue-100 text-blue-700 text-[10px] font-semibold transition-colors"
+                  className="px-2 py-0.5 rounded bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold transition-colors"
                   title="Điền mẫu Nội trú: Phẫu thuật ruột thừa BV FV (14.5tr) + Giấy ra viện"
                 >
                   Nội trú
@@ -508,7 +508,7 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
                 <button
                   type="button"
                   onClick={() => handleFillSample('dental')}
-                  className="px-1.5 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-[10px] font-semibold transition-colors"
+                  className="px-2 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-bold transition-colors"
                   title="Điền mẫu Nha khoa: Viêm nướu BV RHM (1.85tr)"
                 >
                   Nha khoa
@@ -517,9 +517,9 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
             </div>
 
             {selectedPolicy && matchingBenefit && (
-              <div className="flex items-center gap-1.5 text-[11px] bg-emerald-50 text-emerald-800 px-2.5 py-1 rounded-md border border-emerald-200 font-medium">
+              <div className="flex items-center gap-1.5 text-xs bg-emerald-50 text-emerald-800 px-3 py-1 rounded-md border border-emerald-200 font-medium">
                 <span>Hạn mức {matchingBenefit.name}:</span>
-                <strong className="font-bold text-emerald-700">
+                <strong className="font-bold text-emerald-700 font-numeric">
                   {matchingBenefit.unit === 'days'
                     ? `${matchingBenefit.remainingLimit} ngày`
                     : formatCurrencyVND(matchingBenefit.remainingLimit)}
@@ -689,11 +689,11 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
                         <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wide">
                           LỰA CHỌN QUYỀN LỢI BỒI THƯỜNG (11 Quyền Lợi Chuẩn AIA)
                         </h4>
-                        <p className="text-[11px] text-slate-500 mt-0.5">
+                        <p className="text-xs text-slate-600 mt-0.5">
                           Tích chọn quyền lợi yêu cầu để hiển thị chính xác danh mục giấy tờ cần nộp.
                         </p>
                       </div>
-                      <span className="text-[11px] font-semibold text-aia-red bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+                      <span className="text-xs font-semibold text-aia-red bg-rose-50 px-2.5 py-0.5 rounded border border-rose-200">
                         {AIA_11_BENEFITS.length} quyền lợi
                       </span>
                     </div>
@@ -732,12 +732,12 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
                                     {b.title}
                                   </p>
                                   {hasInPolicy && (
-                                    <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800">
+                                    <span className="text-[10.5px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-900 border border-emerald-300">
                                       Có trong HĐ
                                     </span>
                                   )}
                                 </div>
-                                <p className="text-[10px] text-slate-500 line-clamp-1 mt-0.5">
+                                <p className="text-xs text-slate-600 line-clamp-1 mt-0.5">
                                   {b.description}
                                 </p>
                               </div>

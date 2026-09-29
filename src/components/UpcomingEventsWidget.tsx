@@ -38,14 +38,14 @@ export const UpcomingEventsWidget: React.FC<UpcomingEventsWidgetProps> = ({
       {/* Header & Filter Tabs */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0">
             <Clock className="w-5 h-5 text-aia-red" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-900">
+            <h3 className="text-base font-bold text-slate-900">
               Trung Tâm Cảnh Báo & Sự Kiện Cần Xử Lý
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs sm:text-[13px] text-slate-500 mt-0.5">
               Tự động rà soát sinh nhật, kỳ gia hạn đóng phí và chăm sóc sau bồi thường
             </p>
           </div>
@@ -56,7 +56,7 @@ export const UpcomingEventsWidget: React.FC<UpcomingEventsWidgetProps> = ({
           <button
             type="button"
             onClick={() => setFilterType('all')}
-            className={`px-2.5 py-1 rounded-lg transition-all select-none whitespace-nowrap cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg transition-all select-none whitespace-nowrap cursor-pointer ${
               filterType === 'all'
                 ? 'bg-white shadow-xs text-slate-900 font-bold'
                 : 'text-slate-600 hover:text-slate-900'
@@ -67,37 +67,37 @@ export const UpcomingEventsWidget: React.FC<UpcomingEventsWidgetProps> = ({
           <button
             type="button"
             onClick={() => setFilterType('birthday')}
-            className={`px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 select-none whitespace-nowrap cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 select-none whitespace-nowrap cursor-pointer ${
               filterType === 'birthday'
                 ? 'bg-white shadow-xs text-aia-red font-bold'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Cake className="w-3.5 h-3.5 text-aia-red" />
+            <Cake className="w-4 h-4 text-aia-red" />
             <span>Sinh nhật ({birthdayAlerts.length})</span>
           </button>
           <button
             type="button"
             onClick={() => setFilterType('premium')}
-            className={`px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 select-none whitespace-nowrap cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 select-none whitespace-nowrap cursor-pointer ${
               filterType === 'premium'
                 ? 'bg-white shadow-xs text-amber-700 font-bold'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Calendar className="w-3.5 h-3.5 text-amber-600" />
+            <Calendar className="w-4 h-4 text-amber-600" />
             <span>Hạn nộp phí ({premiumAlerts.length})</span>
           </button>
           <button
             type="button"
             onClick={() => setFilterType('claim')}
-            className={`px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 select-none whitespace-nowrap cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 select-none whitespace-nowrap cursor-pointer ${
               filterType === 'claim'
                 ? 'bg-white shadow-xs text-emerald-700 font-bold'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <HeartHandshake className="w-3.5 h-3.5 text-emerald-600" />
+            <HeartHandshake className="w-4 h-4 text-emerald-600" />
             <span>Sau Claim ({postClaimAlerts.length})</span>
           </button>
         </div>
@@ -105,7 +105,7 @@ export const UpcomingEventsWidget: React.FC<UpcomingEventsWidgetProps> = ({
 
       {/* Alert List - Clean Executive Cards */}
       {displayAlerts.length === 0 ? (
-        <div className="text-center py-10 text-slate-400 text-xs">
+        <div className="text-center py-10 text-slate-400 text-sm">
           Không có sự kiện hoặc cảnh báo nào trong danh mục này.
         </div>
       ) : (
@@ -118,40 +118,40 @@ export const UpcomingEventsWidget: React.FC<UpcomingEventsWidgetProps> = ({
             return (
               <div
                 key={alert.id}
-                className="bg-white rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-md hover:border-slate-300 transition-all p-4 sm:p-4.5 flex flex-col justify-between"
+                className="bg-white rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-md hover:border-slate-300 transition-all p-4 sm:p-5 flex flex-col justify-between"
               >
                 <div>
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
                       {isBirthday ? (
-                        <div className="w-8 h-8 rounded-xl bg-rose-50 text-aia-red flex items-center justify-center shrink-0">
-                          <Cake className="w-4 h-4" />
+                        <div className="w-10 h-10 rounded-xl bg-rose-50 text-aia-red flex items-center justify-center shrink-0">
+                          <Cake className="w-5 h-5" />
                         </div>
                       ) : isGrace ? (
-                        <div className="w-8 h-8 rounded-xl bg-rose-50 text-aia-red flex items-center justify-center shrink-0">
-                          <AlertTriangle className="w-4 h-4" />
+                        <div className="w-10 h-10 rounded-xl bg-rose-50 text-aia-red flex items-center justify-center shrink-0">
+                          <AlertTriangle className="w-5 h-5" />
                         </div>
                       ) : isPremium ? (
-                        <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
-                          <Calendar className="w-4 h-4" />
+                        <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
+                          <Calendar className="w-5 h-5" />
                         </div>
                       ) : (
-                        <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
-                          <HeartHandshake className="w-4 h-4" />
+                        <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
+                          <HeartHandshake className="w-5 h-5" />
                         </div>
                       )}
 
                       <div className="min-w-0 flex-1">
                         <h4
                           onClick={() => onSelectCustomer?.(alert.customerId)}
-                          className="text-xs sm:text-sm font-bold text-slate-900 hover:text-aia-red cursor-pointer transition-colors truncate"
+                          className="text-sm sm:text-base font-bold text-slate-900 hover:text-aia-red cursor-pointer transition-colors truncate leading-snug"
                           title={alert.customerName}
                         >
                           {alert.customerName}
                         </h4>
                         {alert.policyId && (
-                          <p className="text-[10.5px] text-slate-400 font-mono flex items-center gap-1 mt-0.5 truncate">
-                            <ShieldCheck className="w-3 h-3 text-aia-red shrink-0" />
+                          <p className="text-xs text-slate-500 font-mono font-medium flex items-center gap-1.5 mt-0.5 truncate">
+                            <ShieldCheck className="w-3.5 h-3.5 text-aia-red shrink-0" />
                             <span>{alert.policyId}</span>
                           </p>
                         )}
@@ -159,12 +159,12 @@ export const UpcomingEventsWidget: React.FC<UpcomingEventsWidgetProps> = ({
                     </div>
 
                     <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
+                      className={`text-xs font-bold px-2.5 py-1 rounded-full shrink-0 ${
                         alert.severity === 'urgent'
                           ? 'bg-aia-red text-white shadow-2xs'
                           : alert.severity === 'warning'
                           ? 'bg-amber-50 text-amber-800 border border-amber-300 font-extrabold'
-                          : 'bg-slate-100 text-slate-700'
+                          : 'bg-slate-100 text-slate-700 border border-slate-200/70'
                       }`}
                     >
                       {alert.daysRemaining <= 0
@@ -173,38 +173,38 @@ export const UpcomingEventsWidget: React.FC<UpcomingEventsWidgetProps> = ({
                     </span>
                   </div>
 
-                  <p className="text-xs font-semibold text-slate-800 mt-2.5 leading-snug">
+                  <p className="text-sm sm:text-[14.5px] font-bold text-slate-900 mt-3 leading-snug">
                     {alert.title}
                   </p>
-                  <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
+                  <p className="text-[13px] text-slate-600 mt-1.5 line-clamp-2 leading-relaxed font-normal">
                     {alert.description}
                   </p>
                 </div>
 
                 {/* Quick actions for each alert */}
-                <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <span className="text-[11px] text-slate-400 font-mono">
-                    Hạn: {alert.dueDate}
+                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                  <span className="text-xs text-slate-500 font-mono font-medium">
+                    Hạn: <span className="font-semibold text-slate-700">{alert.dueDate}</span>
                   </span>
 
-                  <div className="flex items-center gap-1.5 shrink-0">
+                  <div className="flex items-center gap-2 shrink-0">
                     {alert.customerPhone && (
                       <>
                         <a
                           href={`tel:${alert.customerPhone.replace(/\s+/g, '')}`}
-                          className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 hover:border-emerald-300 transition-colors shadow-2xs"
+                          className="p-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 hover:border-emerald-300 transition-colors shadow-2xs cursor-pointer"
                           title={`Gọi điện ${alert.customerPhone}`}
                         >
-                          <Phone className="w-3.5 h-3.5" />
+                          <Phone className="w-4 h-4" />
                         </a>
                         <a
                           href={`https://zalo.me/${alert.customerPhone.replace(/[^0-9]/g, '')}`}
                           target="_blank"
                           rel="noreferrer"
-                          className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-600 hover:text-blue-700 hover:bg-blue-50 hover:border-blue-300 transition-colors shadow-2xs"
+                          className="p-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-600 hover:text-blue-700 hover:bg-blue-50 hover:border-blue-300 transition-colors shadow-2xs cursor-pointer"
                           title="Nhắn tin Zalo"
                         >
-                          <MessageSquare className="w-3.5 h-3.5" />
+                          <MessageSquare className="w-4 h-4" />
                         </a>
                       </>
                     )}

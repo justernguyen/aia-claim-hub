@@ -90,7 +90,7 @@ export const ClaimKanbanView: React.FC<ClaimKanbanViewProps> = ({
                   {col.title}
                 </h3>
               </div>
-              <span className={`text-[11px] font-extrabold px-2 py-0.5 rounded-full ${col.color}`}>
+              <span className={`text-xs font-bold font-numeric px-2.5 py-0.5 rounded-full ${col.color}`}>
                 {columnClaims.length}
               </span>
             </div>
@@ -146,7 +146,7 @@ export const ClaimKanbanView: React.FC<ClaimKanbanViewProps> = ({
                           </span>
                         </div>
                         <span
-                          className="text-[11px] font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200/90 shrink truncate max-w-[84px]"
+                          className="text-xs font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded border border-slate-200/90 shrink truncate max-w-[90px]"
                           title={CLAIM_TYPE_LABELS[claim.claimType]}
                         >
                           {CLAIM_TYPE_LABELS[claim.claimType]}
@@ -187,7 +187,7 @@ export const ClaimKanbanView: React.FC<ClaimKanbanViewProps> = ({
                       )}
 
                       {/* Document Status pill */}
-                      <div className="mt-2.5 flex items-center justify-between gap-1 text-[10px]">
+                      <div className="mt-2.5 flex items-center justify-between gap-1 text-xs">
                         <span
                           className={`inline-flex items-center gap-1 font-semibold px-2 py-0.5 rounded-full border ${
                             hasMissing
@@ -196,15 +196,14 @@ export const ClaimKanbanView: React.FC<ClaimKanbanViewProps> = ({
                           }`}
                         >
                           {hasMissing ? (
-                            <AlertCircle className="w-2.5 h-2.5 text-amber-600" />
+                            <AlertCircle className="w-3 h-3 text-amber-600" />
                           ) : (
-                            <CheckCircle2 className="w-2.5 h-2.5 text-emerald-600" />
+                            <CheckCircle2 className="w-3 h-3 text-emerald-600" />
                           )}
                           <span>
                             {verifiedDocs}/{totalDocs} CT
                           </span>
                         </span>
-
                         {/* Move Status Dropdown */}
                         <div
                           onClick={(e) => e.stopPropagation()}
@@ -213,7 +212,7 @@ export const ClaimKanbanView: React.FC<ClaimKanbanViewProps> = ({
                           <select
                             value={claim.status}
                             onChange={(e) => onUpdateStatus(claim.id, e.target.value as ClaimStatus)}
-                            className="text-[10px] font-semibold bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded px-1 py-0.5 text-slate-600 cursor-pointer focus:outline-none"
+                            className="text-xs font-medium bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg px-2 py-0.8 text-slate-700 cursor-pointer focus:outline-none"
                             title="Chuyển trạng thái"
                           >
                             <option value="intake">Tiếp nhận</option>

@@ -46,7 +46,7 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({
             <div>
               <h4 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                 <span>Cảnh báo SLA Thẩm định AIA: Có {stats.overdueSlaCount} hồ sơ đã vượt quá 5 ngày làm việc</span>
-                <span className="text-[10px] bg-aia-red text-white font-extrabold px-2 py-0.5 rounded-full">
+                <span className="text-xs bg-aia-red text-white font-extrabold px-2.5 py-0.5 rounded-full">
                   Ưu tiên xử lý
                 </span>
               </h4>
@@ -115,7 +115,7 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({
               <p className="text-xl sm:text-2xl font-black text-slate-900 font-numeric">
                 {stats.pendingDocsCount}
               </p>
-              <span className="text-[11px] font-bold text-amber-900 bg-amber-100 border border-amber-300 px-2 py-0.2 rounded-full">
+              <span className="text-xs font-bold text-amber-900 bg-amber-100 border border-amber-300 px-2.5 py-0.5 rounded-full">
                 Cần bổ sung
               </span>
             </div>
@@ -146,11 +146,11 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({
                 {stats.underwritingCount}
               </p>
               {stats.overdueSlaCount > 0 ? (
-                <span className="text-[11px] font-bold text-rose-800 bg-rose-100 px-2 py-0.2 rounded-full border border-rose-300">
+                <span className="text-xs font-bold text-rose-800 bg-rose-100 px-2.5 py-0.5 rounded-full border border-rose-300">
                   {stats.overdueSlaCount} trễ hạn
                 </span>
               ) : (
-                <span className="text-[11px] font-bold text-slate-700 bg-slate-100 px-2 py-0.2 rounded-full border border-slate-200">
+                <span className="text-xs font-bold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">
                   Trong hạn SLA
                 </span>
               )}
@@ -181,8 +181,8 @@ export const MetricsOverview: React.FC<MetricsOverviewProps> = ({
               <p className="text-xl sm:text-2xl font-black text-slate-900 font-numeric truncate">
                 {formatShortCurrency(stats.totalApproved)}
               </p>
-              <div className="flex items-center gap-0.5 text-[11px] font-bold text-emerald-900 bg-emerald-100 px-2 py-0.2 rounded-full font-numeric border border-emerald-300">
-                <TrendingUp className="w-3 h-3" />
+              <div className="flex items-center gap-1 text-xs font-bold text-emerald-900 bg-emerald-100 px-2.5 py-0.5 rounded-full font-numeric border border-emerald-300">
+                <TrendingUp className="w-3.5 h-3.5" />
                 <span>{stats.approvalRate}%</span>
               </div>
             </div>

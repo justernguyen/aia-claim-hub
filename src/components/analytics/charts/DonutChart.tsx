@@ -176,12 +176,12 @@ export const DonutChart: React.FC<DonutChartProps> = ({ policies, onSelectStatus
             {activeSegment ? (
               <>
                 <span className="text-2xl font-black font-numeric text-slate-900 tracking-tight">
-                  {activeSegment.count} <span className="text-xs font-semibold text-slate-400">HĐ</span>
+                  {activeSegment.count} <span className="text-xs font-bold text-slate-500">HĐ</span>
                 </span>
-                <span className="text-[11px] font-bold text-slate-500 mt-0.5 max-w-[100px] truncate">
+                <span className="text-xs font-bold text-slate-700 mt-0.5 max-w-[110px] truncate">
                   {activeSegment.label}
                 </span>
-                <span className="text-[10px] font-extrabold text-aia-red font-numeric">
+                <span className="text-xs font-black text-aia-red font-numeric">
                   {activeSegment.pct}%
                 </span>
               </>
@@ -190,7 +190,7 @@ export const DonutChart: React.FC<DonutChartProps> = ({ policies, onSelectStatus
                 <span className="text-2xl font-black font-numeric text-slate-900">
                   {totalCount}
                 </span>
-                <span className="text-xs text-slate-400 font-medium">Hợp đồng</span>
+                <span className="text-xs text-slate-600 font-bold">Hợp đồng</span>
               </>
             )}
           </div>
@@ -218,14 +218,14 @@ export const DonutChart: React.FC<DonutChartProps> = ({ policies, onSelectStatus
                     <span className="font-bold text-slate-800 truncate">{seg.label}</span>
                   </div>
                   <div className="flex items-center gap-2 shrink-0 font-numeric">
-                    <strong className="text-slate-900">{seg.count} HĐ</strong>
-                    <span className="text-slate-400 text-[11px]">({seg.pct}%)</span>
+                    <strong className="text-slate-900 font-bold">{seg.count} HĐ</strong>
+                    <span className="text-slate-600 font-bold text-xs">({seg.pct}%)</span>
                   </div>
                 </div>
 
-                <div className="mt-1.5 flex items-center justify-between text-[11px] text-slate-500 pt-1.5 border-t border-slate-100 font-numeric">
-                  <span className="text-[10px] text-slate-400 uppercase tracking-wider">Phí thường niên:</span>
-                  <span className="font-semibold text-slate-700">
+                <div className="mt-1.5 flex items-center justify-between text-xs text-slate-600 pt-1.5 border-t border-slate-100 font-numeric">
+                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Phí thường niên:</span>
+                  <span className="font-bold text-slate-800">
                     {formatShortCurrency(seg.premiumSum)}
                   </span>
                 </div>
@@ -236,10 +236,10 @@ export const DonutChart: React.FC<DonutChartProps> = ({ policies, onSelectStatus
       </div>
 
       {/* Footer Insight */}
-      <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-        <div className="flex items-center gap-1.5 text-slate-500">
+      <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+        <div className="flex items-center gap-1.5 text-slate-600">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-          <span>Tỷ lệ hợp đồng hiệu lực: <strong className="text-slate-900 font-numeric">{segments[0]?.pct || 0}%</strong></span>
+          <span>Tỷ lệ hợp đồng hiệu lực: <strong className="text-slate-900 font-numeric font-bold">{segments[0]?.pct || 0}%</strong></span>
         </div>
         {segments.find((s) => s.status === 'pending_payment' && s.count > 0) && (
           <div className="flex items-center gap-1 text-aia-red font-semibold">

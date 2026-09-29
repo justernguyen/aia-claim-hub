@@ -156,7 +156,7 @@ export const CareScheduleSheet: React.FC<CareScheduleSheetProps> = ({
       <div className="overflow-x-auto border-t border-slate-200">
         <table className="w-full min-w-[960px] text-left text-xs border-collapse">
           <thead>
-            <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
+            <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-xs">
               <th className="py-3 px-2 w-11 text-center whitespace-nowrap">Xong</th>
               <th className="py-3 px-2.5 w-24 whitespace-nowrap">Ngày</th>
               <th className="py-3 px-3 min-w-[135px] whitespace-nowrap">Khách hàng</th>
@@ -206,7 +206,7 @@ export const CareScheduleSheet: React.FC<CareScheduleSheetProps> = ({
                     </td>
 
                     {/* Ngày */}
-                    <td className="py-3 px-2.5 font-mono text-slate-500 whitespace-nowrap">
+                    <td className="py-3 px-2.5 font-numeric text-xs font-medium text-slate-600 whitespace-nowrap">
                       {act.date}
                     </td>
 
@@ -214,12 +214,12 @@ export const CareScheduleSheet: React.FC<CareScheduleSheetProps> = ({
                     <td className="py-3 px-3">
                       <div
                         onClick={() => onSelectCustomer?.(act.customerId)}
-                        className="font-bold text-slate-900 hover:text-aia-red cursor-pointer transition-colors"
+                        className="font-bold text-slate-900 text-sm hover:text-aia-red cursor-pointer transition-colors"
                       >
                         {act.customerName}
                       </div>
                       {act.policyId && (
-                        <div className="text-[10px] text-slate-400 font-mono">
+                        <div className="text-xs text-slate-500 font-numeric font-medium">
                           {act.policyId}
                         </div>
                       )}
@@ -228,7 +228,7 @@ export const CareScheduleSheet: React.FC<CareScheduleSheetProps> = ({
                     {/* Kênh */}
                     <td className="py-3 px-2.5 whitespace-nowrap">
                       <span
-                        className={`inline-flex items-center gap-1 px-2.5 py-0.8 rounded-md text-[10px] font-semibold border ${
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold border ${
                           CARE_CHANNEL_CONFIG[act.channel]?.badgeClass
                         }`}
                       >
@@ -242,29 +242,29 @@ export const CareScheduleSheet: React.FC<CareScheduleSheetProps> = ({
                       <div className={`font-semibold ${isCompleted ? 'text-slate-500 line-through' : 'text-slate-800'}`}>
                         {act.title}
                       </div>
-                      <div className="text-[11px] text-slate-500 mt-0.5 line-clamp-2">
+                      <div className="text-xs text-slate-600 mt-0.5 line-clamp-2">
                         {act.content}
                       </div>
                     </td>
 
                     {/* Kết quả */}
-                    <td className="py-3 px-3 text-slate-600 text-[11px]">
-                      {act.result || <span className="text-slate-300 italic">Chưa có kết quả</span>}
+                    <td className="py-3 px-3 text-slate-700 text-xs">
+                      {act.result || <span className="text-slate-400 italic text-xs">Chưa có kết quả</span>}
                     </td>
 
                     {/* Việc cần làm tiếp theo */}
                     <td className="py-3 px-3">
                       {act.nextAction ? (
-                        <div className="bg-emerald-50 text-emerald-800 border border-emerald-200/80 px-2 py-1 rounded-lg text-[11px] font-semibold">
+                        <div className="bg-emerald-50 text-emerald-800 border border-emerald-200/80 px-2.5 py-1 rounded-lg text-xs font-semibold">
                           {act.nextAction}
                         </div>
                       ) : (
-                        <span className="text-slate-300 text-[11px] italic">Không có việc cần làm</span>
+                        <span className="text-slate-400 text-xs italic">Không có việc cần làm</span>
                       )}
                     </td>
 
                     {/* Ngày hẹn tiếp theo */}
-                    <td className="py-3 px-2.5 font-mono text-[11px] text-slate-500 whitespace-nowrap">
+                    <td className="py-3 px-2.5 font-numeric text-xs text-slate-600 whitespace-nowrap">
                       {act.nextFollowUpDate || '-'}
                     </td>
                     {/* Nút xóa */}

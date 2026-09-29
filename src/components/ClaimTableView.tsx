@@ -46,7 +46,7 @@ export const ClaimTableView: React.FC<ClaimTableViewProps> = ({
       <div className="overflow-x-auto">
         <table className="w-full min-w-[1240px] text-left text-xs border-collapse">
           <thead>
-            <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-600 font-semibold uppercase tracking-wider text-[11px]">
+            <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-xs">
               <th className="py-3.5 px-4 min-w-[150px] whitespace-nowrap">Mã Claim / Ngày nộp</th>
               <th className="py-3.5 px-4 min-w-[210px] whitespace-nowrap">Khách hàng & HĐBH</th>
               <th className="py-3.5 px-4 min-w-[200px] whitespace-nowrap">Sản phẩm & Quyền lợi</th>
@@ -75,62 +75,61 @@ export const ClaimTableView: React.FC<ClaimTableViewProps> = ({
                     <div className="font-bold text-slate-900 group-hover:text-aia-red transition-colors flex items-center gap-1.5 font-numeric">
                       <span className="whitespace-nowrap">{claim.id}</span>
                     </div>
-                    <div className="text-[11px] text-slate-500 flex items-center gap-1 mt-0.5 whitespace-nowrap">
-                      <Calendar className="w-3 h-3 text-slate-400 shrink-0" />
+                    <div className="text-xs text-slate-500 font-numeric flex items-center gap-1 mt-0.5 whitespace-nowrap">
+                      <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                       <span>{formatDate(claim.intakeDate)}</span>
                     </div>
                   </td>
 
                   {/* Khách hàng & Số HĐ */}
                   <td className="py-3.5 px-4 whitespace-nowrap">
-                    <div className="font-bold text-slate-900 whitespace-nowrap">{claim.customerName}</div>
-                    <div className="text-[11px] text-slate-500 font-numeric flex items-center gap-1.5 mt-0.5 whitespace-nowrap">
-                      <span className="text-aia-red font-semibold whitespace-nowrap tracking-tight">{claim.policyNumber}</span>
+                    <div className="font-bold text-slate-900 text-sm whitespace-nowrap">{claim.customerName}</div>
+                    <div className="text-xs text-slate-600 font-numeric flex items-center gap-1.5 mt-0.5 whitespace-nowrap">
+                      <span className="text-aia-red font-bold whitespace-nowrap tracking-tight">{claim.policyNumber}</span>
                       <span className="text-slate-300">•</span>
-                      <span className="inline-block px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded text-[10px] font-sans font-medium whitespace-nowrap">{claim.relationship}</span>
+                      <span className="inline-block px-2 py-0.5 bg-slate-100 text-slate-700 rounded text-xs font-sans font-semibold whitespace-nowrap">{claim.relationship}</span>
                     </div>
                     {claim.insuredPersonName !== claim.customerName && (
-                      <div className="text-[10px] text-slate-400 italic whitespace-nowrap mt-0.5">
-                        NĐBH: {claim.insuredPersonName}
+                      <div className="text-xs text-slate-600 font-medium whitespace-nowrap mt-1 bg-slate-100/70 px-2 py-0.5 rounded border border-slate-200/70 inline-block">
+                        NĐBH: <strong className="text-slate-800">{claim.insuredPersonName}</strong>
                       </div>
                     )}
                   </td>
-
                   {/* Sản phẩm & Quyền lợi */}
                   <td className="py-3.5 px-4">
                     <div className="font-medium text-slate-800 truncate max-w-[210px]" title={claim.productName}>
                       {claim.productName}
                     </div>
-                    <span className="inline-block mt-1 text-[10px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200 whitespace-nowrap">
+                    <span className="inline-block mt-1 text-xs font-bold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200 whitespace-nowrap">
                       {CLAIM_TYPE_LABELS[claim.claimType]}
                     </span>
                   </td>
 
                   {/* Bệnh viện & Chẩn đoán */}
                   <td className="py-3.5 px-4">
-                    <div className="font-medium text-slate-900 flex items-center gap-1.5 truncate max-w-[260px]" title={claim.hospitalName}>
-                      <Building2 className="w-3 h-3 text-slate-400 shrink-0" />
+                    <div className="font-semibold text-slate-900 text-xs sm:text-[13px] flex items-center gap-1.5 truncate max-w-[260px]" title={claim.hospitalName}>
+                      <Building2 className="w-3.5 h-3.5 text-slate-500 shrink-0" />
                       <span className="truncate">{claim.hospitalName}</span>
                     </div>
-                    <div className="text-[11px] text-slate-500 truncate max-w-[260px] mt-0.5" title={claim.diagnosis}>
+                    <div className="text-xs text-slate-600 font-medium truncate max-w-[260px] mt-0.5" title={claim.diagnosis}>
                       {claim.diagnosis}
                     </div>
                   </td>
                   {/* Số tiền Yêu cầu / Duyệt */}
                   <td className="py-3.5 px-4 text-right whitespace-nowrap">
-                    <div className="font-bold text-slate-900 font-numeric whitespace-nowrap">
+                    <div className="font-extrabold text-slate-900 text-sm font-numeric whitespace-nowrap">
                       {formatCurrencyVND(claim.claimedAmount)}
                     </div>
                     {claim.approvedAmount > 0 ? (
-                      <div className="text-[11px] text-emerald-600 font-semibold font-numeric mt-0.5 whitespace-nowrap">
+                      <div className="text-xs sm:text-[13px] text-emerald-700 font-bold font-numeric mt-0.5 whitespace-nowrap">
                         Duyệt: {formatCurrencyVND(claim.approvedAmount)}
                       </div>
                     ) : claim.status === 'rejected' ? (
-                      <div className="text-[11px] text-rose-600 font-semibold mt-0.5 whitespace-nowrap">
+                      <div className="text-xs text-rose-700 font-bold mt-0.5 whitespace-nowrap">
                         Từ chối chi trả
                       </div>
                     ) : (
-                      <div className="text-[11px] text-slate-400 mt-0.5 whitespace-nowrap">
+                      <div className="text-xs text-slate-500 font-medium mt-0.5 whitespace-nowrap">
                         Đang thẩm định
                       </div>
                     )}
@@ -139,17 +138,17 @@ export const ClaimTableView: React.FC<ClaimTableViewProps> = ({
                   {/* Trạng thái chứng từ */}
                   <td className="py-3.5 px-4 text-center whitespace-nowrap">
                     {verifiedDocs === totalDocs && totalDocs > 0 ? (
-                      <div className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full border whitespace-nowrap bg-emerald-50 text-emerald-800 border-emerald-200 shadow-2xs">
+                      <div className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full border whitespace-nowrap bg-emerald-50 text-emerald-800 border-emerald-200 shadow-2xs">
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                         <span className="whitespace-nowrap">{verifiedDocs}/{totalDocs} hợp lệ</span>
                       </div>
                     ) : hasMissing ? (
-                      <div className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full border whitespace-nowrap bg-amber-50 text-amber-800 border-amber-200 shadow-2xs">
+                      <div className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full border whitespace-nowrap bg-amber-50 text-amber-800 border-amber-200 shadow-2xs">
                         <AlertCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
                         <span className="whitespace-nowrap">{verifiedDocs}/{totalDocs} hợp lệ</span>
                       </div>
                     ) : (
-                      <div className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full border whitespace-nowrap bg-blue-50 text-blue-800 border-blue-200 shadow-2xs">
+                      <div className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full border whitespace-nowrap bg-blue-50 text-blue-800 border-blue-200 shadow-2xs">
                         <Clock className="w-3.5 h-3.5 text-blue-600 shrink-0" />
                         <span className="whitespace-nowrap">{verifiedDocs}/{totalDocs} đã nộp</span>
                       </div>
@@ -205,7 +204,7 @@ export const ClaimTableView: React.FC<ClaimTableViewProps> = ({
       </div>
       <div className="bg-slate-50/80 px-4 py-2.5 border-t border-slate-200 text-xs text-slate-500 flex items-center justify-between">
         <span>Hiển thị <strong>{claims.length}</strong> hồ sơ bồi thường</span>
-        <span className="text-[11px]">Nhấp vào bất kỳ dòng nào để mở hồ sơ chi tiết</span>
+        <span className="text-xs text-slate-500">Nhấp vào bất kỳ dòng nào để mở hồ sơ chi tiết</span>
       </div>
     </div>
   );

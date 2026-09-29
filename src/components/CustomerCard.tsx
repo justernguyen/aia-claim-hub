@@ -79,7 +79,7 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
               </h3>
               <p className="text-xs text-slate-500 font-medium truncate mt-1 flex items-center gap-1.5" title={`${customer.gender ? customer.gender + ' • ' : ''}${customer.occupation || 'Khách hàng cá nhân'}`}>
                 {customer.gender && (
-                  <span className="text-[10px] font-semibold px-1.5 py-0.2 rounded bg-slate-100 text-slate-600 shrink-0">
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 shrink-0">
                     {customer.gender}
                   </span>
                 )}
@@ -90,7 +90,7 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
 
           {primaryPolicy && (
             <span
-              className={`text-[10px] sm:text-[11px] font-semibold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border flex items-center gap-1 whitespace-nowrap shrink-0 ${
+              className={`text-xs font-semibold px-2.5 py-1 rounded-full border flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                 POLICY_STATUS_CONFIG[primaryPolicy.status]?.badgeClass || 'bg-slate-100 text-slate-700'
               }`}
             >
@@ -108,11 +108,11 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
         {/* Contact & Location Info - High-Contrast Pro Legibility */}
         <div className="mt-3.5 space-y-1.5 text-xs">
           <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-1.5 font-numeric font-bold text-slate-800 min-w-0 text-xs sm:text-[13px]">
+            <div className="flex items-center gap-1.5 font-numeric font-bold text-slate-900 min-w-0 text-xs sm:text-sm">
               <Phone className="w-3.5 h-3.5 text-slate-500 shrink-0" />
               <span className="truncate">{formatPhone(customer.phone)}</span>
             </div>
-            <div className="flex items-center gap-1 font-numeric text-xs font-semibold text-slate-700 shrink-0">
+            <div className="flex items-center gap-1 font-numeric text-xs font-bold text-slate-800 shrink-0">
               <CreditCard className="w-3.5 h-3.5 text-slate-500 shrink-0" />
               <span>{formatCCCD(customer.cccd)}</span>
             </div>
@@ -129,7 +129,7 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
             <ShieldCheck className="w-4 h-4 text-aia-red shrink-0" />
             <span className="font-bold text-slate-900">{customerPolicies.length} Hợp đồng</span>
             {primaryPolicy && (
-              <span className="text-xs font-mono font-semibold text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">
+              <span className="text-xs font-numeric font-bold text-slate-800 bg-slate-100 px-2 py-0.5 rounded">
                 {primaryPolicy.id}
               </span>
             )}
@@ -154,11 +154,11 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
               </div>
               <div className="flex items-center gap-1 shrink-0">
                 {primaryPolicy && primaryPolicy.benefits && primaryPolicy.benefits.length > 1 && (
-                  <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-rose-50 text-aia-red border border-rose-200/80">
+                  <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-rose-50 text-aia-red border border-rose-200/80">
                     +{primaryPolicy.benefits.length - 1} bổ trợ
                   </span>
                 )}
-                <span className={`font-bold font-numeric text-[11px] px-2 py-0.5 rounded-full shrink-0 border ${
+                <span className={`font-bold font-numeric text-xs px-2.5 py-0.5 rounded-full shrink-0 border ${
                   usedPercentage > 80
                     ? 'bg-rose-100 text-rose-900 border-rose-300 font-extrabold'
                     : usedPercentage > 0
@@ -201,7 +201,7 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
         )}
         {/* Warning if pending payment or grace period */}
         {primaryPolicy?.status === 'pending_payment' && primaryPolicy.gracePeriodEnd && (
-          <div className="mt-3 px-3 py-1.5 rounded-lg bg-rose-50 border border-rose-200/80 text-[11px] text-aia-red flex items-center gap-1.5 font-medium">
+          <div className="mt-3 px-3 py-1.5 rounded-lg bg-rose-50 border border-rose-200/80 text-xs text-aia-red flex items-center gap-1.5 font-semibold">
             <AlertTriangle className="w-3.5 h-3.5 text-aia-red shrink-0" />
             <span className="truncate">
               Gia hạn nộp phí đến {primaryPolicy.gracePeriodEnd}

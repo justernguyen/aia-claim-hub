@@ -190,7 +190,7 @@ export const QuotaRadarTab: React.FC<QuotaRadarTabProps> = ({
       <div className="overflow-x-auto border border-slate-200 rounded-xl">
         <table className="w-full min-w-[960px] text-left text-xs border-collapse">
           <thead>
-            <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
+            <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-xs">
               <th className="py-3 px-3 min-w-[160px] whitespace-nowrap">Khách hàng & HĐ</th>
               <th className="py-3 px-3 min-w-[180px] whitespace-nowrap">Quyền lợi bảo hiểm</th>
               <th className="py-3 px-3 min-w-[130px] text-right whitespace-nowrap">Hạn mức năm</th>
@@ -219,13 +219,13 @@ export const QuotaRadarTab: React.FC<QuotaRadarTabProps> = ({
                       <span>{row.customerName}</span>
                       <ExternalLink className="w-3 h-3 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
-                    <div className="text-[10px] text-slate-400 font-numeric">{row.policyId}</div>
+                    <div className="text-xs text-slate-500 font-numeric font-medium">{row.policyId}</div>
                   </td>
 
                   {/* Quyền lợi */}
                   <td className="py-3 px-3">
                     <span className="font-semibold text-slate-800">{row.benefitName}</span>
-                    <span className="text-[10px] text-slate-400 block truncate">{row.productName}</span>
+                    <span className="text-xs text-slate-500 block truncate">{row.productName}</span>
                   </td>
 
                   {/* Hạn mức năm */}
@@ -240,8 +240,8 @@ export const QuotaRadarTab: React.FC<QuotaRadarTabProps> = ({
 
                   {/* Tỷ lệ sử dụng */}
                   <td className="py-3 px-3">
-                    <div className="flex items-center justify-between text-[11px] mb-1 font-numeric">
-                      <span className="text-slate-700 font-bold">{row.usedPercentage}%</span>
+                    <div className="flex items-center justify-between text-xs mb-1 font-numeric">
+                      <span className="text-slate-800 font-bold">{row.usedPercentage}%</span>
                     </div>
                     <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
                       <div
@@ -265,12 +265,12 @@ export const QuotaRadarTab: React.FC<QuotaRadarTabProps> = ({
                   {/* Đánh giá & Khuyến nghị */}
                   <td className="py-3 px-3">
                     <div
-                      className={`p-2 rounded-lg text-[11px] flex items-start gap-1.5 ${
+                      className={`p-2.5 rounded-lg text-xs flex items-start gap-1.5 ${
                         row.status === 'danger'
-                          ? 'bg-rose-50 text-rose-800 border border-rose-200'
+                          ? 'bg-rose-50 text-rose-800 border border-rose-200 font-medium'
                           : row.status === 'warning'
-                          ? 'bg-amber-50 text-amber-800 border border-amber-200'
-                          : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                          ? 'bg-amber-50 text-amber-800 border border-amber-200 font-medium'
+                          : 'bg-emerald-50 text-emerald-800 border border-emerald-200 font-medium'
                       }`}
                     >
                       {row.status === 'danger' ? (

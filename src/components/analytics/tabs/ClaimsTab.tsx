@@ -167,47 +167,46 @@ export const ClaimsTab: React.FC<ClaimsTabProps> = ({ claims, kpis }) => {
           <div className="space-y-3">
             {/* SLA 1: Turnaround Time */}
             <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              <div className="text-xs font-bold text-slate-600 uppercase tracking-wider">
                 Thời gian xử lý trung bình (TAT):
               </div>
               <div className="text-lg font-black text-slate-900 font-numeric mt-0.5">
                 3.2 <span className="text-xs font-normal text-slate-500">ngày làm việc</span>
               </div>
-              <div className="text-[11px] text-emerald-600 font-medium mt-0.5">
+              <div className="text-xs text-emerald-700 font-semibold mt-0.5">
                 Nhanh hơn 36% so với SLA chuẩn 5 ngày
               </div>
             </div>
 
             {/* SLA 2: Digital Submission Rate */}
             <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              <div className="text-xs font-bold text-slate-600 uppercase tracking-wider">
                 Tỷ lệ nộp hồ sơ eClaim điện tử:
               </div>
               <div className="text-lg font-black text-slate-900 font-numeric mt-0.5">
                 100% <span className="text-xs font-normal text-slate-500">qua AIA iClaim</span>
               </div>
-              <div className="text-[11px] text-slate-500 mt-0.5">
+              <div className="text-xs text-slate-600 mt-0.5">
                 Không phát sinh thất lạc chứng từ gốc
               </div>
             </div>
 
             {/* SLA 3: Rejection rate */}
             <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
-              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              <div className="text-xs font-bold text-slate-600 uppercase tracking-wider">
                 Tỷ lệ từ chối chi trả:
               </div>
               <div className="text-lg font-black text-slate-900 font-numeric mt-0.5">
                 {totalClaims > 0 ? Math.round((rejectedClaims.length / totalClaims) * 100) : 0}%{' '}
                 <span className="text-xs font-normal text-slate-500">({rejectedClaims.length} ca)</span>
               </div>
-              <div className="text-[11px] text-slate-500 mt-0.5">
+              <div className="text-xs text-slate-600 mt-0.5">
                 Chủ yếu do bệnh tồn tại trước hoặc thời gian chờ
               </div>
             </div>
           </div>
 
-          <div className="pt-3 border-t border-slate-100 text-[11px] text-slate-400">
-            Đồng bộ tiêu chuẩn Dịch vụ Khách hàng AIA
+          <div className="pt-3 border-t border-slate-100 text-xs text-slate-500">
           </div>
         </div>
 
@@ -239,8 +238,8 @@ export const ClaimsTab: React.FC<ClaimsTabProps> = ({ claims, kpis }) => {
               <div key={item.type} className="p-3 bg-slate-50/70 rounded-xl border border-slate-100 text-xs">
                 <div className="flex items-center justify-between mb-1.5">
                   <div className="flex items-center gap-2 min-w-0">
-                    <span className="font-bold text-slate-800 truncate">{item.label}</span>
-                    <span className="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded font-numeric shrink-0">
+                    <span className="font-bold text-slate-900 truncate text-xs">{item.label}</span>
+                    <span className="text-xs bg-slate-200 text-slate-800 px-2 py-0.5 rounded font-numeric font-bold shrink-0">
                       {item.count} ca
                     </span>
                   </div>
@@ -248,7 +247,7 @@ export const ClaimsTab: React.FC<ClaimsTabProps> = ({ claims, kpis }) => {
                     <span className="font-extrabold text-slate-900">
                       {formatCurrencyVND(item.approvedSum)}
                     </span>
-                    <span className="text-slate-400 text-[11px]">({item.sharePct}%)</span>
+                    <span className="text-slate-600 font-bold text-xs">({item.sharePct}%)</span>
                   </div>
                 </div>
 
@@ -263,7 +262,7 @@ export const ClaimsTab: React.FC<ClaimsTabProps> = ({ claims, kpis }) => {
             ))}
           </div>
 
-          <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+          <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
             <span>Đối soát quyền lợi bồi thường</span>
             <span className="font-numeric font-semibold text-slate-700">
               Tổng cộng {formatCurrencyVND(kpis.totalApprovedAmount)} đã chi trả

@@ -200,18 +200,18 @@ export const DynamicAreaChart: React.FC<DynamicAreaChartProps> = ({
     <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs p-4 sm:p-5 flex flex-col justify-between">
       {/* Top Header & Toggle Modes */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5 min-w-0 flex-1">
           <div className="w-9 h-9 rounded-xl bg-rose-50 text-aia-red flex items-center justify-center shrink-0 border border-rose-200/50">
             <TrendingUp className="w-4 h-4" />
           </div>
-          <div>
-            <h4 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-              <span>Diễn Biến Doanh Số & Hợp Đồng Mới</span>
-              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+          <div className="min-w-0">
+            <h4 className="text-sm font-bold text-slate-900 flex items-center gap-1.5 flex-wrap sm:flex-nowrap">
+              <span className="sm:whitespace-nowrap">Diễn Biến Doanh Số & Hợp Đồng Mới</span>
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 whitespace-nowrap shrink-0">
                 {monthlyData.length} Kỳ
               </span>
             </h4>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 whitespace-nowrap">
               Tổng doanh số phát hành:{' '}
               <strong className="text-slate-900 font-numeric">
                 {formatShortCurrency(totalPeriodRevenue)}
@@ -222,28 +222,28 @@ export const DynamicAreaChart: React.FC<DynamicAreaChartProps> = ({
         </div>
 
         {/* Metric Toggle: Doanh số vs Số HĐ */}
-        <div className="inline-flex items-center p-0.5 bg-slate-100 rounded-xl text-xs font-semibold self-start sm:self-auto border border-slate-200/60">
+        <div className="inline-flex items-center p-0.5 bg-slate-100 rounded-xl text-xs font-semibold self-start sm:self-auto border border-slate-200/60 shrink-0">
           <button
             type="button"
             onClick={() => setMetricMode('revenue')}
-            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap ${
               metricMode === 'revenue'
                 ? 'bg-white text-aia-red shadow-xs font-bold'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            Doanh Số APE (VNĐ)
+            Doanh số APE
           </button>
           <button
             type="button"
             onClick={() => setMetricMode('policies')}
-            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer whitespace-nowrap ${
               metricMode === 'policies'
                 ? 'bg-white text-slate-900 shadow-xs font-bold'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            Số Hợp Đồng
+            Số hợp đồng
           </button>
         </div>
       </div>
@@ -291,7 +291,7 @@ export const DynamicAreaChart: React.FC<DynamicAreaChartProps> = ({
                   x={paddingLeft - 8}
                   y={y + 3.5}
                   textAnchor="end"
-                  className="text-[10px] fill-slate-400 font-numeric font-medium"
+                  className="text-xs fill-slate-500 font-numeric font-semibold"
                 >
                   {valLabel}
                 </text>
@@ -326,8 +326,8 @@ export const DynamicAreaChart: React.FC<DynamicAreaChartProps> = ({
               x={pt.x}
               y={height - 10}
               textAnchor="middle"
-              className={`text-[11px] font-numeric transition-colors ${
-                hoveredIndex === idx ? 'fill-slate-900 font-bold' : 'fill-slate-500 font-medium'
+              className={`text-xs font-numeric transition-colors ${
+                hoveredIndex === idx ? 'fill-slate-900 font-bold' : 'fill-slate-600 font-semibold'
               }`}
             >
               {pt.data.shortLabel}
@@ -399,7 +399,7 @@ export const DynamicAreaChart: React.FC<DynamicAreaChartProps> = ({
             }}
           >
             <div className="bg-slate-900/95 text-white p-2.5 rounded-xl shadow-xl border border-slate-700 text-xs backdrop-blur-xs min-w-[150px]">
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+              <p className="text-xs text-slate-300 font-bold uppercase tracking-wider">
                 {activePoint.data.label}
               </p>
               <div className="mt-1 font-numeric">
@@ -407,12 +407,12 @@ export const DynamicAreaChart: React.FC<DynamicAreaChartProps> = ({
                   {formatCurrencyVND(activePoint.data.premiumAmount)}
                 </span>
               </div>
-              <div className="mt-1 pt-1 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-300">
+              <div className="mt-1.5 pt-1.5 border-t border-slate-800 flex items-center justify-between text-xs text-slate-300">
                 <span>Hợp đồng mới:</span>
                 <span className="font-bold text-white font-numeric">{activePoint.data.policiesCount} HĐ</span>
               </div>
               {activePoint.data.claimsCount > 0 && (
-                <div className="flex items-center justify-between text-[10px] text-amber-300 mt-0.5">
+                <div className="flex items-center justify-between text-xs text-amber-300 mt-0.5">
                   <span>Claim phát sinh:</span>
                   <span className="font-bold font-numeric">{activePoint.data.claimsCount} ca</span>
                 </div>
@@ -423,7 +423,7 @@ export const DynamicAreaChart: React.FC<DynamicAreaChartProps> = ({
       </div>
 
       {/* Bottom Micro Legend & Guidance */}
-      <div className="pt-3 mt-1 border-t border-slate-100 flex flex-wrap items-center justify-between text-[11px] text-slate-400">
+      <div className="pt-3 mt-1 border-t border-slate-100 flex flex-wrap items-center justify-between text-xs text-slate-500">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1.5">
             <span

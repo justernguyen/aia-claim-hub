@@ -310,10 +310,10 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
                     placeholder="0912 345 678"
                     className={`w-full pl-9 pr-3 py-2.5 rounded-xl border ${
                       errors.phone ? 'border-rose-400 bg-rose-50/50' : 'border-slate-300'
-                    } bg-white text-slate-900 font-bold placeholder:text-slate-400 focus:outline-aia-red font-mono`}
+                    } bg-white text-slate-900 font-bold placeholder:text-slate-400 focus:outline-aia-red font-numeric`}
                   />
                 </div>
-                {errors.phone && <p className="text-rose-500 text-[11px] mt-1">{errors.phone}</p>}
+                {errors.phone && <p className="text-rose-600 text-xs font-semibold mt-1">{errors.phone}</p>}
               </div>
 
               <div>
@@ -329,10 +329,10 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
                     placeholder="079198002341"
                     className={`w-full pl-9 pr-3 py-2.5 rounded-xl border ${
                       errors.cccd ? 'border-rose-400 bg-rose-50/50' : 'border-slate-300'
-                    } bg-white text-slate-900 font-bold placeholder:text-slate-400 focus:outline-aia-red font-mono`}
+                    } bg-white text-slate-900 font-bold placeholder:text-slate-400 focus:outline-aia-red font-numeric`}
                   />
                 </div>
-                {errors.cccd && <p className="text-rose-500 text-[11px] mt-1">{errors.cccd}</p>}
+                {errors.cccd && <p className="text-rose-600 text-xs font-semibold mt-1">{errors.cccd}</p>}
               </div>
 
               <div className="grid grid-cols-2 gap-2">
@@ -342,7 +342,7 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
                     type="date"
                     value={birthDate}
                     onChange={(e) => setBirthDate(e.target.value)}
-                    className="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-semibold focus:outline-aia-red font-mono text-xs"
+                    className="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 font-semibold focus:outline-aia-red font-numeric text-xs"
                   />
                 </div>
                 <div>
@@ -677,10 +677,10 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
                                       onChange={(e) =>
                                         handleUpdateRiderLimit(rider.id, parseNumberInput(e.target.value))
                                       }
-                                      className="w-full py-1 px-2 pr-6 rounded-lg border border-slate-200 bg-white font-mono font-bold text-xs text-right text-slate-900 focus:outline-none focus:ring-1 focus:ring-aia-red"
+                                      className="w-full py-1.5 px-2 pr-6 rounded-lg border border-slate-200 bg-white font-numeric font-bold text-xs text-right text-slate-900 focus:outline-none focus:ring-1 focus:ring-aia-red"
                                     />
-                                    <span className="absolute right-2 top-1 text-[11px] font-bold text-slate-400 select-none">
-                                      đ
+                                    <span className="absolute right-2 top-1.5 text-xs font-bold text-slate-500 select-none">
+                                      ₫
                                     </span>
                                   </div>
                                 </div>
@@ -700,7 +700,7 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
                             <div className="flex items-center gap-1.5">
                               <span className="w-2 h-2 rounded-full bg-amber-500" />
                               <span className="text-xs font-bold text-slate-800">Sản phẩm bổ trợ tùy biến</span>
-                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-amber-100 text-amber-800">
+                              <span className="text-xs font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-300">
                                 Custom
                               </span>
                             </div>
@@ -751,10 +751,10 @@ export const NewCustomerModal: React.FC<NewCustomerModalProps> = ({
                                     handleUpdateRiderLimit(rider.id, parseNumberInput(e.target.value))
                                   }
                                   placeholder="Hạn mức bảo hiểm"
-                                  className="w-full p-2 pr-6 rounded-lg border border-slate-200 bg-white font-mono font-bold text-xs text-right text-slate-900 focus:outline-aia-red"
+                                  className="w-full p-2 pr-6 rounded-lg border border-slate-200 bg-white font-numeric font-bold text-xs text-right text-slate-900 focus:outline-aia-red"
                                 />
-                                <span className="absolute right-2 top-2 text-[11px] font-bold text-slate-400 select-none">
-                                  đ
+                                <span className="absolute right-2 top-2 text-xs font-bold text-slate-500 select-none">
+                                  ₫
                                 </span>
                               </div>
                               {rider.limit > 0 && (
