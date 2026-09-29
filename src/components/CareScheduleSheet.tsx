@@ -153,7 +153,7 @@ export const CareScheduleSheet: React.FC<CareScheduleSheetProps> = ({
       </div>
 
       {/* Spreadsheet Grid Table */}
-      <div className="overflow-x-auto border-t border-slate-200">
+      <div className="overflow-x-auto border-t border-slate-200 scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent">
         <table className="w-full min-w-[960px] text-left text-xs border-collapse">
           <thead>
             <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-xs">
@@ -165,7 +165,7 @@ export const CareScheduleSheet: React.FC<CareScheduleSheetProps> = ({
               <th className="py-3 px-3 min-w-[150px]">Kết quả</th>
               <th className="py-3 px-3 min-w-[160px]">Việc tiếp theo (Next Action)</th>
               <th className="py-3 px-2.5 w-24 whitespace-nowrap">Hẹn tiếp</th>
-              <th className="py-3 px-2 w-10 text-center whitespace-nowrap">Xóa</th>
+              <th className="py-3 px-2 w-10 text-center whitespace-nowrap sticky right-0 bg-slate-50 border-l border-slate-200/90 shadow-[-4px_0_6px_rgba(0,0,0,0.03)] z-10">Xóa</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 font-medium">
@@ -268,7 +268,8 @@ export const CareScheduleSheet: React.FC<CareScheduleSheetProps> = ({
                       {act.nextFollowUpDate || '-'}
                     </td>
                     {/* Nút xóa */}
-                    <td className="py-3 px-2 text-center">
+                    {/* Nút xóa - Sticky right */}
+                    <td className="py-3 px-2 text-center sticky right-0 bg-white group-hover:bg-slate-50 border-l border-slate-100 shadow-[-4px_0_6px_rgba(0,0,0,0.03)] z-10">
                       <button
                         type="button"
                         onClick={() => {
@@ -276,7 +277,7 @@ export const CareScheduleSheet: React.FC<CareScheduleSheetProps> = ({
                             onDelete(act.id);
                           }
                         }}
-                        className="text-slate-300 hover:text-rose-500 transition-colors p-1"
+                        className="text-slate-400 hover:text-rose-500 transition-colors p-1 cursor-pointer"
                         title="Xóa dòng này"
                       >
                         <Trash2 className="w-3.5 h-3.5" />

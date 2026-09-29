@@ -180,7 +180,15 @@ export default function App() {
             }}
             onUpdateCustomer={(id, updates) => {
               store.updateCustomer(id, updates);
-              showNotification('Đã cập nhật avatar khách hàng thành công!');
+              if (updates.avatar && Object.keys(updates).length === 1) {
+                showNotification('Đã cập nhật avatar khách hàng thành công!');
+              } else {
+                showNotification('Đã lưu thông tin khách hàng thành công!');
+              }
+            }}
+            onUpdatePolicy={(id, updates) => {
+              store.updatePolicy(id, updates);
+              showNotification('Đã cập nhật thông tin hợp đồng bảo hiểm!');
             }}
             onDeleteCustomer={(id) => {
               store.deleteCustomer(id);
@@ -190,7 +198,7 @@ export default function App() {
               store.addCareActivity(act);
               showNotification('Đã ghi nhận nhật ký chăm sóc mới!');
             }}
-            onSelectClaim={(claimId) => {
+            onSelectClaim={(claimId: string) => {
               setActiveTab('claims');
               handleOpenClaimDetail(claimId);
             }}

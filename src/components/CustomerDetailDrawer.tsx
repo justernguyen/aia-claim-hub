@@ -21,6 +21,7 @@ import {
   Mail,
   Shield,
   ExternalLink,
+  Pencil,
 } from 'lucide-react';
 import { Customer, Policy, CareActivity, POLICY_STATUS_CONFIG, BILLING_FREQ_LABELS, CARE_CHANNEL_CONFIG } from '../types/crm';
 import { ClaimItem, STATUS_CONFIG } from '../types/claim';
@@ -38,8 +39,8 @@ interface CustomerDetailDrawerProps {
   onAddCareActivity?: (activity: Omit<CareActivity, 'id' | 'createdAt'>) => void;
   onDeleteCustomer?: (customerId: string) => void;
   onChangeAvatar?: (customer: Customer) => void;
+  onEdit?: (customer: Customer) => void;
 }
-
 const getBenefitBadge = (type: string) => {
   switch (type) {
     case 'medical_expense':
@@ -76,6 +77,7 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
   onAddCareActivity,
   onDeleteCustomer,
   onChangeAvatar,
+  onEdit,
 }) => {
   const [activeSubTab, setActiveSubTab] = useState<'profile' | 'policies' | 'claims' | 'care'>('profile');
   const [copiedField, setCopiedField] = useState<string | null>(null);
@@ -242,18 +244,28 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                 </div>
               </div>
 
-              {/* Close Button */}
-              <button
-                type="button"
-                onClick={onClose}
-                className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors shrink-0"
-                title="Đóng (Esc)"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              {/* Actions: Edit & Close */}
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => onEdit?.(customer)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 rounded-xl transition-colors border border-slate-200 shadow-2xs"
+                  title="Chỉnh sửa hồ sơ khách hàng"
+                >
+                  <Pencil className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Sửa thông tin</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors shrink-0"
+                  title="Đóng (Esc)"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </div>
-
           {/* Quick Contact & Action Toolbar */}
           <div className="bg-slate-50/90 border-b border-slate-200/80 px-5 sm:px-7 py-2.5 flex items-center justify-between gap-3 text-xs">
             <div className="flex items-center gap-2.5 overflow-x-auto scrollbar-none">

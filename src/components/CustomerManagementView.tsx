@@ -18,6 +18,7 @@ import { CustomerTableView } from './CustomerTableView';
 import { CustomerDetailDrawer } from './CustomerDetailDrawer';
 import { formatCurrencyVND, formatShortCurrency } from '../utils/formatters';
 import { AvatarPickerModal } from './AvatarPickerModal';
+import { EditCustomerModal } from './EditCustomerModal';
 
 interface CustomerManagementViewProps {
   customers: Customer[];
@@ -26,11 +27,12 @@ interface CustomerManagementViewProps {
   careActivities: CareActivity[];
   onAddCustomer: (customer: Omit<Customer, 'id' | 'createdAt'>, initialPolicy?: Policy) => void;
   onUpdateCustomer?: (id: string, updates: Partial<Customer>) => void;
+  onUpdatePolicy?: (id: string, updates: Partial<Policy>) => void;
   onDeleteCustomer: (id: string) => void;
   onAddCareActivity: (activity: Omit<CareActivity, 'id' | 'createdAt'>) => void;
-  onSelectClaim?: (claimId: string) => void;
   isCreateModalOpen: boolean;
   setIsCreateModalOpen: (open: boolean) => void;
+  onSelectClaim?: (claimId: string) => void;
   onBulkImport?: (customers: Omit<Customer, 'id' | 'createdAt'>[], policies: Policy[]) => void;
   selectedCustomerId?: string | null;
   onSelectCustomerId?: (id: string | null) => void;
@@ -43,6 +45,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
   careActivities,
   onAddCustomer,
   onUpdateCustomer,
+  onUpdatePolicy,
   onDeleteCustomer,
   onAddCareActivity,
   onSelectClaim,
@@ -67,6 +70,8 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
 
   // Customer currently being edited for avatar
   const [editingAvatarCustomer, setEditingAvatarCustomer] = useState<Customer | null>(null);
+  // Customer currently being edited for full profile
+  const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
 
   const filteredCustomers = useMemo(() => {
     return customers.filter((cust) => {
@@ -115,51 +120,51 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
       {/* Top KPI Cards Strip - Standardized 4-Zone Metric Strip */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* KPI 1: Tổng khách hàng */}
-        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-2xs hover:shadow-xs transition-all flex items-center justify-between gap-3 min-w-0">
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-bold text-slate-700 uppercase tracking-wider truncate">Tổng Khách hàng</p>
-            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1 font-numeric">{customers.length}</p>
-            <p className="text-xs text-slate-600 font-medium mt-0.5 truncate">Khách hàng được phân công</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Tổng Khách hàng</p>
+            <p className="text-2xl font-bold text-slate-900 mt-1 font-numeric">{customers.length}</p>
+            <p className="text-xs text-slate-500 font-normal mt-0.5 truncate">Khách hàng được phân công</p>
           </div>
-          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-rose-50 text-aia-red hidden sm:flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-rose-50 text-aia-red hidden sm:flex items-center justify-center shrink-0">
             <Users className="w-5 h-5" />
           </div>
         </div>
 
         {/* KPI 2: Hợp đồng hiệu lực */}
-        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-2xs hover:shadow-xs transition-all flex items-center justify-between gap-3 min-w-0">
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-bold text-slate-700 uppercase tracking-wider truncate">HĐ Đang Hiệu Lực</p>
-            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1 font-numeric">{inForceCount}</p>
-            <p className="text-xs text-slate-600 font-medium mt-0.5 truncate">Trên tổng số {policies.length} HĐ</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">HĐ Đang Hiệu Lực</p>
+            <p className="text-2xl font-bold text-slate-900 mt-1 font-numeric">{inForceCount}</p>
+            <p className="text-xs text-slate-500 font-normal mt-0.5 truncate">Trên tổng số {policies.length} HĐ</p>
           </div>
-          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-100 text-slate-700 hidden sm:flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 hidden sm:flex items-center justify-center shrink-0">
             <ShieldCheck className="w-5 h-5" />
           </div>
         </div>
 
         {/* KPI 3: Hợp đồng chờ nộp phí */}
-        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-2xs hover:shadow-xs transition-all flex items-center justify-between gap-3 min-w-0">
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-bold text-slate-700 uppercase tracking-wider truncate">Chờ nộp phí (Gia hạn)</p>
-            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1 font-numeric">{pendingCount}</p>
-            <p className="text-xs text-aia-red font-bold mt-0.5 truncate">Cần nhắc phí gia hạn</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Chờ nộp phí (Gia hạn)</p>
+            <p className="text-2xl font-bold text-slate-900 mt-1 font-numeric">{pendingCount}</p>
+            <p className="text-xs text-aia-red font-medium mt-0.5 truncate">Cần nhắc phí gia hạn</p>
           </div>
-          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-rose-50 text-aia-red hidden sm:flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-rose-50 text-aia-red hidden sm:flex items-center justify-center shrink-0">
             <TrendingUp className="w-5 h-5" />
           </div>
         </div>
 
         {/* KPI 4: Doanh số phí thường niên */}
-        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-2xs hover:shadow-xs transition-all flex items-center justify-between gap-3 min-w-0">
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-bold text-slate-700 uppercase tracking-wider truncate">Tổng Phí Quản Lý</p>
-            <p className="text-xl sm:text-2xl font-black text-slate-900 mt-1 font-numeric truncate" title={formatCurrencyVND(totalAnnualPremium)}>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Tổng Phí Quản Lý</p>
+            <p className="text-2xl font-bold text-slate-900 mt-1 font-numeric truncate" title={formatCurrencyVND(totalAnnualPremium)}>
               {formatShortCurrency(totalAnnualPremium)}
             </p>
-            <p className="text-xs text-slate-600 font-medium mt-0.5 truncate">Phí bảo hiểm thường niên</p>
+            <p className="text-xs text-slate-500 font-normal mt-0.5 truncate">Phí bảo hiểm thường niên</p>
           </div>
-          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-100 text-slate-700 hidden sm:flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 hidden sm:flex items-center justify-center shrink-0">
             <Coins className="w-5 h-5" />
           </div>
         </div>
@@ -175,7 +180,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Tìm theo Tên KH, Số điện thoại, CCCD, Số HĐ (AIA-...), Địa chỉ..."
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs sm:text-sm text-slate-900 placeholder:text-slate-500 font-medium focus:outline-none focus:ring-2 focus:ring-aia-red/20 focus:border-aia-red focus:bg-white transition-all"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 font-medium focus:outline-none focus:ring-2 focus:ring-aia-red/20 focus:border-aia-red focus:bg-white transition-all"
           />
         </div>
 
@@ -184,18 +189,18 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
           <button
             type="button"
             onClick={() => setStatusFilter('all')}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all select-none ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all select-none ${
               statusFilter === 'all'
                 ? 'bg-aia-red text-white shadow-xs'
-                : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-300'
+                : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'
             }`}
           >
             <span>Tất cả</span>
             <span
-              className={`text-[11px] font-extrabold px-1.5 py-0.2 rounded-full ${
+              className={`text-[11px] font-semibold px-1.5 py-0.2 rounded-full ${
                 statusFilter === 'all'
                   ? 'bg-white/20 text-white'
-                  : 'bg-slate-200 text-slate-800'
+                  : 'bg-slate-200 text-slate-700'
               }`}
             >
               {customers.length}
@@ -204,18 +209,18 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
           <button
             type="button"
             onClick={() => setStatusFilter('in_force')}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all select-none ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all select-none ${
               statusFilter === 'in_force'
                 ? 'bg-aia-red text-white shadow-xs'
-                : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-300'
+                : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'
             }`}
           >
             <span>Đang hiệu lực</span>
             <span
-              className={`text-[11px] font-extrabold px-1.5 py-0.2 rounded-full ${
+              className={`text-[11px] font-semibold px-1.5 py-0.2 rounded-full ${
                 statusFilter === 'in_force'
                   ? 'bg-white/20 text-white'
-                  : 'bg-slate-200 text-slate-800'
+                  : 'bg-slate-200 text-slate-700'
               }`}
             >
               {inForceCount}
@@ -224,18 +229,18 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
           <button
             type="button"
             onClick={() => setStatusFilter('pending_payment')}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all select-none ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all select-none ${
               statusFilter === 'pending_payment'
                 ? 'bg-aia-red text-white shadow-xs'
-                : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-300'
+                : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'
             }`}
           >
             <span>Chờ nộp phí</span>
             <span
-              className={`text-[11px] font-extrabold px-1.5 py-0.2 rounded-full ${
+              className={`text-[11px] font-semibold px-1.5 py-0.2 rounded-full ${
                 statusFilter === 'pending_payment'
                   ? 'bg-white/20 text-white'
-                  : 'bg-slate-200 text-slate-800'
+                  : 'bg-slate-200 text-slate-700'
               }`}
             >
               {pendingCount}
@@ -268,12 +273,11 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
           </div>
 
           <button
-            type="button"
             onClick={() => setIsImportModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold shadow-xs transition-colors shrink-0"
+            className="inline-flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold border border-slate-200 transition-colors shrink-0"
             title="Nhập hàng loạt khách hàng từ Excel hoặc file CSV"
           >
-            <FileSpreadsheet className="w-3.5 h-3.5" />
+            <FileSpreadsheet className="w-3.5 h-3.5 text-slate-500" />
             <span className="hidden sm:inline">Nhập Excel</span>
           </button>
 
@@ -307,6 +311,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
               claims={claims}
               onSelect={(c) => setSelectedCustomerId(c.id)}
               onChangeAvatar={(c) => setEditingAvatarCustomer(c)}
+              onEdit={(c) => setEditingCustomer(c)}
             />
           ))}
         </div>
@@ -317,6 +322,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
           claims={claims}
           onSelect={(c) => setSelectedCustomerId(c.id)}
           onChangeAvatar={(c) => setEditingAvatarCustomer(c)}
+          onEdit={(c) => setEditingCustomer(c)}
         />
       )}
 
@@ -332,8 +338,8 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
         onAddCareActivity={onAddCareActivity}
         onDeleteCustomer={onDeleteCustomer}
         onChangeAvatar={(c) => setEditingAvatarCustomer(c)}
+        onEdit={(c) => setEditingCustomer(c)}
       />
-
       {/* Customer Import Modal */}
       <CustomerImportModal
         isOpen={isImportModalOpen}
@@ -354,6 +360,20 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
               prev ? { ...prev, avatar: avatarId } : null
             );
           }
+        }}
+      />
+
+      {/* Edit Customer Profile & Policy Modal */}
+      <EditCustomerModal
+        isOpen={Boolean(editingCustomer)}
+        onClose={() => setEditingCustomer(null)}
+        customer={editingCustomer}
+        policies={policies}
+        onSaveCustomer={(id, updates) => {
+          onUpdateCustomer?.(id, updates);
+        }}
+        onSavePolicy={(id, updates) => {
+          onUpdatePolicy?.(id, updates);
         }}
       />
     </div>

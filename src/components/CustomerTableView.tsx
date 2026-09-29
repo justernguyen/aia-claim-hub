@@ -4,6 +4,7 @@ import {
   ShieldCheck,
   ChevronRight,
   HeartPulse,
+  Pencil,
 } from 'lucide-react';
 import { Customer, Policy, POLICY_STATUS_CONFIG } from '../types/crm';
 import { ClaimItem } from '../types/claim';
@@ -16,29 +17,30 @@ interface CustomerTableViewProps {
   claims: ClaimItem[];
   onSelect: (customer: Customer) => void;
   onChangeAvatar?: (customer: Customer) => void;
+  onEdit?: (customer: Customer) => void;
 }
-
 export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
   customers,
   policies,
   claims,
   onSelect,
   onChangeAvatar,
+  onEdit,
 }) => {
   return (
     <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[1100px] text-left text-xs border-collapse">
+      <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent">
+        <table className="w-full min-w-[1080px] text-left text-xs border-collapse">
           <thead>
             <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider text-xs">
               <th className="py-3.5 px-4 min-w-[170px] whitespace-nowrap">Khách hàng</th>
               <th className="py-3.5 px-4 min-w-[160px] whitespace-nowrap">Số điện thoại / Địa chỉ</th>
               <th className="py-3.5 px-4 min-w-[180px] whitespace-nowrap">Hợp đồng & Sản phẩm</th>
-              <th className="py-3.5 px-4 min-w-[130px] whitespace-nowrap">Trạng thái HĐ</th>
-              <th className="py-3.5 px-4 min-w-[130px] text-right whitespace-nowrap">Phí định kỳ</th>
-              <th className="py-3.5 px-4 min-w-[180px] whitespace-nowrap">Hạn mức Thẻ SK</th>
-              <th className="py-3.5 px-4 min-w-[90px] text-center whitespace-nowrap">Claim</th>
-              <th className="py-3.5 px-4 min-w-[90px] text-right whitespace-nowrap">Thao tác</th>
+              <th className="py-3.5 px-4 min-w-[125px] whitespace-nowrap">Trạng thái HĐ</th>
+              <th className="py-3.5 px-4 min-w-[125px] text-right whitespace-nowrap">Phí định kỳ</th>
+              <th className="py-3.5 px-4 min-w-[170px] whitespace-nowrap">Hạn mức Thẻ SK</th>
+              <th className="py-3.5 px-4 min-w-[85px] text-center whitespace-nowrap">Claim</th>
+              <th className="py-3.5 px-4 min-w-[85px] text-right whitespace-nowrap sticky right-0 bg-slate-50 border-l border-slate-200/90 shadow-[-6px_0_8px_rgba(0,0,0,0.03)] z-10">Thao tác</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -197,24 +199,45 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
                     </span>
                   </td>
                   {/* Thao tác */}
-                  <td className="py-3.5 px-4 text-right whitespace-nowrap">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onSelect(cust);
-                      }}
-                      className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-aia-red hover:bg-rose-50 rounded-lg transition-colors whitespace-nowrap shrink-0"
-                    >
-                      <span>Chi tiết</span>
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </button>
+                  {/* Thao tác - Sticky right */}
+                  <td className="py-3.5 px-4 text-right whitespace-nowrap sticky right-0 bg-white group-hover:bg-slate-50 border-l border-slate-100 shadow-[-6px_0_8px_rgba(0,0,0,0.03)] z-10">
+                    <div className="inline-flex items-center gap-1.5 justify-end">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onEdit?.(cust);
+                        }}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 rounded-lg transition-colors border border-slate-200/70 shrink-0"
+                        title="Chỉnh sửa thông tin"
+                      >
+                        <Pencil className="w-3 h-3 text-slate-500" />
+                        <span>Sửa</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelect(cust);
+                        }}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-aia-red hover:bg-rose-50 rounded-lg transition-colors whitespace-nowrap shrink-0"
+                      >
+                        <span>Chi tiết</span>
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
+      </div>
+      <div className="bg-slate-50/80 px-4 py-2.5 border-t border-slate-200 text-xs text-slate-500 flex flex-wrap items-center justify-between gap-2">
+        <span>Hiển thị <strong>{customers.length}</strong> khách hàng</span>
+        <span className="text-[11px] text-slate-500">
+          Nhấp vào dòng để xem chi tiết • Cột thao tác luôn cố định bên phải
+        </span>
       </div>
     </div>
   );
