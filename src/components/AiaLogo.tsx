@@ -71,10 +71,10 @@ export const AiaLogo: React.FC<AiaLogoProps> = ({
   const fillColor = theme === 'white' ? '#FFFFFF' : theme === 'current' ? 'currentColor' : AIA_RED;
 
   const sizeClasses = {
-    sm: 'h-6',
-    md: 'h-8 sm:h-9',
-    lg: 'h-10 sm:h-11',
-    xl: 'h-12 sm:h-14',
+    sm: 'h-5 sm:h-6',
+    md: 'h-6 sm:h-9',
+    lg: 'h-8 sm:h-11',
+    xl: 'h-10 sm:h-14',
   }[size];
 
   if (variant === 'symbol') {
@@ -105,7 +105,7 @@ export const AiaLogo: React.FC<AiaLogoProps> = ({
 
   // Default 'full': Mountain Crest icon + AIA Wordmark text
   return (
-    <div className={`inline-flex items-center gap-2.5 select-none ${className}`}>
+    <div className={`inline-flex items-center gap-1.5 sm:gap-2.5 select-none ${className}`}>
       <div className={`${sizeClasses} aspect-[1453/1555] flex-shrink-0`}>
         <AiaMountainSymbol fill={fillColor} className="w-full h-full" />
       </div>

@@ -103,53 +103,53 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Top KPI Cards Strip */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* KPI 1: Tổng khách hàng */}
-        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between">
-          <div>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tổng Khách hàng</p>
-            <p className="text-2xl font-extrabold text-slate-900 mt-1 font-mono">{customers.length}</p>
-            <p className="text-[11px] text-slate-400 mt-0.5">Khách hàng được phân công</p>
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
+          <div className="min-w-0 flex-1">
+            <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Tổng Khách hàng</p>
+            <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1 font-mono">{customers.length}</p>
+            <p className="text-[11px] text-slate-400 mt-0.5 truncate">Khách hàng được phân công</p>
           </div>
-          <div className="w-11 h-11 rounded-xl bg-rose-50 text-aia-red flex items-center justify-center">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-rose-50 text-aia-red hidden sm:flex items-center justify-center shrink-0">
             <Users className="w-5 h-5" />
           </div>
         </div>
 
         {/* KPI 2: Hợp đồng hiệu lực */}
-        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between">
-          <div>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">HĐ Đang Hiệu Lực</p>
-            <p className="text-2xl font-extrabold text-slate-900 mt-1 font-mono">{inForceCount}</p>
-            <p className="text-[11px] text-slate-400 mt-0.5">Trên tổng số {policies.length} HĐ</p>
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
+          <div className="min-w-0 flex-1">
+            <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">HĐ Đang Hiệu Lực</p>
+            <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1 font-mono">{inForceCount}</p>
+            <p className="text-[11px] text-slate-400 mt-0.5 truncate">Trên tổng số {policies.length} HĐ</p>
           </div>
-          <div className="w-11 h-11 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-100 text-slate-700 hidden sm:flex items-center justify-center shrink-0">
             <ShieldCheck className="w-5 h-5" />
           </div>
         </div>
 
         {/* KPI 3: Hợp đồng chờ nộp phí */}
-        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between">
-          <div>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Chờ nộp phí (Gia hạn)</p>
-            <p className="text-2xl font-extrabold text-slate-900 mt-1 font-mono">{pendingCount}</p>
-            <p className="text-[11px] text-aia-red font-medium mt-0.5">Cần nhắc phí tránh mất hiệu lực</p>
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
+          <div className="min-w-0 flex-1">
+            <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Chờ nộp phí (Gia hạn)</p>
+            <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1 font-mono">{pendingCount}</p>
+            <p className="text-[11px] text-aia-red font-medium mt-0.5 truncate">Cần nhắc phí tránh mất hiệu lực</p>
           </div>
-          <div className="w-11 h-11 rounded-xl bg-rose-50 text-aia-red flex items-center justify-center">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-rose-50 text-aia-red hidden sm:flex items-center justify-center shrink-0">
             <TrendingUp className="w-5 h-5" />
           </div>
         </div>
 
         {/* KPI 4: Doanh số phí thường niên */}
-        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between">
-          <div>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tổng Phí Quản Lý</p>
-            <p className="text-lg sm:text-xl font-extrabold text-slate-900 mt-1 font-mono truncate max-w-[150px]" title={formatCurrencyVND(totalAnnualPremium)}>
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 min-w-0">
+          <div className="min-w-0 flex-1">
+            <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Tổng Phí Quản Lý</p>
+            <p className="text-sm sm:text-xl font-extrabold text-slate-900 mt-1 font-mono truncate" title={formatCurrencyVND(totalAnnualPremium)}>
               {formatCurrencyVND(totalAnnualPremium)}
             </p>
-            <p className="text-[11px] text-slate-400 mt-0.5">Phí bảo hiểm thường niên</p>
+            <p className="text-[11px] text-slate-400 mt-0.5 truncate">Phí bảo hiểm thường niên</p>
           </div>
-          <div className="w-11 h-11 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-100 text-slate-700 hidden sm:flex items-center justify-center shrink-0">
             <Coins className="w-5 h-5" />
           </div>
         </div>

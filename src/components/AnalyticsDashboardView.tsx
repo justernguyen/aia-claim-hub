@@ -71,29 +71,29 @@ export const AnalyticsDashboardView: React.FC<AnalyticsDashboardViewProps> = ({
       </div>
 
       {/* KPI Highlight Strip */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-xs">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tổng Doanh Số Phí APE</p>
-          <p className="text-xl font-extrabold text-slate-900 mt-1 font-mono">{formatCurrencyVND(totalAnnualPremium)}</p>
-          <p className="text-[11px] text-emerald-600 font-medium mt-0.5">Phí thường niên quản lý</p>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-xs min-w-0">
+          <p className="text-[11px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider truncate">Tổng Doanh Số Phí APE</p>
+          <p className="text-sm sm:text-xl font-extrabold text-slate-900 mt-1 font-mono truncate">{formatCurrencyVND(totalAnnualPremium)}</p>
+          <p className="text-[11px] text-emerald-600 font-medium mt-0.5 truncate">Phí thường niên quản lý</p>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-xs">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tiền AIA Đã Chi Trả</p>
-          <p className="text-xl font-extrabold text-emerald-600 mt-1 font-mono">{formatCurrencyVND(totalApproved)}</p>
-          <p className="text-[11px] text-slate-400 mt-0.5">Tiền về tài khoản khách hàng</p>
+        <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-xs min-w-0">
+          <p className="text-[11px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider truncate">Tiền AIA Đã Chi Trả</p>
+          <p className="text-sm sm:text-xl font-extrabold text-emerald-600 mt-1 font-mono truncate">{formatCurrencyVND(totalApproved)}</p>
+          <p className="text-[11px] text-slate-400 mt-0.5 truncate">Tiền về tài khoản khách hàng</p>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-xs">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tỷ Lệ Duyệt Claim</p>
-          <p className="text-xl font-extrabold text-blue-600 mt-1 font-mono">{approvalRate}%</p>
-          <p className="text-[11px] text-slate-400 mt-0.5">Duyệt {approvedCount}/{totalClaims} hồ sơ</p>
+        <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-xs min-w-0">
+          <p className="text-[11px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider truncate">Tỷ Lệ Duyệt Claim</p>
+          <p className="text-base sm:text-xl font-extrabold text-blue-600 mt-1 font-mono">{approvalRate}%</p>
+          <p className="text-[11px] text-slate-400 mt-0.5 truncate">Duyệt {approvedCount}/{totalClaims} hồ sơ</p>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-xs">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tổng Quy Mô Khách Hàng</p>
-          <p className="text-xl font-extrabold text-aia-red mt-1 font-mono">{customers.length} khách hàng</p>
-          <p className="text-[11px] text-slate-400 mt-0.5">{policies.length} Hợp đồng bảo hiểm</p>
+        <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-xs min-w-0">
+          <p className="text-[11px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider truncate">Tổng Quy Mô Khách Hàng</p>
+          <p className="text-base sm:text-xl font-extrabold text-aia-red mt-1 font-mono whitespace-nowrap truncate">{customers.length} khách hàng</p>
+          <p className="text-[11px] text-slate-400 mt-0.5 truncate">{policies.length} Hợp đồng bảo hiểm</p>
         </div>
       </div>
 

@@ -125,28 +125,28 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
         className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity duration-300"
       />
 
-      <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
+      <div className="fixed inset-y-0 right-0 max-w-full flex pl-0 sm:pl-10">
         <div className="w-screen max-w-2xl bg-white shadow-2xl flex flex-col border-l border-slate-200">
           {/* Header */}
-          <div className="px-6 py-5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-aia-red text-white font-bold rounded-xl text-xs shadow-xs">
+          <div className="px-4 py-4 sm:px-6 sm:py-5 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+              <div className="p-2 sm:p-2.5 bg-aia-red text-white font-bold rounded-xl text-xs shadow-xs shrink-0">
                 AIA
               </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="text-lg font-bold text-slate-900">{claim.id}</h2>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h2 className="text-base sm:text-lg font-bold text-slate-900">{claim.id}</h2>
                   <span
-                    className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-0.5 rounded-full border ${statusCfg.badgeClass}`}
+                    className={`inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full border whitespace-nowrap ${statusCfg.badgeClass}`}
                   >
                     <span
-                      className="w-1.5 h-1.5 rounded-full"
+                      className="w-1.5 h-1.5 rounded-full shrink-0"
                       style={{ backgroundColor: statusCfg.dotColor }}
                     />
                     <span>{statusCfg.label}</span>
                   </span>
                 </div>
-                <p className="text-xs text-slate-500 font-medium mt-0.5">
+                <p className="text-xs text-slate-500 font-medium mt-0.5 truncate">
                   Tư vấn viên phụ trách: <strong>{claim.agentName}</strong> ({claim.agentCode})
                 </p>
               </div>
@@ -155,14 +155,14 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded-xl transition-colors"
+              className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded-xl transition-colors shrink-0"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {/* Drawer Body */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 sm:space-y-6">
             {/* Box 1: Customer & Policy Information */}
             <div className="bg-slate-50/70 border border-slate-200/90 rounded-2xl p-4">
               <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2 mb-3">

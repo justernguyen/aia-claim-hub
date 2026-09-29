@@ -100,18 +100,19 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         {/* Top bar: Brand + Consultant Info + Quick Actions */}
-        <div className="flex items-center justify-between h-18 border-b border-slate-100">
+        <div className="flex items-center justify-between gap-2 h-15 sm:h-18 border-b border-slate-100">
           {/* Left: AIA Brand & System Title */}
-          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
-            <AiaLogo variant="full" size="md" className="h-9 sm:h-10 shrink-0" />
-            <div className="border-l border-slate-200 pl-3 sm:pl-3.5">
-              <div className="flex items-center gap-2">
-                <h1 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-tight whitespace-nowrap">
-                  AIA Agent CRM & Claim Hub
+          <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
+            <AiaLogo variant="full" size="md" className="h-6 sm:h-10 shrink-0" />
+            <div className="border-l border-slate-200 pl-2 sm:pl-3.5 min-w-0">
+              <div className="flex items-center gap-2 min-w-0">
+                <h1 className="text-xs sm:text-lg font-bold text-slate-900 tracking-tight leading-tight truncate">
+                  <span className="sm:hidden">CRM & Claim</span>
+                  <span className="hidden sm:inline">AIA Agent CRM & Claim Hub</span>
                 </h1>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-aia-red border border-rose-200/80 uppercase tracking-wide hidden xs:inline-block whitespace-nowrap">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-50 text-aia-red border border-rose-200/80 uppercase tracking-wide hidden md:inline-block whitespace-nowrap shrink-0">
                   MDRT Portal
                 </span>
               </div>
@@ -160,10 +161,10 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Right: Data Tools + Primary Action Dropdown */}
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* Mobile Consultant Avatar */}
             <div
-              className="relative flex lg:hidden items-center flex-shrink-0 mr-1"
+              className="relative flex lg:hidden items-center flex-shrink-0"
               title={`${consultant.name} (${consultant.code}) - ${consultant.agency}`}
             >
               {consultant.avatarUrl && !avatarError ? (
@@ -236,7 +237,7 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 type="button"
                 onClick={() => setIsAddMenuOpen((prev) => !prev)}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-aia-red hover:bg-aia-red-dark text-white text-xs sm:text-sm font-semibold rounded-xl shadow-xs hover:shadow-md transition-all active:scale-[0.98] whitespace-nowrap shrink-0 cursor-pointer select-none"
+                className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-2 sm:px-3.5 sm:py-2.5 bg-aia-red hover:bg-aia-red-dark text-white text-xs sm:text-sm font-semibold rounded-xl shadow-xs hover:shadow-md transition-all active:scale-[0.98] whitespace-nowrap shrink-0 cursor-pointer select-none"
               >
                 <Plus className="w-4 h-4 stroke-[2.5] shrink-0" />
                 <span className="whitespace-nowrap">Thêm mới</span>
@@ -300,7 +301,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Bottom bar: 4 Main Navigation Tabs */}
-        <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto py-2.5 scrollbar-none">
+        <div className="grid grid-cols-2 sm:flex items-center gap-1.5 sm:gap-2 py-2 sm:py-2.5">
           {navTabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -309,17 +310,17 @@ export const Header: React.FC<HeaderProps> = ({
                 key={tab.id}
                 type="button"
                 onClick={() => onTabChange(tab.id)}
-                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer select-none ${
+                className={`flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-2 rounded-xl text-[11px] sm:text-sm font-semibold transition-all whitespace-nowrap cursor-pointer select-none ${
                   isActive
                     ? 'bg-aia-red text-white shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                    : 'bg-slate-50 sm:bg-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-500'}`} />
-                <span>{tab.label}</span>
+                <Icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 ${isActive ? 'text-white' : 'text-slate-500'}`} />
+                <span className="truncate">{tab.label}</span>
                 {tab.badge !== undefined && (
                   <span
-                    className={`ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
+                    className={`ml-0.5 px-1.5 py-0.2 rounded-full text-[10px] font-bold shrink-0 ${
                       isActive ? 'bg-white text-aia-red' : tab.badgeColor || 'bg-slate-200 text-slate-700'
                     }`}
                   >

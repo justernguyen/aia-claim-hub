@@ -56,8 +56,8 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
     >
       <div>
         {/* Top Header: Avatar + Name + Status */}
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex items-center gap-3">
+        <div className="flex items-start justify-between gap-2">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
             <CustomerAvatar
               avatarId={customer.avatar}
               name={customer.name}
@@ -73,16 +73,16 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
                   : undefined
               }
             />
-            <div>
-              <div className="flex items-center gap-2">
-                <h3 className="text-base font-bold text-slate-900 group-hover:text-aia-red transition-colors">
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5 min-w-0">
+                <h3 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-aia-red transition-colors truncate">
                   {customer.name}
                 </h3>
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">
+                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 shrink-0">
                   {customer.gender}
                 </span>
               </div>
-              <p className="text-xs text-slate-500 font-medium truncate max-w-[200px]">
+              <p className="text-xs text-slate-500 font-medium truncate">
                 {customer.occupation || 'Khách hàng cá nhân'}
               </p>
             </div>
@@ -90,12 +90,12 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
 
           {primaryPolicy && (
             <span
-              className={`text-[11px] font-semibold px-2.5 py-1 rounded-full border flex items-center gap-1.5 ${
+              className={`text-[10px] sm:text-[11px] font-semibold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border flex items-center gap-1 whitespace-nowrap shrink-0 ${
                 POLICY_STATUS_CONFIG[primaryPolicy.status]?.badgeClass || 'bg-slate-100 text-slate-700'
               }`}
             >
               <span
-                className={`w-1.5 h-1.5 rounded-full ${
+                className={`w-1.5 h-1.5 rounded-full shrink-0 ${
                   POLICY_STATUS_CONFIG[primaryPolicy.status]?.dotColor || 'bg-slate-400'
                 }`}
               />
