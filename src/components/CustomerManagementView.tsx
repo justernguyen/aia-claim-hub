@@ -8,7 +8,9 @@ import {
   UserPlus,
   Coins,
   TrendingUp,
+  FileSpreadsheet,
 } from 'lucide-react';
+import { CustomerImportModal } from './CustomerImportModal';
 import { Customer, Policy, CareActivity, PolicyStatus } from '../types/crm';
 import { ClaimItem } from '../types/claim';
 import { CustomerCard } from './CustomerCard';
@@ -28,6 +30,7 @@ interface CustomerManagementViewProps {
   onSelectClaim?: (claimId: string) => void;
   isCreateModalOpen: boolean;
   setIsCreateModalOpen: (open: boolean) => void;
+  onBulkImport?: (customers: Omit<Customer, 'id' | 'createdAt'>[], policies: Policy[]) => void;
 }
 
 export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
@@ -41,7 +44,9 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
   onSelectClaim,
   isCreateModalOpen,
   setIsCreateModalOpen,
+  onBulkImport,
 }) => {
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<PolicyStatus | 'all'>('all');
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
@@ -225,6 +230,16 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
 
           <button
             type="button"
+            onClick={() => setIsImportModalOpen(true)}
+            className="inline-flex items-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-xs transition-colors shrink-0"
+            title="Nhập hàng loạt khách hàng từ Excel hoặc file CSV"
+          >
+            <FileSpreadsheet className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Nhập Excel</span>
+          </button>
+
+          <button
+            type="button"
             onClick={() => setIsCreateModalOpen(true)}
             className="inline-flex items-center gap-1.5 px-3 py-2 bg-aia-red hover:bg-aia-red-dark text-white rounded-xl text-xs font-bold shadow-xs transition-colors shrink-0"
           >
@@ -282,6 +297,13 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
         onSubmit={onAddCustomer}
+      />
+
+      {/* Customer Import Modal */}
+      <CustomerImportModal
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+        onImport={(importedCusts, importedPols) => onBulkImport?.(importedCusts, importedPols)}
       />
     </div>
   );

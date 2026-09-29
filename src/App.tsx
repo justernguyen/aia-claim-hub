@@ -181,6 +181,10 @@ export default function App() {
               setActiveTab('claims');
               handleOpenClaimDetail(claimId);
             }}
+            onBulkImport={(importedCusts, importedPols) => {
+              store.addBulkCustomers(importedCusts, importedPols);
+              showNotification(`Đã nạp thành công ${importedCusts.length} khách hàng vào hệ thống!`);
+            }}
             isCreateModalOpen={isNewCustomerModalOpen}
             setIsCreateModalOpen={setIsNewCustomerModalOpen}
           />
@@ -310,6 +314,14 @@ export default function App() {
         onUpdateDocStatus={(claimId, docId, docStatus, note) => {
           store.updateDocumentStatus(claimId, docId, docStatus, note);
           showNotification('Đã cập nhật tình trạng chứng từ y tế!');
+        }}
+        onAttachDocImage={(claimId, docId, fileUrl, fileName, fileSize) => {
+          store.attachDocumentImage(claimId, docId, fileUrl, fileName, fileSize);
+          showNotification(`Đã lưu trữ ảnh chứng từ: ${fileName}!`);
+        }}
+        onAddDocument={(claimId, docName, fileUrl, fileName, fileSize) => {
+          store.addClaimDocument(claimId, docName, fileUrl, fileName, fileSize);
+          showNotification(`Đã thêm chứng từ mới: ${docName}!`);
         }}
         onAddNote={(claimId, title, content) => {
           store.addTimelineNote(claimId, title, content);

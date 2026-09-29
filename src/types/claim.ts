@@ -7,13 +7,23 @@ export type ClaimStatus =
   | 'rejected';       // Từ chối chi trả
 
 export type ClaimType =
-  | 'hospital_cash'    // Trợ cấp nằm viện
-  | 'surgery'          // Chi phí phẫu thuật
-  | 'medical_expense'  // Chi phí y tế nội/ngoại trú
-  | 'critical_illness' // Bệnh hiểm nghèo
-  | 'accident'         // Tai nạn thương tật
-  | 'death';           // Quyền lợi tử vong
-
+  // 11 Quyền lợi bồi thường chuẩn AIA
+  | 'inpatient'                  // Điều trị nội trú
+  | 'outpatient'                 // Điều trị ngoại trú
+  | 'critical_illness'          // Bệnh hiểm nghèo
+  | 'pre_admission'              // Điều trị trước nhập viện
+  | 'day_treatment'              // Điều trị trong ngày
+  | 'maternity'                  // Khám thai
+  | 'total_permanent_disability' // Tàn tật toàn bộ và vĩnh viễn
+  | 'post_discharge'             // Điều trị sau xuất viện
+  | 'dental'                     // Nha khoa
+  | 'accident_injury'            // Thương tật do tai nạn
+  | 'death'                      // Tử vong
+  // Backward compatibility aliases
+  | 'hospital_cash'
+  | 'surgery'
+  | 'medical_expense'
+  | 'accident';
 // Aliases for compatibility
 export type BenefitType = ClaimType;
 
@@ -25,6 +35,9 @@ export interface DocumentItem {
   status: DocumentStatus;
   required: boolean;
   fileSize?: string;
+  fileName?: string;
+  fileUrl?: string; // Link ảnh hoặc base64 xem trực tiếp
+  previewUrl?: string;
   note?: string;
   updatedAt?: string;
 }
@@ -161,12 +174,22 @@ export const STATUS_CONFIG: Record<
 };
 
 export const CLAIM_TYPE_LABELS: Record<ClaimType, string> = {
+  inpatient: 'Điều trị nội trú',
+  outpatient: 'Điều trị ngoại trú',
+  critical_illness: 'Bệnh hiểm nghèo',
+  pre_admission: 'Điều trị trước nhập viện',
+  day_treatment: 'Điều trị trong ngày',
+  maternity: 'Khám thai',
+  total_permanent_disability: 'Tàn tật toàn bộ và vĩnh viễn',
+  post_discharge: 'Điều trị sau xuất viện',
+  dental: 'Nha khoa',
+  accident_injury: 'Thương tật do tai nạn',
+  death: 'Tử vong',
+  // Aliases
   hospital_cash: 'Trợ cấp nằm viện',
   surgery: 'Chi phí phẫu thuật',
   medical_expense: 'Chi phí y tế',
-  critical_illness: 'Bệnh hiểm nghèo',
-  accident: 'Tai nạn thương tật',
-  death: 'Quyền lợi tử vong',
+  accident: 'Thương tật tai nạn',
 };
 
 // Alias

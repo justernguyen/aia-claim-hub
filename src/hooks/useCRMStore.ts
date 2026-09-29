@@ -290,6 +290,43 @@ export const useCRMStore = () => {
     }));
     return newCustomer;
   }, [data.customers.length]);
+  const addBulkCustomers = useCallback((
+    newCustomers: Omit<Customer, 'id' | 'createdAt'>[],
+    newPolicies: Policy[]
+  ) => {
+    setData((prev) => {
+      let currentCount = prev.customers.length;
+      const createdCusts: Customer[] = [];
+      const createdPols: Policy[] = [];
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      newCustomers.forEach((c, idx) => {
+        currentCount += 1;
+        const newId = `CUST-${String(currentCount).padStart(3, '0')}`;
+        const fullCust: Customer = {
+          ...c,
+          id: newId,
+          createdAt: todayStr,
+        };
+        createdCusts.push(fullCust);
+
+        const matchingPol = newPolicies[idx];
+        if (matchingPol) {
+          createdPols.push({
+            ...matchingPol,
+            customerId: newId,
+            customerName: fullCust.name,
+          });
+        }
+      });
+
+      return {
+        ...prev,
+        customers: [...createdCusts, ...prev.customers],
+        policies: [...createdPols, ...prev.policies],
+      };
+    });
+  }, []);
 
   const updateCustomer = useCallback((id: string, updates: Partial<Customer>) => {
     setData((prev) => ({
@@ -342,7 +379,6 @@ export const useCRMStore = () => {
         return {
           ...pol,
           benefits: pol.benefits.map((b) => {
-            // Khớp theo type quyền lợi hoặc trợ cấp nằm viện / thẻ sức khỏe
             if (b.type === claimType || (b.type === 'medical_expense' && claimType === 'hospital_cash')) {
               const newUsed = Math.max(0, b.usedAmount + amountDelta);
               const newRemaining = Math.max(0, b.maxLimit - newUsed);
@@ -529,6 +565,90 @@ export const useCRMStore = () => {
     }));
   }, []);
 
+  const attachDocumentImage = useCallback((
+    claimId: string,
+    docId: string,
+    fileUrl: string,
+    fileName: string,
+    fileSize: string
+  ) => {
+    setData((prev) => ({
+      ...prev,
+      claims: prev.claims.map((claim) => {
+        if (claim.id !== claimId) return claim;
+        const updatedDocs = claim.documents.map((d) =>
+          d.id === docId
+            ? {
+                ...d,
+                fileUrl,
+                fileName,
+                fileSize,
+                status: d.status === 'missing' ? ('received' as const) : d.status,
+                updatedAt: new Date().toISOString().split('T')[0],
+              }
+            : d
+        );
+        const docName = claim.documents.find((d) => d.id === docId)?.name || 'chứng từ';
+        const newEvent = {
+          id: `tl-${Date.now()}`,
+          timestamp: new Date().toISOString().replace('T', ' ').substring(0, 16),
+          title: `Đã lưu ảnh chứng từ: ${docName}`,
+          description: `Đã đính kèm tệp ${fileName} (${fileSize}) lưu trữ vĩnh viễn trong hồ sơ.`,
+          actor: prev.consultant.name,
+          type: 'doc_update' as const,
+        };
+        return {
+          ...claim,
+          documents: updatedDocs,
+          timeline: [newEvent, ...claim.timeline],
+          updatedAt: new Date().toISOString(),
+        };
+      }),
+    }));
+  }, []);
+
+  const addClaimDocument = useCallback((
+    claimId: string,
+    docName: string,
+    fileUrl?: string,
+    fileName?: string,
+    fileSize?: string
+  ) => {
+    const newDocId = `doc-${Date.now()}`;
+    const newDoc = {
+      id: newDocId,
+      name: docName,
+      status: fileUrl ? ('received' as const) : ('missing' as const),
+      required: false,
+      fileUrl,
+      fileName,
+      fileSize: fileSize || 'Ảnh y tế',
+      updatedAt: new Date().toISOString().split('T')[0],
+    };
+
+    setData((prev) => ({
+      ...prev,
+      claims: prev.claims.map((claim) => {
+        if (claim.id !== claimId) return claim;
+        const newEvent = {
+          id: `tl-${Date.now()}`,
+          timestamp: new Date().toISOString().replace('T', ' ').substring(0, 16),
+          title: `Bổ sung chứng từ: ${docName}`,
+          description: `Tư vấn viên ${prev.consultant.name} đã thêm chứng từ mới vào hồ sơ.`,
+          actor: prev.consultant.name,
+          type: 'doc_update' as const,
+        };
+        return {
+          ...claim,
+          documents: [...claim.documents, newDoc],
+          timeline: [newEvent, ...claim.timeline],
+          updatedAt: new Date().toISOString(),
+        };
+      }),
+    }));
+    return newDoc;
+  }, []);
+
   const addTimelineNote = useCallback((claimId: string, title: string, content: string) => {
     setData((prev) => ({
       ...prev,
@@ -692,6 +812,7 @@ export const useCRMStore = () => {
 
     // Mutations
     addCustomer,
+    addBulkCustomers,
     updateCustomer,
     deleteCustomer,
 
@@ -702,6 +823,8 @@ export const useCRMStore = () => {
     addClaim,
     updateClaimStatus,
     updateDocumentStatus,
+    attachDocumentImage,
+    addClaimDocument,
     addTimelineNote,
     deleteClaim,
 

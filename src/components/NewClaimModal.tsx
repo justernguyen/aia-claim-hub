@@ -54,6 +54,7 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
   const [claimedAmountStr, setClaimedAmountStr] = useState('');
   const [notes, setNotes] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [attachedPhotos, setAttachedPhotos] = useState<{ name: string; url: string; size: string }[]>([]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -123,6 +124,18 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
       dischargeDate: dischargeDate || undefined,
       diagnosis: diagnosis.trim(),
       claimedAmount: parsedAmount,
+      documents: attachedPhotos.length > 0
+        ? attachedPhotos.map((p, idx) => ({
+            id: `doc-${Date.now()}-${idx}`,
+            name: p.name,
+            status: 'received' as const,
+            required: true,
+            fileUrl: p.url,
+            fileName: p.name,
+            fileSize: p.size,
+            updatedAt: new Date().toISOString().split('T')[0],
+          }))
+        : undefined,
       notes: notes.trim() || 'Hồ sơ mới tiếp nhận từ khách hàng.',
     });
 
@@ -445,6 +458,65 @@ export const NewClaimModal: React.FC<NewClaimModalProps> = ({
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-aia-red/20"
                   />
                 </div>
+              </div>
+            </div>
+
+            {/* Section 4: Đính kèm ảnh chứng từ ban đầu */}
+            <div className="space-y-2 pt-3 border-t border-slate-100">
+              <div className="flex items-center justify-between">
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                  4. Tải lên ảnh giấy tờ y tế (Không sợ mất ảnh như Zalo)
+                </label>
+                <span className="text-[11px] text-slate-400">Tùy chọn • Tải nhiều ảnh</span>
+              </div>
+
+              <div className="border-2 border-dashed border-slate-200 rounded-xl p-4 text-center hover:border-aia-red transition-colors bg-slate-50/50">
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*,.pdf"
+                  id="claim-photos-input"
+                  className="hidden"
+                  onChange={(e) => {
+                    const files = Array.from(e.target.files || []);
+                    files.forEach((file) => {
+                      const reader = new FileReader();
+                      reader.onload = (ev) => {
+                        const url = ev.target?.result as string;
+                        const size = `${Math.round(file.size / 1024)} KB`;
+                        setAttachedPhotos((prev) => [...prev, { name: file.name, url, size }]);
+                      };
+                      reader.readAsDataURL(file);
+                    });
+                  }}
+                />
+                <label htmlFor="claim-photos-input" className="cursor-pointer">
+                  <div className="text-xs font-semibold text-aia-red hover:underline">
+                    + Bấm để chọn ảnh từ máy hoặc chụp từ điện thoại
+                  </div>
+                  <p className="text-[11px] text-slate-400 mt-1">
+                    Giấy ra viện, bảng kê viện phí, hóa đơn VAT điện tử, giấy phẫu thuật
+                  </p>
+                </label>
+
+                {attachedPhotos.length > 0 && (
+                  <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-left">
+                    {attachedPhotos.map((p, idx) => (
+                      <div key={idx} className="relative rounded-lg border border-slate-200 bg-white p-1 text-[10px]">
+                        <img src={p.url} alt={p.name} className="h-16 w-full object-cover rounded" />
+                        <p className="truncate mt-1 font-medium text-slate-700">{p.name}</p>
+                        <span className="text-slate-400">{p.size}</span>
+                        <button
+                          type="button"
+                          onClick={() => setAttachedPhotos((prev) => prev.filter((_, i) => i !== idx))}
+                          className="absolute -top-1.5 -right-1.5 bg-rose-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px]"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 
