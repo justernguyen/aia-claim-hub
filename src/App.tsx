@@ -17,7 +17,8 @@ import { ClaimStatus, ClaimType } from './types/claim';
 import { SortOption, ViewMode } from './hooks/useClaims';
 import { ShieldCheck, Sparkles } from 'lucide-react';
 import { AiaLogo } from './components/AiaLogo';
-
+import { ConsultantProfileModal } from './components/ConsultantProfileModal';
+import { DataBackupModal } from './components/DataBackupModal';
 export default function App() {
   const store = useCRMStore();
 
@@ -30,6 +31,8 @@ export default function App() {
   const [isNewClaimModalOpen, setIsNewClaimModalOpen] = useState(false);
   const [isNewCustomerModalOpen, setIsNewCustomerModalOpen] = useState(false);
   const [isNewCareModalOpen, setIsNewCareModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isBackupModalOpen, setIsBackupModalOpen] = useState(false);
 
   // Claim Drawer state
   const [selectedClaimId, setSelectedClaimId] = useState<string | null>(null);
@@ -150,8 +153,9 @@ export default function App() {
           store.resetCRMDefault();
           showNotification('Đã khôi phục dữ liệu hệ thống về mặc định!');
         }}
+        onOpenProfile={() => setIsProfileModalOpen(true)}
+        onOpenBackupModal={() => setIsBackupModalOpen(true)}
       />
-
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* TAB 1: KHÁCH HÀNG & HỢP ĐỒNG */}
@@ -299,14 +303,19 @@ export default function App() {
             <span>Hệ thống Quản lý Khách hàng, Bồi thường & Chăm sóc Khách hàng</span>
           </div>
           <div className="flex items-center gap-3 text-slate-400">
-            <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setIsProfileModalOpen(true)}
+              className="flex items-center gap-2 hover:text-slate-700 cursor-pointer transition-colors text-left"
+              title="Nhấp để sửa thông tin tư vấn viên"
+            >
               <img
                 src={store.consultant.avatarUrl || '/avatar-consultant.png'}
                 alt={store.consultant.name}
                 className="w-5 h-5 rounded-full object-cover border border-slate-200"
               />
-              <span>Tư vấn viên: <strong className="text-slate-700">{store.consultant.name}</strong> ({store.consultant.code})</span>
-            </div>
+              <span>Tư vấn viên: <strong className="text-slate-700 underline decoration-slate-300 underline-offset-2">{store.consultant.name}</strong> ({store.consultant.code})</span>
+            </button>
             <span>•</span>
             <span className="flex items-center gap-1 text-slate-500">
               <ShieldCheck className="w-3.5 h-3.5 text-aia-red" />
@@ -391,6 +400,43 @@ export default function App() {
         onSubmit={(act) => {
           store.addCareActivity(act);
           showNotification('Đã thêm ghi chú chăm sóc mới!');
+        }}
+      />
+
+      {/* Consultant Profile Modal */}
+      <ConsultantProfileModal
+        isOpen={isProfileModalOpen}
+        onClose={() => setIsProfileModalOpen(false)}
+        consultant={store.consultant}
+        onSave={(updated) => {
+          store.updateConsultant(updated);
+          showNotification('Đã cập nhật thông tin tư vấn viên!');
+        }}
+      />
+
+      {/* Data Backup & Restore Modal */}
+      <DataBackupModal
+        isOpen={isBackupModalOpen}
+        onClose={() => setIsBackupModalOpen(false)}
+        stats={{
+          customersCount: store.customers.length,
+          policiesCount: store.policies.length,
+          claimsCount: store.claims.length,
+          careCount: store.careActivities.length,
+        }}
+        consultant={store.consultant}
+        onExportJSON={store.exportAllJSON}
+        onExportCSV={store.exportAllCSV}
+        onImportJSON={(str) => {
+          const res = store.importAllJSON(str);
+          if (res.success) {
+            showNotification('Khôi phục toàn bộ cơ sở dữ liệu thành công!');
+          }
+          return res;
+        }}
+        onResetDefault={() => {
+          store.resetCRMDefault();
+          showNotification('Đã khôi phục dữ liệu hệ thống về mặc định!');
         }}
       />
     </div>

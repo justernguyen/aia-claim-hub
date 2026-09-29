@@ -84,16 +84,9 @@ export const useCRMStore = () => {
             }
             return c;
           });
-          const consultant = {
+          const consultant: ConsultantProfile = {
             ...CURRENT_CONSULTANT,
             ...(parsed.consultant || {}),
-            name: CURRENT_CONSULTANT.name,
-            code: CURRENT_CONSULTANT.code,
-            agency: CURRENT_CONSULTANT.agency,
-            avatarUrl:
-              parsed.consultant?.avatarUrl && !parsed.consultant.avatarUrl.includes('unsplash.com')
-                ? parsed.consultant.avatarUrl
-                : CURRENT_CONSULTANT.avatarUrl,
           };
           return { ...parsed, customers, policies, claims, consultant };
         }
@@ -793,13 +786,35 @@ export const useCRMStore = () => {
   // ==========================================
   // DATA BACKUP & RESTORE UTILITIES
   // ==========================================
+  const updateConsultant = useCallback((updated: Partial<ConsultantProfile>) => {
+    setData((prev) => ({
+      ...prev,
+      consultant: {
+        ...prev.consultant,
+        ...updated,
+      },
+    }));
+  }, []);
+
   const exportAllJSON = useCallback(() => {
-    const jsonStr = JSON.stringify(data, null, 2);
+    const backupPayload = {
+      version: '2.0',
+      exportedAt: new Date().toISOString(),
+      agent: {
+        name: data.consultant.name,
+        code: data.consultant.code,
+        agency: data.consultant.agency,
+      },
+      ...data,
+    };
+    const jsonStr = JSON.stringify(backupPayload, null, 2);
     const blob = new Blob([jsonStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `aia_crm_backup_${new Date().toISOString().split('T')[0]}.json`;
+    const cleanDate = new Date().toISOString().slice(0, 10);
+    const cleanCode = (data.consultant.code || 'AGENT').replace(/[^a-zA-Z0-9_-]/g, '_');
+    a.download = `AIA_CRM_Backup_${cleanCode}_${cleanDate}.json`;
     a.click();
     URL.revokeObjectURL(url);
   }, [data]);
@@ -835,25 +850,56 @@ export const useCRMStore = () => {
     URL.revokeObjectURL(url);
   }, [data]);
 
-  const importAllJSON = useCallback((jsonStr: string): { success: boolean; error?: string } => {
-    try {
-      const parsed = JSON.parse(jsonStr);
-      if (!parsed.customers || !parsed.policies || !parsed.claims) {
-        return { success: false, error: 'File JSON không đúng định dạng CRM AIA' };
+  const importAllJSON = useCallback(
+    (jsonStr: string): { success: boolean; error?: string; count?: { customers: number; policies: number; claims: number; careActivities: number } } => {
+      try {
+        const parsed = JSON.parse(jsonStr);
+        if (
+          !parsed.customers ||
+          !Array.isArray(parsed.customers) ||
+          !parsed.policies ||
+          !Array.isArray(parsed.policies) ||
+          !parsed.claims ||
+          !Array.isArray(parsed.claims)
+        ) {
+          return {
+            success: false,
+            error: 'File JSON không đúng định dạng dữ liệu AIA CRM (cần có danh sách customers, policies và claims hợp lệ)',
+          };
+        }
+        const restoredConsultant: ConsultantProfile = {
+          ...CURRENT_CONSULTANT,
+          ...(parsed.consultant || {}),
+        };
+        const restoredCustomers = parsed.customers;
+        const restoredPolicies = parsed.policies;
+        const restoredClaims = parsed.claims;
+        const restoredCare = Array.isArray(parsed.careActivities) ? parsed.careActivities : INITIAL_CARE_ACTIVITIES;
+
+        setData({
+          customers: restoredCustomers,
+          policies: restoredPolicies,
+          claims: restoredClaims,
+          careActivities: restoredCare,
+          consultant: restoredConsultant,
+        });
+
+        return {
+          success: true,
+          count: {
+            customers: restoredCustomers.length,
+            policies: restoredPolicies.length,
+            claims: restoredClaims.length,
+            careActivities: restoredCare.length,
+          },
+        };
+      } catch (e: unknown) {
+        const message = e instanceof Error ? e.message : 'Lỗi đọc file JSON';
+        return { success: false, error: message };
       }
-      setData({
-        customers: parsed.customers,
-        policies: parsed.policies,
-        claims: parsed.claims,
-        careActivities: parsed.careActivities || INITIAL_CARE_ACTIVITIES,
-        consultant: parsed.consultant || CURRENT_CONSULTANT,
-      });
-      return { success: true };
-    } catch (e: unknown) {
-      const message = e instanceof Error ? e.message : 'Lỗi đọc file JSON';
-      return { success: false, error: message };
-    }
-  }, []);
+    },
+    []
+  );
 
   const resetCRMDefault = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY);
@@ -873,6 +919,7 @@ export const useCRMStore = () => {
     claims: data.claims,
     careActivities: data.careActivities,
     consultant: data.consultant,
+    updateConsultant,
 
     // Computed
     alerts,
