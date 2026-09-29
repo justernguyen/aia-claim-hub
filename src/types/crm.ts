@@ -45,6 +45,106 @@ export interface BenefitQuota {
   unit: 'VND' | 'days';
 }
 
+export interface RiderPreset {
+  id: string;
+  name: string;
+  shortName: string;
+  claimType: ClaimType;
+  defaultLimit: number;
+  unit: 'VND' | 'days';
+  defaultEnabled: boolean;
+  categoryBadge: string;
+  description: string;
+  limitPresets?: number[];
+}
+
+export interface ConfiguredRiderItem {
+  id: string;
+  presetId?: string;
+  name: string;
+  claimType: ClaimType;
+  limit: number;
+  unit: 'VND' | 'days';
+  enabled: boolean;
+  isCustom?: boolean;
+}
+
+export const AIA_RIDER_PRESETS: RiderPreset[] = [
+  {
+    id: 'rider-health-card',
+    name: 'Thẻ Chăm sóc Sức khỏe Toàn cầu (Nội trú)',
+    shortName: 'Thẻ Sức Khỏe CSSK',
+    claimType: 'medical_expense',
+    defaultLimit: 250000000,
+    unit: 'VND',
+    defaultEnabled: true,
+    categoryBadge: 'Y tế & CSSK',
+    description: 'Bảo lãnh viện phí nội trú, phẫu thuật, phòng điều trị tại các bệnh viện liên kết',
+    limitPresets: [150000000, 250000000, 500000000, 1000000000],
+  },
+  {
+    id: 'rider-critical-illness',
+    name: 'Bảo hiểm Bệnh hiểm nghèo Toàn diện (3 giai đoạn)',
+    shortName: 'Bệnh Hiểm Nghèo',
+    claimType: 'critical_illness',
+    defaultLimit: 300000000,
+    unit: 'VND',
+    defaultEnabled: false,
+    categoryBadge: 'Bệnh nghiêm trọng',
+    description: 'Bảo vệ trước ung thư, tim mạch, đột quỵ và các bệnh lý nghiêm trọng qua các giai đoạn',
+    limitPresets: [200000000, 300000000, 500000000, 1000000000],
+  },
+  {
+    id: 'rider-accident',
+    name: 'Bảo hiểm Tai nạn Toàn diện Nâng cao',
+    shortName: 'Tai Nạn Toàn Diện',
+    claimType: 'accident_injury',
+    defaultLimit: 500000000,
+    unit: 'VND',
+    defaultEnabled: false,
+    categoryBadge: 'Tai nạn & Thương tật',
+    description: 'Chi trả quyền lợi tử vong, thương tật toàn bộ/bộ phận và chi phí y tế do tai nạn',
+    limitPresets: [200000000, 500000000, 1000000000, 2000000000],
+  },
+  {
+    id: 'rider-hospital-cash',
+    name: 'Trợ cấp Nằm viện & Phẫu thuật Tiêu chuẩn',
+    shortName: 'Trợ Cấp Nằm Viện',
+    claimType: 'hospital_cash',
+    defaultLimit: 30000000,
+    unit: 'VND',
+    defaultEnabled: false,
+    categoryBadge: 'Trợ cấp thu nhập',
+    description: 'Hỗ trợ bù đắp tài chính khi nằm viện nội trú điều trị (tương đương 500.000đ/ngày)',
+    limitPresets: [15000000, 30000000, 50000000, 100000000],
+  },
+  {
+    id: 'rider-waiver',
+    name: 'Bảo hiểm Miễn đóng phí khi mắc Bệnh hiểm nghèo',
+    shortName: 'Miễn Đóng Phí',
+    claimType: 'critical_illness',
+    defaultLimit: 100000000,
+    unit: 'VND',
+    defaultEnabled: false,
+    categoryBadge: 'Bảo toàn HĐ',
+    description: 'AIA thay mặt đóng toàn bộ phí bảo hiểm còn lại của HĐ khi người được bảo hiểm mắc bệnh hiểm nghèo',
+    limitPresets: [50000000, 100000000, 200000000],
+  },
+];
+
+export function convertRidersToBenefits(riders: ConfiguredRiderItem[]): BenefitQuota[] {
+  return riders
+    .filter((r) => r.enabled && r.limit > 0 && r.name.trim().length > 0)
+    .map((r) => ({
+      type: r.claimType,
+      name: r.name.trim(),
+      maxLimit: r.limit,
+      usedAmount: 0,
+      remainingLimit: r.limit,
+      unit: r.unit || 'VND',
+    }));
+}
+
 export interface Policy {
   id: string; // Số HĐ: AIA-1108924
   customerId: string;

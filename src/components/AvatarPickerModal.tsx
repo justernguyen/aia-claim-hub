@@ -1,16 +1,14 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import {
   X,
-  Shuffle,
   Check,
-  Search,
+  Upload,
   Sparkles,
-  Type,
+  RefreshCw,
+  Link as LinkIcon,
 } from 'lucide-react';
 import {
   AVATAR_CATALOG,
-  AVATAR_CATEGORIES,
-  AvatarCategory,
   AvatarItem,
   getAvatarById,
   getDefaultAvatarForCustomer,
@@ -42,28 +40,52 @@ const AvatarPickerContent: React.FC<Omit<AvatarPickerModalProps, 'isOpen'>> = ({
     return AVATAR_CATALOG[0].id;
   }, [currentAvatarId, customer]);
 
+  const [activeTab, setActiveTab] = useState<'preset' | 'upload'>('preset');
   const [selectedId, setSelectedId] = useState<string>(initialSelected);
-  const [activeCategory, setActiveCategory] = useState<AvatarCategory>('all');
-  const [searchQuery, setSearchQuery] = useState('');
-  // Filtered avatars
-  const filteredAvatars = AVATAR_CATALOG.filter((item) => {
-    const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
-    const matchesSearch =
-      searchQuery.trim() === '' ||
-      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.id.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  const [uploadedPreview, setUploadedPreview] = useState<string | null>(
+    initialSelected.startsWith('data:image') || initialSelected.startsWith('http')
+      ? initialSelected
+      : null
+  );
+  const [imageUrlInput, setImageUrlInput] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Close on Escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
   const selectedItem: AvatarItem | undefined = getAvatarById(selectedId);
-  const isLetterMode = selectedId === 'letter';
+  const initials = getCustomerInitials(customer?.name);
+  const isCustomImage =
+    selectedId.startsWith('data:image') ||
+    selectedId.startsWith('http://') ||
+    selectedId.startsWith('https://') ||
+    selectedId.startsWith('blob:');
 
-  // Random avatar selection
-  const handleRandomSelect = () => {
-    const available = AVATAR_CATALOG.filter((a) => a.id !== selectedId);
-    const randomItem = available[Math.floor(Math.random() * available.length)];
-    if (randomItem) {
-      setSelectedId(randomItem.id);
+  // Handle local image file upload
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const dataUrl = ev.target?.result as string;
+      setUploadedPreview(dataUrl);
+      setSelectedId(dataUrl);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Handle URL paste
+  const handleApplyUrl = () => {
+    if (imageUrlInput.trim()) {
+      setUploadedPreview(imageUrlInput.trim());
+      setSelectedId(imageUrlInput.trim());
     }
   };
 
@@ -71,8 +93,6 @@ const AvatarPickerContent: React.FC<Omit<AvatarPickerModalProps, 'isOpen'>> = ({
     onSelectAvatar(selectedId);
     onClose();
   };
-
-  const initials = getCustomerInitials(customer?.name);
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
@@ -82,211 +102,238 @@ const AvatarPickerContent: React.FC<Omit<AvatarPickerModalProps, 'isOpen'>> = ({
         onClick={onClose}
       />
 
+      {/* Hidden File Input */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        accept="image/png,image/jpeg,image/webp,image/jpg"
+        className="hidden"
+        onChange={handleFileUpload}
+      />
+
       <div className="flex min-h-full items-center justify-center p-3 sm:p-5 text-center">
         <div
-          className="w-full max-w-4xl transform overflow-hidden rounded-3xl bg-white text-left align-middle shadow-2xl transition-all border border-slate-200 flex flex-col max-h-[90vh]"
+          className="w-full max-w-lg transform overflow-hidden rounded-3xl bg-white text-left align-middle shadow-2xl transition-all border border-slate-200 flex flex-col max-h-[92vh]"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Header */}
-          <div className="px-6 py-4 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white flex items-center justify-between border-b border-slate-700 shrink-0">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-aia-red to-rose-500 flex items-center justify-center shadow-md">
-                <Sparkles className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h3 className="text-base sm:text-lg font-bold">
-                  Chọn Avatar cho {customer?.name || 'Khách hàng'}
-                </h3>
-                <p className="text-xs text-slate-300">
-                  Bộ sưu tập 36 mẫu avatar doanh nghiệp trang trọng, chuẩn nhận diện AIA
-                </p>
-              </div>
-            </div>
+          {/* Header - Styled Exactly like Image #1 */}
+          <div className="px-6 py-4.5 bg-white border-b border-slate-100 flex items-center justify-between shrink-0">
+            <h3 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
+              Thay đổi ảnh đại diện{' '}
+              <span className="text-slate-500 font-medium">({customer?.name || 'Khách hàng'})</span>
+            </h3>
             <button
               type="button"
               onClick={onClose}
-              className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors"
+              className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-full transition-colors"
+              title="Đóng"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          {/* Preview & Quick Actions Bar */}
-          <div className="bg-slate-50 border-b border-slate-200 p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shrink-0">
-            <div className="flex items-center gap-4 w-full sm:w-auto">
-              <div className="relative w-18 h-18 sm:w-20 sm:h-20 rounded-2xl p-1 bg-white shadow-md border border-slate-200 shrink-0 flex items-center justify-center overflow-hidden">
-                {isLetterMode ? (
-                  <div className="w-full h-full rounded-xl bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-950 text-white font-extrabold flex items-center justify-center text-xl border border-slate-700">
-                    {initials}
-                  </div>
+          {/* Modal Body */}
+          <div className="p-5 sm:p-6 overflow-y-auto flex-1 space-y-5">
+            {/* 1. Large Top Circular Avatar Preview (Ảnh mẫu trên cùng) */}
+            <div className="flex flex-col items-center justify-center pt-1">
+              <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full p-1 bg-white shadow-xl ring-4 ring-slate-100 shrink-0 flex items-center justify-center overflow-hidden transition-all hover:scale-102">
+                {isCustomImage ? (
+                  <img
+                    src={selectedId}
+                    alt={customer?.name || 'Avatar'}
+                    className="w-full h-full object-cover rounded-full"
+                  />
                 ) : selectedItem ? (
-                  <div className={`w-full h-full rounded-xl p-1 bg-gradient-to-tr ${selectedItem.bgGradient} flex items-center justify-center shadow-inner`}>
-                    <selectedItem.SvgComponent className="w-full h-full drop-shadow-xs" initials={initials} />
+                  <div className="w-full h-full rounded-full overflow-hidden flex items-center justify-center">
+                    <selectedItem.SvgComponent className="w-full h-full" initials={initials} />
                   </div>
                 ) : (
-                  <div className="w-full h-full rounded-xl bg-slate-200 flex items-center justify-center text-slate-400">
-                    ?
+                  <div className="w-full h-full rounded-full bg-gradient-to-tr from-sky-100 to-indigo-100 text-sky-900 font-extrabold flex items-center justify-center text-2xl border border-sky-200">
+                    {initials}
                   </div>
                 )}
               </div>
 
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm sm:text-base font-bold text-slate-800">
-                    {isLetterMode ? 'Chữ cái ban đầu' : selectedItem?.name || 'Đang chọn'}
-                  </span>
-                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">
-                    {isLetterMode ? 'Ký tự' : selectedItem?.category === 'corporate_exec' ? '👔 Chuyên gia' : selectedItem?.category === 'monogram_luxury' ? '💎 Monogram VIP' : '🛡️ Biểu trưng'}
-                  </span>
-                </div>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Áp dụng cho hồ sơ, danh thiếp và hợp đồng của{' '}
-                  <strong className="text-slate-700">{customer?.name}</strong>
+              <div className="mt-2.5 text-center">
+                <p className="text-xs font-bold text-slate-800">
+                  {isCustomImage
+                    ? 'Ảnh tự tải lên'
+                    : selectedItem?.name || 'Khuôn mặt hoạt hình'}
+                </p>
+                <p className="text-[11px] text-slate-400 mt-0.5">
+                  Ảnh đại diện hiển thị trên hồ sơ, hợp đồng và chăm sóc khách hàng
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+            {/* 2. Tabs Switcher: [ Hình mẫu ] & [ Tải lên ] (Ảnh mẫu Image #1) */}
+            <div className="bg-slate-100 p-1 rounded-2xl flex items-center max-w-xs mx-auto shadow-inner">
               <button
                 type="button"
-                onClick={handleRandomSelect}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900 text-white font-bold text-xs rounded-xl shadow-xs transition-transform active:scale-95 cursor-pointer"
-                title="Gợi ý ngẫu nhiên 1 mẫu avatar phù hợp"
-              >
-                <Shuffle className="w-3.5 h-3.5" />
-                <span>Đổi ngẫu nhiên</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setSelectedId('letter')}
-                className={`inline-flex items-center gap-1.5 px-3 py-2 border rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
-                  isLetterMode
-                    ? 'bg-slate-800 text-white border-slate-800 shadow-xs'
-                    : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'
+                onClick={() => setActiveTab('preset')}
+                className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  activeTab === 'preset'
+                    ? 'bg-white text-slate-900 shadow-sm'
+                    : 'text-slate-500 hover:text-slate-800'
                 }`}
-                title="Dùng ký tự chữ cái viết tắt"
               >
-                <Type className="w-3.5 h-3.5" />
-                <span>Dùng chữ cái</span>
+                <Sparkles className="w-3.5 h-3.5 text-aia-red" />
+                <span>Hình mẫu</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab('upload')}
+                className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  activeTab === 'upload'
+                    ? 'bg-white text-slate-900 shadow-sm'
+                    : 'text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                <Upload className="w-3.5 h-3.5 text-aia-red" />
+                <span>Tải lên</span>
               </button>
             </div>
-          </div>
 
-          {/* Search & Categories Bar */}
-          <div className="p-4 border-b border-slate-200 bg-white space-y-3 shrink-0">
-            {/* Search Input */}
-            <div className="relative">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Tìm avatar theo tên (ví dụ: giám đốc, bác sĩ, monogram, khiên, vương miện...)"
-                className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-aia-red focus:border-transparent transition-all"
-              />
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              )}
-            </div>
-
-            {/* Categories filter tabs */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-              {AVATAR_CATEGORIES.map((cat) => {
-                const isActive = activeCategory === cat.key;
-                return (
+            {/* 3. Tab Content: HÌNH MẪU (Lưới 16 khuôn mặt hoạt hình biểu cảm chuẩn Image #1) */}
+            {activeTab === 'preset' && (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between text-xs text-slate-500 px-1">
+                  <span>Chọn 1 khuôn mặt bạn thích:</span>
                   <button
-                    key={cat.key}
                     type="button"
-                    onClick={() => setActiveCategory(cat.key)}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
-                      isActive
-                        ? 'bg-aia-red text-white shadow-xs'
-                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
-                    }`}
+                    onClick={() => {
+                      const otherAvatars = AVATAR_CATALOG.filter((a) => a.id !== selectedId);
+                      const rand = otherAvatars[Math.floor(Math.random() * otherAvatars.length)];
+                      if (rand) setSelectedId(rand.id);
+                    }}
+                    className="text-aia-red hover:underline font-semibold flex items-center gap-1 cursor-pointer"
                   >
-                    <span>{cat.icon}</span>
-                    <span>{cat.label}</span>
+                    <RefreshCw className="w-3 h-3" />
+                    <span>Gợi ý ngẫu nhiên</span>
                   </button>
-                );
-              })}
-            </div>
-          </div>
+                </div>
 
-          {/* Grid of Avatars */}
-          <div className="p-4 sm:p-6 overflow-y-auto flex-1 max-h-[50vh]">
-            {filteredAvatars.length === 0 ? (
-              <div className="text-center py-12 text-slate-400">
-                <p className="text-sm font-semibold">Không tìm thấy avatar phù hợp</p>
-                <p className="text-xs mt-1">Hãy thử xóa bộ lọc tìm kiếm</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-3 sm:gap-4">
-                {filteredAvatars.map((item) => {
-                  const isSelected = selectedId === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      type="button"
-                      onClick={() => setSelectedId(item.id)}
-                      className={`group relative flex flex-col items-center p-2 rounded-2xl transition-all cursor-pointer ${
-                        isSelected
-                          ? 'ring-3 ring-aia-red ring-offset-2 bg-rose-50/50 shadow-md scale-105'
-                          : 'hover:bg-slate-100 hover:scale-105 hover:shadow-xs'
-                      }`}
-                    >
-                      <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl p-1 bg-gradient-to-tr ${item.bgGradient} shadow-xs flex items-center justify-center transition-transform group-hover:scale-102`}>
-                        <item.SvgComponent className="w-full h-full drop-shadow-xs" initials={initials} />
-                      </div>
-
-                      <span className="text-[10px] font-semibold text-slate-700 text-center truncate max-w-full mt-1.5 group-hover:text-slate-900">
-                        {item.name}
-                      </span>
-
-                      {isSelected && (
-                        <div className="absolute top-1 right-1 w-5 h-5 rounded-full bg-aia-red text-white flex items-center justify-center shadow-xs">
-                          <Check className="w-3 h-3 stroke-[3]" />
+                <div className="grid grid-cols-4 gap-2.5 sm:gap-3.5">
+                  {AVATAR_CATALOG.map((item) => {
+                    const isSelected = selectedId === item.id;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => setSelectedId(item.id)}
+                        className={`group relative aspect-square rounded-2xl overflow-hidden p-1 transition-all cursor-pointer focus:outline-hidden ${
+                          isSelected
+                            ? 'ring-3 ring-aia-red ring-offset-2 scale-105 shadow-md'
+                            : 'border border-slate-200 hover:border-slate-300 hover:shadow-xs hover:scale-102'
+                        }`}
+                        title={item.name}
+                      >
+                        <div className="w-full h-full rounded-xl overflow-hidden flex items-center justify-center bg-slate-50">
+                          <item.SvgComponent className="w-full h-full transition-transform group-hover:scale-105" />
                         </div>
-                      )}
+
+                        {/* Selected Checkmark Badge */}
+                        {isSelected && (
+                          <div className="absolute top-1 right-1 w-4 h-4 rounded-full bg-aia-red text-white flex items-center justify-center shadow-xs">
+                            <Check className="w-2.5 h-2.5 stroke-[3]" />
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* 4. Tab Content: TẢI LÊN (Upload custom image from file or URL) */}
+            {activeTab === 'upload' && (
+              <div className="space-y-4 pt-1">
+                {/* Upload Card Dropzone */}
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className="border-2 border-dashed border-slate-300 hover:border-aia-red rounded-2xl p-6 text-center cursor-pointer transition-all bg-slate-50/60 hover:bg-rose-50/30 group"
+                >
+                  <div className="w-12 h-12 rounded-full bg-rose-100/70 text-aia-red flex items-center justify-center mx-auto mb-3 transition-transform group-hover:scale-110 shadow-xs">
+                    <Upload className="w-6 h-6" />
+                  </div>
+                  <p className="text-xs font-bold text-slate-800 group-hover:text-aia-red transition-colors">
+                    Bấm để chọn ảnh từ máy tính hoặc điện thoại
+                  </p>
+                  <p className="text-[11px] text-slate-400 mt-1">
+                    Hỗ trợ định dạng JPG, PNG, WEBP dung lượng tối đa 5MB
+                  </p>
+                </div>
+
+                {/* Direct Image URL input */}
+                <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                  <label className="block text-xs font-semibold text-slate-700 flex items-center gap-1.5">
+                    <LinkIcon className="w-3.5 h-3.5 text-slate-400" />
+                    <span>Hoặc dán đường link ảnh trực tiếp:</span>
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="url"
+                      value={imageUrlInput}
+                      onChange={(e) => setImageUrlInput(e.target.value)}
+                      placeholder="https://example.com/avatar.jpg"
+                      className="flex-1 px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-800 focus:outline-aia-red"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleApplyUrl}
+                      className="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-lg transition-colors cursor-pointer"
+                    >
+                      Áp dụng
                     </button>
-                  );
-                })}
+                  </div>
+                </div>
+
+                {/* Uploaded image preview */}
+                {uploadedPreview && (
+                  <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={uploadedPreview}
+                        alt="Preview"
+                        className="w-10 h-10 rounded-full object-cover border border-emerald-300 shadow-2xs"
+                      />
+                      <div>
+                        <p className="text-xs font-bold text-emerald-900">Đã nạp ảnh thành công!</p>
+                        <p className="text-[10px] text-emerald-700">Bấm "Lưu thay đổi" bên dưới để áp dụng.</p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="text-xs font-semibold text-emerald-800 hover:underline"
+                    >
+                      Đổi ảnh khác
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
 
-          {/* Footer */}
-          <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between shrink-0">
-            <span className="text-xs text-slate-500">
-              Đang chọn:{' '}
-              <strong className="text-slate-800">
-                {isLetterMode ? 'Chữ cái viết tắt' : selectedItem?.name || selectedId}
-              </strong>
-            </span>
+          {/* Footer Actions */}
+          <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between shrink-0">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-xs transition-colors cursor-pointer"
+            >
+              HỦY BỎ
+            </button>
 
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={onClose}
-                className="px-4 py-2 border border-slate-300 text-slate-700 hover:bg-slate-100 font-semibold rounded-xl text-xs transition-colors cursor-pointer"
-              >
-                Hủy bỏ
-              </button>
-              <button
-                type="button"
-                onClick={handleSave}
-                className="px-5 py-2 bg-aia-red hover:bg-aia-red-dark text-white font-bold rounded-xl text-xs shadow-xs transition-all cursor-pointer flex items-center gap-1.5"
-              >
-                <Check className="w-3.5 h-3.5" />
-                <span>Lưu thay đổi</span>
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={handleSave}
+              className="px-6 py-2.5 bg-aia-red hover:bg-aia-red-dark text-white font-bold rounded-xl text-xs shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer flex items-center gap-1.5"
+            >
+              <Check className="w-4 h-4 stroke-[2.5]" />
+              <span>LƯU THAY ĐỔI</span>
+            </button>
           </div>
         </div>
       </div>

@@ -72,17 +72,23 @@ export const CustomerAvatar: React.FC<CustomerAvatarProps> = ({
   onClick,
   showBadge = false,
 }) => {
+  const isUploadedImage =
+    avatarId &&
+    (avatarId.startsWith('data:image') ||
+      avatarId.startsWith('http://') ||
+      avatarId.startsWith('https://') ||
+      avatarId.startsWith('blob:'));
+
   // Try to find custom avatar from catalog
   let avatarItem = getAvatarById(avatarId);
 
   // If customer has no explicit avatar set, use deterministic fun avatar or letter
-  if (!avatarItem && avatarId !== 'letter') {
+  if (!isUploadedImage && !avatarItem && avatarId !== 'letter') {
     avatarItem = getDefaultAvatarForCustomer(customerId || name, name);
   }
 
   const initials = getCustomerInitials(name);
   const sizeConfig = SIZE_MAP[size] || SIZE_MAP.md;
-
   return (
     <div
       onClick={onClick}
@@ -97,12 +103,16 @@ export const CustomerAvatar: React.FC<CustomerAvatarProps> = ({
           : ''
       } ${className}`}
     >
-      {avatarItem && avatarId !== 'letter' ? (
-        <div className={`w-full h-full rounded-[inherit] overflow-hidden p-0.5 bg-gradient-to-tr ${avatarItem.bgGradient} shadow-xs flex items-center justify-center`}>
+      {isUploadedImage ? (
+        <div className="w-full h-full rounded-[inherit] overflow-hidden shadow-xs border border-slate-200/80 bg-slate-50 flex items-center justify-center">
+          <img src={avatarId} alt={name} className="w-full h-full object-cover rounded-[inherit]" />
+        </div>
+      ) : avatarItem && avatarId !== 'letter' ? (
+        <div className="w-full h-full rounded-[inherit] overflow-hidden shadow-xs flex items-center justify-center border border-slate-200/60">
           <avatarItem.SvgComponent className="w-full h-full" initials={initials} />
         </div>
       ) : (
-        <div className="w-full h-full rounded-[inherit] bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-950 text-white font-bold flex items-center justify-center shadow-xs border border-slate-700/60">
+        <div className="w-full h-full rounded-[inherit] bg-gradient-to-tr from-sky-100 to-indigo-100 text-sky-900 font-extrabold flex items-center justify-center shadow-xs border border-sky-200">
           <span className={sizeConfig.textClass}>{initials}</span>
         </div>
       )}
