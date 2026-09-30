@@ -183,43 +183,43 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
               {/* Box 1: Customer & Policy Information - High Contrast Pro */}
               <div className="bg-slate-50/90 border border-slate-200 rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-2xs">
                 <div>
-                  <h3 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-2 mb-3.5">
+                  <h3 className="text-xs font-semibold text-slate-600 uppercase tracking-wider flex items-center gap-2 mb-3.5">
                     <User className="w-4 h-4 text-aia-red" />
                     <span>Thông tin Khách hàng & Hợp đồng bảo hiểm</span>
                   </h3>
                   <div className="grid grid-cols-2 gap-y-3.5 gap-x-4 text-xs">
                     <div>
-                      <span className="text-slate-700 block text-xs font-bold mb-1">Bên mua bảo hiểm:</span>
-                      <span className="font-black text-slate-950 text-sm sm:text-base">{claim.customerName}</span>
+                      <span className="text-slate-500 block text-xs font-medium mb-1">Bên mua bảo hiểm:</span>
+                      <span className="font-semibold text-slate-900 text-sm sm:text-base">{claim.customerName}</span>
                     </div>
                     <div>
-                      <span className="text-slate-700 block text-xs font-bold mb-1">Người được bảo hiểm:</span>
-                      <span className="font-extrabold text-slate-950 text-sm">
+                      <span className="text-slate-500 block text-xs font-medium mb-1">Người được bảo hiểm:</span>
+                      <span className="font-semibold text-slate-900 text-sm">
                         {claim.insuredPersonName}{' '}
-                        <span className="text-xs text-slate-800 font-bold bg-slate-200 px-2 py-0.5 rounded ml-1">({claim.relationship})</span>
+                        <span className="text-[11px] text-slate-600 font-medium bg-slate-200/70 px-1.5 py-0.5 rounded ml-1">({claim.relationship})</span>
                       </span>
                     </div>
                     <div>
-                      <span className="text-slate-700 block text-xs font-bold mb-1">Số điện thoại:</span>
-                      <span className="font-numeric font-extrabold text-slate-950 text-sm">{formatPhone(claim.customerPhone)}</span>
+                      <span className="text-slate-500 block text-xs font-medium mb-1">Số điện thoại:</span>
+                      <span className="font-numeric font-semibold text-slate-900 text-sm">{formatPhone(claim.customerPhone)}</span>
                     </div>
                     <div>
-                      <span className="text-slate-700 block text-xs font-bold mb-1">Số CCCD:</span>
-                      <span className="font-numeric font-extrabold text-slate-950 text-sm">{formatCCCD(claim.customerCccd)}</span>
+                      <span className="text-slate-500 block text-xs font-medium mb-1">Số CCCD:</span>
+                      <span className="font-numeric font-semibold text-slate-900 text-sm">{formatCCCD(claim.customerCccd)}</span>
                     </div>
                     <div>
-                      <span className="text-slate-700 block text-xs font-bold mb-1">Số hợp đồng AIA:</span>
-                      <span className="font-numeric font-black text-aia-red text-base tracking-tight">{claim.policyNumber}</span>
+                      <span className="text-slate-500 block text-xs font-medium mb-1">Số hợp đồng AIA:</span>
+                      <span className="font-numeric font-bold text-aia-red text-base tracking-tight">{claim.policyNumber}</span>
                     </div>
                     <div>
-                      <span className="text-slate-700 block text-xs font-bold mb-1">Sản phẩm bảo hiểm:</span>
-                      <span className="font-extrabold text-slate-950 text-sm">{claim.productName}</span>
+                      <span className="text-slate-500 block text-xs font-medium mb-1">Sản phẩm bảo hiểm:</span>
+                      <span className="font-semibold text-slate-900 text-sm">{claim.productName}</span>
                     </div>
                   </div>
                 </div>
                 <div className="pt-3.5 mt-3.5 border-t border-slate-200 flex items-center justify-between text-xs">
-                  <span className="text-slate-800 text-xs font-extrabold">Loại quyền lợi yêu cầu:</span>
-                  <span className="font-black text-slate-950 bg-white px-3 py-1 rounded-lg border-2 border-slate-200 text-xs shadow-2xs">
+                  <span className="text-slate-600 text-xs font-medium">Loại quyền lợi yêu cầu:</span>
+                  <span className="font-semibold text-slate-800 bg-white px-3 py-1 rounded-lg border border-slate-200 text-xs shadow-2xs">
                     {CLAIM_TYPE_LABELS[claim.claimType]}
                   </span>
                 </div>
@@ -228,18 +228,18 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
               {/* Box 2: Hospital & Clinical Details - High Contrast Pro */}
               <div className="bg-slate-50/90 border border-slate-200 rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-2xs">
                 <div>
-                  <h3 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-2 mb-3.5">
+                  <h3 className="text-xs font-semibold text-slate-600 uppercase tracking-wider flex items-center gap-2 mb-3.5">
                     <Building2 className="w-4 h-4 text-aia-red" />
                     <span>Chi tiết y tế & Cơ sở điều trị</span>
                   </h3>
                   <div className="space-y-3.5 text-xs">
                     <div className="flex items-start justify-between gap-2">
-                      <span className="text-slate-700 text-xs font-bold shrink-0">Cơ sở khám chữa bệnh:</span>
-                      <span className="font-black text-slate-950 text-sm text-right">{claim.hospitalName}</span>
+                      <span className="text-slate-500 text-xs font-medium shrink-0">Cơ sở khám chữa bệnh:</span>
+                      <span className="font-semibold text-slate-900 text-sm text-right">{claim.hospitalName}</span>
                     </div>
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-slate-700 text-xs font-bold shrink-0">Thời gian điều trị:</span>
-                      <span className="font-extrabold text-slate-950 text-xs sm:text-sm font-numeric">
+                      <span className="text-slate-500 text-xs font-medium shrink-0">Thời gian điều trị:</span>
+                      <span className="font-semibold text-slate-900 text-xs sm:text-sm font-numeric">
                         {formatDate(claim.admissionDate)}
                         {claim.dischargeDate ? ` ➔ ${formatDate(claim.dischargeDate)}` : ' (Ngoại trú/Trong ngày)'}
                       </span>
@@ -247,11 +247,11 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
                   </div>
                 </div>
                 <div className="pt-3.5 mt-3.5 border-t border-slate-200 text-xs">
-                  <span className="text-slate-800 text-xs font-extrabold block mb-1.5">Chẩn đoán y khoa & Mã ICD-10:</span>
-                  <div className="p-3.5 bg-white rounded-xl border border-slate-300 text-slate-950 font-extrabold text-xs sm:text-sm leading-relaxed shadow-2xs flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-slate-600 text-xs font-medium block mb-1.5">Chẩn đoán y khoa & Mã ICD-10:</span>
+                  <div className="p-3 bg-white rounded-xl border border-slate-200 text-slate-800 font-medium text-xs sm:text-sm leading-relaxed shadow-2xs flex flex-wrap items-center justify-between gap-2">
                     <span>{claim.diagnosis}</span>
                     {claim.icd10Code && (
-                      <span className="font-numeric text-xs bg-slate-900 text-white px-2.5 py-1 rounded-md font-black shadow-2xs">
+                      <span className="font-numeric text-xs bg-slate-800 text-white px-2.5 py-1 rounded-md font-semibold shadow-2xs">
                         {claim.icd10Code}
                       </span>
                     )}
@@ -261,19 +261,19 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
             </div>
             {/* Box 3: Financials & Payout details */}
             <div className="bg-slate-50/90 border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-2xs">
-              <h3 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-2 mb-3.5">
+              <h3 className="text-xs font-semibold text-slate-600 uppercase tracking-wider flex items-center gap-2 mb-3.5">
                 <CreditCard className="w-4 h-4 text-aia-red" />
                 <span>Chi tiết tài chính & Chi trả bồi thường</span>
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs mb-3.5">
-                <div className="p-4 bg-white rounded-xl border-2 border-slate-200 shadow-2xs">
-                  <span className="text-slate-700 text-xs block font-bold mb-1.5">Số tiền yêu cầu bồi thường:</span>
-                  <span className="text-lg sm:text-xl font-black text-slate-950 font-numeric">
+                <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-2xs">
+                  <span className="text-slate-500 text-xs block font-medium mb-1.5">Số tiền yêu cầu bồi thường:</span>
+                  <span className="text-xl sm:text-2xl font-bold text-slate-900 font-numeric">
                     {formatCurrencyVND(claim.claimedAmount)}
                   </span>
                 </div>
                 <div
-                  className={`p-4 rounded-xl border-2 shadow-2xs ${
+                  className={`p-4 rounded-xl border shadow-2xs ${
                     claim.approvedAmount > 0
                       ? 'bg-emerald-50/70 border-emerald-300 text-emerald-950'
                       : claim.status === 'rejected'
@@ -282,18 +282,18 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-xs block font-extrabold text-slate-800">
+                    <span className="text-xs block font-medium text-slate-500">
                       Số tiền AIA duyệt chi trả:
                     </span>
                     {claim.status === 'rejected' && (
-                      <span className="text-[11px] font-extrabold bg-rose-100 text-rose-800 px-2 py-0.5 rounded border border-rose-200">
+                      <span className="text-[11px] font-semibold bg-rose-100 text-rose-800 px-2 py-0.5 rounded border border-rose-200">
                         Từ chối chi trả
                       </span>
                     )}
                   </div>
                   <span
-                    className={`text-lg sm:text-xl font-black font-numeric ${
-                      claim.approvedAmount > 0 ? 'text-emerald-800' : 'text-slate-600'
+                    className={`text-xl sm:text-2xl font-bold font-numeric ${
+                      claim.approvedAmount > 0 ? 'text-emerald-700' : 'text-slate-500'
                     }`}
                   >
                     {formatCurrencyVND(claim.approvedAmount)}
@@ -353,8 +353,8 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
               })()}
 
               {claim.deductedAmount && claim.deductedAmount > 0 && (
-                <div className="p-4 bg-amber-100/90 border-2 border-amber-300 rounded-xl text-amber-950 mb-3.5 shadow-2xs">
-                  <div className="font-black text-sm flex items-center gap-2 text-amber-950">
+                <div className="p-4 bg-amber-50/90 border border-amber-300 rounded-xl text-amber-950 mb-3.5 shadow-2xs">
+                  <div className="font-bold text-sm flex items-center gap-2 text-amber-950">
                     <AlertTriangle className="w-4 h-4 text-amber-700 shrink-0" />
                     <span>Giảm trừ / Không chi trả: {formatCurrencyVND(claim.deductedAmount)}</span>
                   </div>
@@ -379,7 +379,7 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
             <div className="bg-slate-50/70 border border-slate-200/90 rounded-2xl p-4 space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-xs font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+                  <h3 className="text-xs font-semibold text-slate-600 uppercase tracking-wider flex items-center gap-2">
                     <FileCheck className="w-4 h-4 text-aia-red" />
                     <span>Kho ảnh & Chứng từ y tế ({claim.documents.length})</span>
                   </h3>
