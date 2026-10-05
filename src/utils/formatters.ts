@@ -50,14 +50,23 @@ export function formatCompactVND(amount: number): string {
  * Định dạng số Căn cước công dân (CCCD) thành từng cụm 3 số dễ đọc:
  * Ví dụ: "079198002341" -> "079 198 002 341"
  */
-export function formatCCCD(cccd?: string | null): string {
+export function formatCCCD(cccd?: string | null, isMasked = false): string {
   if (!cccd) return '--';
   const clean = cccd.replace(/\s+/g, '');
   if (clean.length === 12) {
+    if (isMasked) {
+      return `${clean.slice(0, 3)} ••• ••• ${clean.slice(9, 12)}`;
+    }
     return `${clean.slice(0, 3)} ${clean.slice(3, 6)} ${clean.slice(6, 9)} ${clean.slice(9, 12)}`;
   }
   if (clean.length === 9) {
+    if (isMasked) {
+      return `${clean.slice(0, 3)} ••• ${clean.slice(6, 9)}`;
+    }
     return `${clean.slice(0, 3)} ${clean.slice(3, 6)} ${clean.slice(6, 9)}`;
+  }
+  if (isMasked && clean.length > 4) {
+    return `${clean.slice(0, 2)}••••${clean.slice(-2)}`;
   }
   return cccd;
 }
@@ -65,14 +74,31 @@ export function formatCCCD(cccd?: string | null): string {
 /**
  * Định dạng số điện thoại theo chuẩn 4-3-3:
  * Ví dụ: "0912345678" -> "0912 345 678"
+ * Chế độ che mờ: "0912 ••• 678"
  */
-export function formatPhone(phone?: string | null): string {
+export function formatPhone(phone?: string | null, isMasked = false): string {
   if (!phone) return '--';
   const clean = phone.replace(/\s+/g, '');
   if (clean.length === 10) {
+    if (isMasked) {
+      return `${clean.slice(0, 4)} ••• ${clean.slice(7, 10)}`;
+    }
     return `${clean.slice(0, 4)} ${clean.slice(4, 7)} ${clean.slice(7, 10)}`;
   }
+  if (isMasked && clean.length > 4) {
+    return `${clean.slice(0, 3)}•••${clean.slice(-2)}`;
+  }
   return phone;
+}
+
+/**
+ * Che mờ chuỗi văn bản bất kỳ (ví dụ số tài khoản hoặc thông tin nhạy cảm)
+ */
+export function maskText(text?: string | null, startChars = 3, endChars = 3): string {
+  if (!text) return '--';
+  const clean = text.trim();
+  if (clean.length <= startChars + endChars) return clean;
+  return `${clean.slice(0, startChars)}••••${clean.slice(-endChars)}`;
 }
 
 /**

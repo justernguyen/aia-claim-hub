@@ -19,8 +19,11 @@ import { ShieldCheck, Sparkles } from 'lucide-react';
 import { AiaLogo } from './components/AiaLogo';
 import { ConsultantProfileModal } from './components/ConsultantProfileModal';
 import { DataBackupModal } from './components/DataBackupModal';
+import { usePrivacyMode } from './hooks/usePrivacyMode';
+
 export default function App() {
   const store = useCRMStore();
+  const { isPrivacyMode, togglePrivacyMode } = usePrivacyMode();
 
   // Navigation tab state
   const [activeTab, setActiveTab] = useState<AppTab>('customers');
@@ -137,6 +140,8 @@ export default function App() {
         consultant={store.consultant}
         pendingClaimsCount={store.stats.pendingClaims}
         urgentAlertsCount={store.stats.urgentAlertsCount}
+        isPrivacyMode={isPrivacyMode}
+        onTogglePrivacyMode={togglePrivacyMode}
         onOpenNewCustomer={() => setIsNewCustomerModalOpen(true)}
         onOpenNewClaim={() => setIsNewClaimModalOpen(true)}
         onOpenNewCare={() => setIsNewCareModalOpen(true)}
@@ -167,6 +172,7 @@ export default function App() {
             careActivities={store.careActivities}
             selectedCustomerId={selectedCustomerId}
             onSelectCustomerId={setSelectedCustomerId}
+            isPrivacyMode={isPrivacyMode}
             onAddCustomer={(custData, initialPol) => {
               const newCust = store.addCustomer(custData);
               if (initialPol) {
@@ -241,6 +247,7 @@ export default function App() {
               <ClaimTableView
                 claims={filteredClaims}
                 onSelectClaim={handleOpenClaimDetail}
+                isPrivacyMode={isPrivacyMode}
                 onUpdateStatus={(id, s) => {
                   store.updateClaimStatus(id, s);
                   showNotification(`Đã cập nhật trạng thái hồ sơ ${id}`);
@@ -338,6 +345,7 @@ export default function App() {
         claim={selectedClaim}
         policies={store.policies}
         isOpen={isClaimDrawerOpen}
+        isPrivacyMode={isPrivacyMode}
         onClose={() => {
           setIsClaimDrawerOpen(false);
           setSelectedClaimId(null);

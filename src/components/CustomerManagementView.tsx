@@ -9,8 +9,8 @@ import {
   Coins,
   TrendingUp,
   FileSpreadsheet,
+  EyeOff,
 } from 'lucide-react';
-import { CustomerImportModal } from './CustomerImportModal';
 import { Customer, Policy, CareActivity, PolicyStatus } from '../types/crm';
 import { ClaimItem } from '../types/claim';
 import { CustomerCard } from './CustomerCard';
@@ -19,7 +19,7 @@ import { CustomerDetailDrawer } from './CustomerDetailDrawer';
 import { formatCurrencyVND, formatShortCurrency } from '../utils/formatters';
 import { AvatarPickerModal } from './AvatarPickerModal';
 import { EditCustomerModal } from './EditCustomerModal';
-
+import { CustomerImportModal } from './CustomerImportModal';
 interface CustomerManagementViewProps {
   customers: Customer[];
   policies: Policy[];
@@ -36,8 +36,8 @@ interface CustomerManagementViewProps {
   onBulkImport?: (customers: Omit<Customer, 'id' | 'createdAt'>[], policies: Policy[]) => void;
   selectedCustomerId?: string | null;
   onSelectCustomerId?: (id: string | null) => void;
+  isPrivacyMode?: boolean;
 }
-
 export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
   customers,
   policies,
@@ -54,6 +54,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
   onBulkImport,
   selectedCustomerId: externalSelectedCustomerId,
   onSelectCustomerId,
+  isPrivacyMode = true,
 }) => {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -183,7 +184,15 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
             className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 font-medium focus:outline-none focus:ring-2 focus:ring-aia-red/20 focus:border-aia-red focus:bg-white transition-all"
           />
         </div>
-
+        {isPrivacyMode && (
+          <div
+            className="hidden xl:flex items-center gap-1.5 px-2.5 py-2 bg-emerald-50 text-emerald-800 border border-emerald-200/90 rounded-xl text-xs font-semibold shrink-0"
+            title="Chế độ riêng tư đang BẬT: SĐT và CCCD được che mờ tự động. Bấm nút Riêng tư trên Header để xem đầy đủ (hoặc Alt+P)."
+          >
+            <EyeOff className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Bảo vệ PII: Đang che mờ</span>
+          </div>
+        )}
         {/* Status Filter Pills */}
         <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1">
           <button
@@ -309,6 +318,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
               customer={cust}
               policies={policies}
               claims={claims}
+              isPrivacyMode={isPrivacyMode}
               onSelect={(c) => setSelectedCustomerId(c.id)}
               onChangeAvatar={(c) => setEditingAvatarCustomer(c)}
               onEdit={(c) => setEditingCustomer(c)}
@@ -320,6 +330,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
           customers={filteredCustomers}
           policies={policies}
           claims={claims}
+          isPrivacyMode={isPrivacyMode}
           onSelect={(c) => setSelectedCustomerId(c.id)}
           onChangeAvatar={(c) => setEditingAvatarCustomer(c)}
           onEdit={(c) => setEditingCustomer(c)}
@@ -333,6 +344,7 @@ export const CustomerManagementView: React.FC<CustomerManagementViewProps> = ({
         claims={claims}
         careActivities={careActivities}
         isOpen={Boolean(selectedCustomerId)}
+        isPrivacyMode={isPrivacyMode}
         onClose={() => setSelectedCustomerId(null)}
         onSelectClaim={onSelectClaim}
         onAddCareActivity={onAddCareActivity}

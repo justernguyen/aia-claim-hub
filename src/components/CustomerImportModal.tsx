@@ -511,6 +511,14 @@ export const CustomerImportModal: React.FC<CustomerImportModalProps> = ({
             </button>
           </div>
 
+          {/* Security & Auto-Masking Banner */}
+          <div className="flex items-center gap-2.5 px-3.5 py-2.5 bg-emerald-50/80 border border-emerald-200/90 rounded-xl text-emerald-800 text-xs shadow-2xs">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+            <div className="leading-relaxed">
+              <strong className="font-bold text-emerald-900">Bảo mật tự động (Zero-Cloud PII):</strong> Dữ liệu khách hàng nạp từ Excel được xử lý trực tiếp trên trình duyệt máy bạn và tự động che mờ CCCD, SĐT chống nhìn trộm.
+            </div>
+          </div>
+
           {/* Drag & Drop Upload Zone */}
           <div
             onDragOver={handleDragOver}

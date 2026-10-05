@@ -18,6 +18,7 @@ interface CustomerTableViewProps {
   onSelect: (customer: Customer) => void;
   onChangeAvatar?: (customer: Customer) => void;
   onEdit?: (customer: Customer) => void;
+  isPrivacyMode?: boolean;
 }
 export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
   customers,
@@ -26,6 +27,7 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
   onSelect,
   onChangeAvatar,
   onEdit,
+  isPrivacyMode = true,
 }) => {
   return (
     <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
@@ -92,7 +94,7 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
                           <span className="text-xs text-slate-500 font-medium">({cust.gender})</span>
                         </div>
                         <div className="text-xs text-slate-600 font-numeric font-semibold whitespace-nowrap mt-0.5">
-                          CCCD: {formatCCCD(cust.cccd)}
+                          CCCD: {formatCCCD(cust.cccd, isPrivacyMode)}
                         </div>
                       </div>
                     </div>
@@ -102,7 +104,7 @@ export const CustomerTableView: React.FC<CustomerTableViewProps> = ({
                   <td className="py-3.5 px-4">
                     <div className="flex items-center gap-1 text-slate-800 font-numeric font-bold text-xs sm:text-[13px] whitespace-nowrap">
                       <Phone className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                      <span>{formatPhone(cust.phone)}</span>
+                      <span>{formatPhone(cust.phone, isPrivacyMode)}</span>
                     </div>
                     <div className="text-xs text-slate-500 truncate max-w-[190px] mt-0.5" title={cust.address}>
                       {cust.address}

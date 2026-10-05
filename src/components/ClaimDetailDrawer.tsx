@@ -14,6 +14,7 @@ import {
   AlertCircle,
   ShieldCheck,
   Eye,
+  EyeOff,
   Image as ImageIcon,
   UploadCloud,
   MessageSquare,
@@ -57,6 +58,7 @@ interface ClaimDetailDrawerProps {
   onDeleteClaim: (claimId: string) => void;
   onAttachDocImage?: (claimId: string, docId: string, fileUrl: string, fileName: string, fileSize: string) => void;
   onAddDocument?: (claimId: string, docName: string, fileUrl?: string, fileName?: string, fileSize?: string) => void;
+  isPrivacyMode?: boolean;
 }
 export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
   claim,
@@ -69,7 +71,10 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
   onDeleteClaim,
   onAttachDocImage,
   onAddDocument,
+  isPrivacyMode = true,
 }) => {
+  const [isPeekPhone, setIsPeekPhone] = useState(false);
+  const [isPeekCccd, setIsPeekCccd] = useState(false);
   const [newNoteTitle, setNewNoteTitle] = useState('');
   const [newNoteContent, setNewNoteContent] = useState('');
   const [statusChangeNote, setStatusChangeNote] = useState('');
@@ -81,6 +86,10 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
   const [customNoteInput, setCustomNoteInput] = useState('');
   const [zaloModalContent, setZaloModalContent] = useState<string | null>(null);
   const [copiedZalo, setCopiedZalo] = useState(false);
+  useEffect(() => {
+    setIsPeekPhone(false);
+    setIsPeekCccd(false);
+  }, [claim?.id, isPrivacyMode]);
   useEffect(() => {
     if (claim) {
       setSelectedStatus(claim.status);
@@ -200,12 +209,40 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
                       </span>
                     </div>
                     <div>
-                      <span className="text-slate-500 block text-xs font-medium mb-1">Số điện thoại:</span>
-                      <span className="font-numeric font-semibold text-slate-900 text-sm">{formatPhone(claim.customerPhone)}</span>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-slate-500 block text-xs font-medium">Số điện thoại:</span>
+                        {isPrivacyMode && (
+                          <button
+                            type="button"
+                            onClick={() => setIsPeekPhone((prev) => !prev)}
+                            className="text-slate-400 hover:text-slate-700 transition-colors p-0.5"
+                            title={isPeekPhone ? 'Che mờ SĐT' : 'Xem rõ SĐT'}
+                          >
+                            {isPeekPhone ? <EyeOff className="w-3.5 h-3.5 text-aia-red" /> : <Eye className="w-3.5 h-3.5" />}
+                          </button>
+                        )}
+                      </div>
+                      <span className="font-numeric font-semibold text-slate-900 text-sm">
+                        {formatPhone(claim.customerPhone, isPrivacyMode && !isPeekPhone)}
+                      </span>
                     </div>
                     <div>
-                      <span className="text-slate-500 block text-xs font-medium mb-1">Số CCCD:</span>
-                      <span className="font-numeric font-semibold text-slate-900 text-sm">{formatCCCD(claim.customerCccd)}</span>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-slate-500 block text-xs font-medium">Số CCCD:</span>
+                        {isPrivacyMode && (
+                          <button
+                            type="button"
+                            onClick={() => setIsPeekCccd((prev) => !prev)}
+                            className="text-slate-400 hover:text-slate-700 transition-colors p-0.5"
+                            title={isPeekCccd ? 'Che mờ CCCD' : 'Xem rõ CCCD'}
+                          >
+                            {isPeekCccd ? <EyeOff className="w-3.5 h-3.5 text-aia-red" /> : <Eye className="w-3.5 h-3.5" />}
+                          </button>
+                        )}
+                      </div>
+                      <span className="font-numeric font-semibold text-slate-900 text-sm">
+                        {formatCCCD(claim.customerCccd, isPrivacyMode && !isPeekCccd)}
+                      </span>
                     </div>
                     <div>
                       <span className="text-slate-500 block text-xs font-medium mb-1">Số hợp đồng AIA:</span>
@@ -218,7 +255,6 @@ export const ClaimDetailDrawer: React.FC<ClaimDetailDrawerProps> = ({
                   </div>
                 </div>
                 <div className="pt-3.5 mt-3.5 border-t border-slate-200 flex items-center justify-between text-xs">
-                  <span className="text-slate-600 text-xs font-medium">Loại quyền lợi yêu cầu:</span>
                   <span className="font-semibold text-slate-800 bg-white px-3 py-1 rounded-lg border border-slate-200 text-xs shadow-2xs">
                     {CLAIM_TYPE_LABELS[claim.claimType]}
                   </span>

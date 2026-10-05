@@ -20,9 +20,9 @@ import {
 } from '../data/mockCRM';
 import { INITIAL_CLAIMS, CURRENT_CONSULTANT } from '../data/mockClaims';
 import { LEGACY_AVATAR_MAP } from '../data/avatarCatalog';
+import { encryptDataWithPin } from '../utils/crypto';
 
 const STORAGE_KEY = 'aia_agent_crm_store_v2';
-
 interface StoredCRMData {
   customers: Customer[];
   policies: Policy[];
@@ -796,7 +796,7 @@ export const useCRMStore = () => {
     }));
   }, []);
 
-  const exportAllJSON = useCallback(() => {
+  const exportAllJSON = useCallback(async (pin?: string) => {
     const backupPayload = {
       version: '2.0',
       exportedAt: new Date().toISOString(),
@@ -808,17 +808,31 @@ export const useCRMStore = () => {
       ...data,
     };
     const jsonStr = JSON.stringify(backupPayload, null, 2);
-    const blob = new Blob([jsonStr], { type: 'application/json' });
+    let finalContent = jsonStr;
+    let isEncrypted = false;
+
+    if (pin && pin.trim().length > 0) {
+      const encryptedVault = await encryptDataWithPin(
+        jsonStr,
+        pin.trim(),
+        `Bản sao lưu AIA CRM - ${data.consultant.name} (${data.consultant.code})`
+      );
+      finalContent = JSON.stringify(encryptedVault, null, 2);
+      isEncrypted = true;
+    }
+
+    const blob = new Blob([finalContent], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     const cleanDate = new Date().toISOString().slice(0, 10);
     const cleanCode = (data.consultant.code || 'AGENT').replace(/[^a-zA-Z0-9_-]/g, '_');
-    a.download = `AIA_CRM_Backup_${cleanCode}_${cleanDate}.json`;
+    a.download = isEncrypted
+      ? `AIA_CRM_Backup_ENCRYPTED_${cleanCode}_${cleanDate}.json`
+      : `AIA_CRM_Backup_${cleanCode}_${cleanDate}.json`;
     a.click();
     URL.revokeObjectURL(url);
   }, [data]);
-
   const exportAllCSV = useCallback(() => {
     // Export 2 CSVs or combined Customer & Policy CSV
     const headers = ['Ma_KH', 'Ho_Ten', 'SDT', 'CCCD', 'Ngay_Sinh', 'Dia_Chi', 'So_HD', 'San_Pham', 'Trang_Thai_HD', 'Phi_Dinh_Ky', 'Han_Muc_Con_Lai'];

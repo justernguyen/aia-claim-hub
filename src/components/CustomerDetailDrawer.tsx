@@ -22,6 +22,8 @@ import {
   Shield,
   ExternalLink,
   Pencil,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import { Customer, Policy, CareActivity, POLICY_STATUS_CONFIG, BILLING_FREQ_LABELS, CARE_CHANNEL_CONFIG } from '../types/crm';
 import { ClaimItem, STATUS_CONFIG } from '../types/claim';
@@ -40,6 +42,7 @@ interface CustomerDetailDrawerProps {
   onDeleteCustomer?: (customerId: string) => void;
   onChangeAvatar?: (customer: Customer) => void;
   onEdit?: (customer: Customer) => void;
+  isPrivacyMode?: boolean;
 }
 const getBenefitBadge = (type: string) => {
   switch (type) {
@@ -78,9 +81,17 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
   onDeleteCustomer,
   onChangeAvatar,
   onEdit,
+  isPrivacyMode = true,
 }) => {
+  const [isPeekCccd, setIsPeekCccd] = useState(false);
+  const [isPeekPhone, setIsPeekPhone] = useState(false);
   const [activeSubTab, setActiveSubTab] = useState<'profile' | 'policies' | 'claims' | 'care'>('profile');
   const [copiedField, setCopiedField] = useState<string | null>(null);
+
+  useEffect(() => {
+    setIsPeekCccd(false);
+    setIsPeekPhone(false);
+  }, [customer?.id, isPrivacyMode]);
 
   const handleCopy = (text: string, field: string) => {
     navigator.clipboard.writeText(text);
@@ -385,6 +396,17 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                         <span className="text-xs font-bold text-slate-600 uppercase tracking-wider">
                           Số CCCD / Định danh
                         </span>
+                      <div className="flex items-center gap-1.5">
+                        {isPrivacyMode && (
+                          <button
+                            type="button"
+                            onClick={() => setIsPeekCccd((prev) => !prev)}
+                            className="text-slate-400 hover:text-slate-700 transition-colors p-0.5"
+                            title={isPeekCccd ? 'Che mờ CCCD' : 'Xem rõ số CCCD'}
+                          >
+                            {isPeekCccd ? <EyeOff className="w-3.5 h-3.5 text-aia-red" /> : <Eye className="w-3.5 h-3.5" />}
+                          </button>
+                        )}
                         <button
                           type="button"
                           onClick={() => handleCopy(customer.cccd, 'cccd')}
@@ -399,9 +421,10 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                             <Copy className="w-3.5 h-3.5" />
                           )}
                         </button>
+                        </div>
                       </div>
                       <span className="font-bold text-slate-900 font-numeric text-sm tracking-wide block">
-                        {formatCCCD(customer.cccd)}
+                        {formatCCCD(customer.cccd, isPrivacyMode && !isPeekCccd)}
                       </span>
                     </div>
 
@@ -463,10 +486,20 @@ export const CustomerDetailDrawer: React.FC<CustomerDetailDrawerProps> = ({
                           href={`tel:${customer.phone.replace(/\s+/g, '')}`}
                           className="font-bold text-slate-900 font-numeric text-base hover:text-aia-red transition-colors"
                         >
-                          {formatPhone(customer.phone)}
+                          {formatPhone(customer.phone, isPrivacyMode && !isPeekPhone)}
                         </a>
                       </div>
                       <div className="flex items-center gap-1">
+                        {isPrivacyMode && (
+                          <button
+                            type="button"
+                            onClick={() => setIsPeekPhone((prev) => !prev)}
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-white border border-transparent hover:border-slate-200 transition-all"
+                            title={isPeekPhone ? 'Che mờ SĐT' : 'Xem rõ SĐT'}
+                          >
+                            {isPeekPhone ? <EyeOff className="w-4 h-4 text-aia-red" /> : <Eye className="w-4 h-4" />}
+                          </button>
+                        )}
                         <button
                           type="button"
                           onClick={() => handleCopy(customer.phone, 'phone')}

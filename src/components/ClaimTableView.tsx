@@ -20,12 +20,13 @@ interface ClaimTableViewProps {
   claims: ClaimItem[];
   onSelectClaim: (claimId: string) => void;
   onUpdateStatus: (claimId: string, status: ClaimStatus) => void;
+  isPrivacyMode?: boolean;
 }
-
 export const ClaimTableView: React.FC<ClaimTableViewProps> = ({
   claims,
   onSelectClaim,
   onUpdateStatus,
+  isPrivacyMode: _isPrivacyMode = true,
 }) => {
   if (claims.length === 0) {
     return (

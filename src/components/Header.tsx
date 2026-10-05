@@ -11,6 +11,8 @@ import {
   ChevronDown,
   Database,
   UserCog,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import { ConsultantProfile } from '../types/claim';
 import { AppTab } from '../types/navigation';
@@ -31,8 +33,9 @@ interface HeaderProps {
   onResetDefault?: () => void;
   onOpenProfile?: () => void;
   onOpenBackupModal?: () => void;
+  isPrivacyMode?: boolean;
+  onTogglePrivacyMode?: () => void;
 }
-
 export const Header: React.FC<HeaderProps> = ({
   activeTab,
   onTabChange,
@@ -44,10 +47,11 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenNewCare,
   onOpenProfile,
   onOpenBackupModal,
+  isPrivacyMode = true,
+  onTogglePrivacyMode,
 }) => {
   const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
   const [avatarError, setAvatarError] = useState(false);
-
   const navTabs: {
     id: AppTab;
     label: string;
@@ -169,6 +173,32 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
 
             {/* Consolidated Backup & Data Center Button */}
+            {/* Privacy Mode Toggle Button */}
+            <button
+              type="button"
+              onClick={onTogglePrivacyMode}
+              title={
+                isPrivacyMode
+                  ? 'Chế độ riêng tư: Đang BẬT (ẩn bớt CCCD & SĐT để chống nhìn trộm). Bấm để xem đầy đủ (hoặc Alt+P)'
+                  : 'Chế độ riêng tư: Đang TẮT (hiển thị đầy đủ thông tin). Bấm để bật che mờ (hoặc Alt+P)'
+              }
+              className={`px-2.5 sm:px-3 py-2 border rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer shrink-0 ${
+                isPrivacyMode
+                  ? 'bg-emerald-50/80 hover:bg-emerald-100/90 text-emerald-800 border-emerald-300'
+                  : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300'
+              }`}
+            >
+              {isPrivacyMode ? (
+                <EyeOff className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600 shrink-0" />
+              ) : (
+                <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500 shrink-0" />
+              )}
+              <span className="hidden sm:inline whitespace-nowrap">
+                {isPrivacyMode ? 'Riêng tư: BẬT' : 'Riêng tư: TẮT'}
+              </span>
+            </button>
+
+            {/* Consolidated Backup & Data Center Button */}
             <button
               type="button"
               onClick={onOpenBackupModal}
@@ -178,7 +208,6 @@ export const Header: React.FC<HeaderProps> = ({
               <Database className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-aia-red shrink-0" />
               <span className="hidden sm:inline whitespace-nowrap">Sao lưu & Dữ liệu</span>
             </button>
-
             {/* Quick Add Dropdown */}
             <div className="relative shrink-0">
               <button

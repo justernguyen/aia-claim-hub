@@ -23,6 +23,7 @@ interface CustomerCardProps {
   onSelect: (customer: Customer) => void;
   onChangeAvatar?: (customer: Customer) => void;
   onEdit?: (customer: Customer) => void;
+  isPrivacyMode?: boolean;
 }
 
 export const CustomerCard: React.FC<CustomerCardProps> = ({
@@ -32,6 +33,7 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
   onSelect,
   onChangeAvatar,
   onEdit,
+  isPrivacyMode = true,
 }) => {
   const [copiedPhone, setCopiedPhone] = useState(false);
 
@@ -146,7 +148,7 @@ export const CustomerCard: React.FC<CustomerCardProps> = ({
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-1.5 font-numeric font-bold text-slate-800 min-w-0 text-xs sm:text-sm">
               <Phone className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-              <span className="truncate">{formatPhone(customer.phone)}</span>
+              <span className="truncate">{formatPhone(customer.phone, isPrivacyMode)}</span>
               <button
                 type="button"
                 onClick={handleCopyPhone}
